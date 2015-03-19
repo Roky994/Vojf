@@ -10,7 +10,7 @@ Ljubljana, 2015
 ## To do
 
 - Mockup application
-- Framework decision (JS -> AngularJS?, PHP?, CSS -> Bootstrap?)
+- Framework decision (JS -> AngularJS)
 - GUI basics
 - Simple demo application
 
