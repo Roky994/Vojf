@@ -10,7 +10,7 @@ Ljubljana, 2015
 ## To do
 
 - Mockup application
-- Framework decision (JS -> AngularJS)
+- Frameworks (JS -> AngularJS)
 - GUI basics
 - Simple demo application
 
@@ -21,10 +21,10 @@ Ljubljana, 2015
 
 ## Authors
 
-Urban Marovt
+Urban Marovt, 
 um5606@student.uni-lj.si
 
-Rok Založnik
+Rok Založnik, 
 rok.zaloznik@student.uni-lj.si
 
 ---
