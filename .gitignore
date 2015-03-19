@@ -31,4 +31,4 @@ it's better to unpack these files and commit the raw source
 *.tar
 .DS_Store
 
-c9/
+.c9/

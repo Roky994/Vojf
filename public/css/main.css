@@ -1,8 +1,15 @@
-
-
 /* ==========================================================================
-   Author's custom styles
+   Basic styling
    ========================================================================== */
+body {
+    padding-top: 50px;
+    padding-bottom: 20px;
+}
+
+.search {
+    height: 45px;
+}
+ 
 
 #graph-container {
 	height: 600px;
