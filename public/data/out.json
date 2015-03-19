@@ -1,0 +1,125 @@
+{
+    "nodes": {
+        "11118": {
+            "sifra_pu": "11118",
+            "naziv": "URAD PREDSEDNIKA REPUBLIKE SLOVENIJE",
+            "type": "pu",
+            "davcna": "45181276",
+            "maticna": "5065402000"
+        },
+        "88880648": {
+            "naziv": "AVTO DOM IN, D.O.O.",
+            "type": "ne_pu",
+            "davcna": "88880648",
+            "maticna": "5862973"
+        },
+        "46035737": {
+            "naziv": "A1-REMONT KRANJ D.O.O.",
+            "type": "ne_pu",
+            "davcna": "46035737",
+            "maticna": "5097134000"
+        },
+        "20256418": {
+            "naziv": "SELKO SELITVENI SERVIS D.O.O.",
+            "type": "ne_pu",
+            "davcna": "20256418",
+            "maticna": "1674773000"
+        },
+        "43547320": {
+            "naziv": "REPROGRAFIX LJUBLJANA",
+            "type": "ne_pu",
+            "davcna": "43547320",
+            "maticna": "5338948000"
+        },
+        "10995": {
+            "sifra_pu": "10995",
+            "naziv": "REPUBLIKA SLOVENIJA",
+            "type": "pu",
+            "davcna": "17659957",
+            "maticna": "5854814000"
+        },
+        "27403831": {
+            "naziv": "AIREST CATERING D.O.O.",
+            "type": "ne_pu",
+            "davcna": "27403831",
+            "maticna": "1760122000"
+        },
+        "27683893": {
+            "naziv": "IUS SOFTWARE D.O.O. LJUBLJANA",
+            "type": "ne_pu",
+            "davcna": "27683893",
+            "maticna": "5333482"
+        },
+        "11738987": {
+            "naziv": "O-TURS D.O.O.",
+            "type": "ne_pu",
+            "davcna": "11738987",
+            "maticna": "2010615000"
+        }
+    },
+    "edges": {
+        "11118-27403831": [
+            {
+                "source": "11118",
+                "datum": "2014-03-03",
+                "target": "27403831",
+                "znesek": "75.3100",
+                "valuta": "EUR"
+            }
+        ],
+        "11118-20256418": [
+            {
+                "source": "11118",
+                "datum": "2014-03-03",
+                "target": "20256418",
+                "znesek": "34.1600",
+                "valuta": "EUR"
+            }
+        ],
+        "11118-11738987": [
+            {
+                "source": "11118",
+                "datum": "2014-03-03",
+                "target": "11738987",
+                "znesek": "2093.9400",
+                "valuta": "EUR"
+            }
+        ],
+        "11118-46035737": [
+            {
+                "source": "11118",
+                "datum": "2014-03-03",
+                "target": "46035737",
+                "znesek": "71.5800",
+                "valuta": "EUR"
+            }
+        ],
+        "11118-43547320": [
+            {
+                "source": "11118",
+                "datum": "2014-03-03",
+                "target": "43547320",
+                "znesek": "54.9000",
+                "valuta": "EUR"
+            }
+        ],
+        "11118-27683893": [
+            {
+                "source": "11118",
+                "datum": "2014-03-03",
+                "target": "27683893",
+                "znesek": "150.0200",
+                "valuta": "EUR"
+            }
+        ],
+        "10995-88880648": [
+            {
+                "source": "10995",
+                "datum": "2014-03-03",
+                "target": "88880648",
+                "znesek": "20.5200",
+                "valuta": "EUR"
+            }
+        ]
+    }
+}

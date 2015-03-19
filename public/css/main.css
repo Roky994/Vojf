@@ -4,6 +4,12 @@
    Author's custom styles
    ========================================================================== */
 
+#graph-container {
+	height: 600px;
+	min-width: 100%;
+    background: #fff;
+    margin: 0 auto;
+}
 
 
 
