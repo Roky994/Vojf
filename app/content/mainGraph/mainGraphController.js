@@ -15,7 +15,9 @@ define(['sigma', 'jQuery', 'sigma-gexf-parser'], function(sigma, $){
 				g.nodes.push({
 					"id": key,
 					"label": value.naziv,
-					"color": "rgb(255,51,51)"
+					"x": Math.random(),
+					"y": Math.random(),
+					"size": 5
 				});
 			});
 
@@ -33,7 +35,6 @@ define(['sigma', 'jQuery', 'sigma-gexf-parser'], function(sigma, $){
 
 		var drawGraph = function(g) {
 
-			console.log(g);
 
 			var s;
 			
@@ -52,7 +53,6 @@ define(['sigma', 'jQuery', 'sigma-gexf-parser'], function(sigma, $){
 			  }
 			});
 
-			console.log(s);
 
 		}
 		//JSON
