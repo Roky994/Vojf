@@ -7,7 +7,7 @@ define([
 	var initialize = function() {
 		var app = angular.module('sigmaJsApp', ['ngRoute']);
 
-		app.config(function($routeProvider){
+		app.config(function($routeProvider) {
 			$routeProvider.when('/home', {
 				controller: homeController,
 				templateUrl: 'app/content/home/homeTemplate.html'

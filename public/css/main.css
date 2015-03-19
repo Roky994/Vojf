@@ -6,11 +6,27 @@ body {
     padding-bottom: 20px;
 }
 
+
+/* ==========================================================================
+   First page
+   ========================================================================== */
 .search {
     height: 45px;
 }
- 
 
+.header {
+    height: 150px;
+      display: table-cell;
+      vertical-align: middle;    
+}
+
+/* ==========================================================================
+   Custom styling
+   ========================================================================== */
+.centered-text {
+    text-align:center
+}  
+ 
 #graph-container {
 	height: 600px;
 	min-width: 100%;
@@ -18,18 +34,34 @@ body {
     margin: 0 auto;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+/* ==========================================================================
+   Spaces
+   ========================================================================== */
+.space20 {
+    height: 20px;
+    clear: both;
+}
+.space30 {
+    height: 30px;
+    clear: both;
+}
+.space40 {
+    height: 40px;
+    clear: both;
+}
+.space50 {
+    height: 50px;
+    clear: both;
+}
+.space60 {
+    height: 60px;
+    clear: both;
+}
+.space80 {
+    height: 80px;
+    clear: both;
+}
+.space100 {
+    height: 100px;
+    clear: both;
+}

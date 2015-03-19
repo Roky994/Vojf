@@ -1,6 +1,5 @@
-define(['sigma', 'jQuery', 'sigma-gexf-parser'], function(sigma, $){
+define(['sigma', 'jQuery', 'sigma-gexf-parser'], function(sigma, $) {
 	return function($scope) {
-
 
 		var testFunction = function() {
 			$.getJSON('../public/data/out.json', function( data ){
@@ -35,7 +34,6 @@ define(['sigma', 'jQuery', 'sigma-gexf-parser'], function(sigma, $){
 
 		var drawGraph = function(g) {
 
-
 			var s;
 			
 			s = new sigma({
@@ -57,9 +55,6 @@ define(['sigma', 'jQuery', 'sigma-gexf-parser'], function(sigma, $){
 		}
 		//JSON
 		testFunction();
-
-
-
 
 	}
 })
