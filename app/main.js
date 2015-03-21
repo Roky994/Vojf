@@ -7,9 +7,7 @@ requirejs.config({
         'angular-resource': 'vendor/angular-resource/angular-resource',
         'bootstrap': 'vendor/bootstrap.min',
         'sigma': 'vendor/sigmajs/sigma.min',
-        'sigma-json-parser': 'vendor/sigmajs/plugins/sigma.parsers.json.min',
-        'gexf-parser': 'vendor/sigmajs/plugins/gexf-parser',
-        'sigma-gexf-parser': 'vendor/sigmajs/plugins/sigma.parsers.gexf'
+        'forceAtlas' : 'vendor/sigmajs/plugins/sigma.layout.forceAtlas2.min'
     },
     shim: {
         'angular': {
@@ -34,13 +32,8 @@ requirejs.config({
 	    'sigma' : {
 	    	exports: 'sigma'
 	    },
-	    'sigma-json-parser' : {
-	    	deps: ['sigma'],
-	    	exports: 'sigma.parsers.json'
-	    },
-	    'sigma-gexf-parser' : {
-	    	deps: ['sigma', 'gexf-parser'],
-	    	exports: 'sigma.parsers.gexf'
+	    'forceAtlas' : {
+	    	deps: ['sigma']
 	    }
     }
 });

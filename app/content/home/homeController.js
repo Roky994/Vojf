@@ -1,4 +1,4 @@
-define(['sigma', 'jQuery', 'sigma-gexf-parser'], function(sigma, $) {
+define(['sigma', 'jQuery'], function(sigma, $) {
 	return function($scope, $http) {
 		
 		// Demonstrate all functionalities...
