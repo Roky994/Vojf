@@ -14,11 +14,16 @@ define(['sigma', 'jQuery', 'forceAtlas'], function(sigma, $) {
 			var maxTransTotal = 0;
 
 			$.each(data.edges, function(key, value) {
+
 				//interiraj po vseh transakcijah med vozliscema in sestej zneske
 				var transTotal = 0;
 				$.each(value, function(index, transacition) {
 					transTotal += parseFloat(transacition.znesek);
 				});
+
+				if(transTotal < 50000) {
+					return;
+				}
 
 				//shrani najvecji strosek za realizacijo velikosti vozlisc
 				if( transTotal > maxTransTotal ) {
@@ -32,6 +37,8 @@ define(['sigma', 'jQuery', 'forceAtlas'], function(sigma, $) {
 					data.nodes[value[0].source].totalExpenses += transTotal;
 				}
 
+				data.nodes[value[0].target].isTarget = true;
+
 				g.edges.push({
 					"id": key,
 					"source": value[0].source,
@@ -42,12 +49,18 @@ define(['sigma', 'jQuery', 'forceAtlas'], function(sigma, $) {
 			});
 
 			$.each(data.nodes, function(key, value) {
+				if(value.totalExpenses == undefined && value.isTarget == undefined) {
+					return;
+				}
+				console.log(value.totalExpenses/ maxTransTotal);
+				console.log(Math.ceil(value.totalExpenses/ maxTransTotal));
+
 				g.nodes.push({
 					"id": key,
 					"label": value.naziv,
 					"x": Math.random() * 1000,
 					"y": Math.random() * 1000,
-					"size": Math.ceil(value.totalExpenses / maxTransTotal * 10),
+					"size": 1,
 					"outcomeSum": 0
 				});
 			});
@@ -83,7 +96,7 @@ define(['sigma', 'jQuery', 'forceAtlas'], function(sigma, $) {
 
 			$timeout(function() {
 				s.stopForceAtlas2();
-			}, 10000);
+			}, 1500);
 		}
 
 		//JSON
