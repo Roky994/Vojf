@@ -7,7 +7,6 @@ define(['sigma', 'jQuery'], function(sigma, $) {
 	    }
 	    
 	    setInterval(function(){demoBlink()}, 1500);
-	
 
 	}
 })
