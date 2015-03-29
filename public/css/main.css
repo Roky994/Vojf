@@ -1,7 +1,12 @@
 /* ==========================================================================
    Basic styling
    ========================================================================== */
+html {
+  height: 100%;
+}
+
 body {
+    height: 100% !important;
     padding-top: 50px;
     padding-bottom: 20px;
 }
@@ -47,6 +52,22 @@ body {
   text-align:center;
 }
 
+.footer {
+  position: absolute;
+  width: 100%;
+  bottom: 0;
+  height: 40px;
+  background-image: -webkit-linear-gradient(top,#3c3c3c 0,#222 100%);
+  background-image: -o-linear-gradient(top,#3c3c3c 0,#222 100%);
+  background-image: -webkit-gradient(linear,left top,left bottom,from(#3c3c3c),to(#222));
+  background-image: linear-gradient(to bottom,#3c3c3c 0,#222 100%);
+}
+
+.footer-text {
+  padding-top: 10px;
+  color: #9d9d9d;
+}
+
 /* ==========================================================================
    Custom styling
    ========================================================================== */
@@ -56,11 +77,19 @@ body {
 }  
  
 #graph-container {
-	top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  position: absolute;
+	height: 700px;
+  width: 100%;
+  background-color: #dedede;
+  border-left: 5px solid;
+  border-bottom: 5px solid;
+}
+
+/* ==========================================================================
+   Height
+   ========================================================================== */
+
+.height45 {
+  height: 45px;
 }
 
 /* ==========================================================================

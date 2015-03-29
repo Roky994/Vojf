@@ -1,5 +1,5 @@
 define(['sigma', 'jQuery'], function(sigma, $) {
-	return function($scope, $http) {
+	return function($scope, $http, $location) {
 		
 		// Demonstrate all functionalities...
 	    function demoBlink() {
@@ -7,6 +7,10 @@ define(['sigma', 'jQuery'], function(sigma, $) {
 	    }
 	    
 	    setInterval(function(){demoBlink()}, 1500);
+
+	    $scope.redirect = function(){
+	    	$location.path("/mainGraph/" + $scope.search);
+	    }
 
 	}
 })

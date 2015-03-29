@@ -11,7 +11,7 @@ define([
 			$routeProvider.when('/home', {
 				controller: homeController,
 				templateUrl: 'app/content/home/homeTemplate.html'
-			}).when('/mainGraph', {
+			}).when('/mainGraph/:nodeId', {
 				controller: mainGraphController,
 				templateUrl: 'app/content/mainGraph/mainGraphTemplate.html'
 			}).otherwise({

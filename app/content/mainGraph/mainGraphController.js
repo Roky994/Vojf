@@ -1,19 +1,19 @@
 define(['sigma', 'jQuery', 'forceAtlas', 'customEdgesShapes'], function(sigma, $) {
-	return function($scope, $timeout) {
+	return function($scope, $timeout, $routeParams) {
 
-		sigma.classes.graph.addMethod('neighbors',  function(nodeId) {
+		var s;
 
-					var k,
-						neighbors = {},
-						index = this.allNeighborsIndex[nodeId] || {};
-					console.log(index);
-					for(k in index) {
-						neighbors[k] = this.nodesIndex[k];
-					}
+		$scope.nodeId = $routeParams.nodeId;
 
-					return neighbors;
+		$scope.graph = {};
 
-				});
+		$scope.findNode = function() {
+			findNodeById();
+		}
+
+		$scope.resetGraph = function() {
+			s.resetZoom();
+		}
 
 		var testFunction = function() {
 			$.getJSON('../public/data/trans201403_samo_pu.json', function( data ){
@@ -35,7 +35,7 @@ define(['sigma', 'jQuery', 'forceAtlas', 'customEdgesShapes'], function(sigma, $
 					transTotal += parseFloat(transacition.znesek);
 				});
 
-				if(transTotal < 50000) {
+				if(transTotal < 100000) {
 					return;
 				}
 
@@ -67,15 +67,23 @@ define(['sigma', 'jQuery', 'forceAtlas', 'customEdgesShapes'], function(sigma, $
 				if(value.totalExpenses == undefined && value.isTarget == undefined) {
 					return;
 				}
-				console.log(value.totalExpenses/ maxTransTotal);
-				console.log(Math.ceil(value.totalExpenses/ maxTransTotal));
+				var size = 0.5;
+				if(value.totalExpenses > maxTransTotal / 10) {
+					size = 3;
+				} else if( value.totalExpenses > maxTransTotal / 15) {
+					size = 2.5;
+				} else if ( value.totalExpenses > maxTransTotal / 30) {
+					size = 2;
+				} else if ( value.totalExpenses > maxTransTotal / 40) {
+					size = 1;
+				}
 
 				g.nodes.push({
 					"id": key,
 					"label": value.naziv,
 					"x": Math.random() * 1000,
 					"y": Math.random() * 1000,
-					"size": 1,
+					"size": size,
 					"outcomeSum": 0
 				});
 			});
@@ -86,6 +94,18 @@ define(['sigma', 'jQuery', 'forceAtlas', 'customEdgesShapes'], function(sigma, $
 		}
 
 		var drawGraph = function(g) {
+
+			sigma.classes.graph.addMethod('neighbors',  function(nodeId) {
+				var k,
+					neighbors = {},
+					index = this.allNeighborsIndex[nodeId] || {};
+
+				for(k in index) {
+					neighbors[k] = this.nodesIndex[k];
+				}
+
+				return neighbors;
+			});
 
 			sigma.prototype.zoomToNode = function(node, ratio){
 			    if(typeof camera == "undefined"){
@@ -99,7 +119,7 @@ define(['sigma', 'jQuery', 'forceAtlas', 'customEdgesShapes'], function(sigma, $
 				    y: node[s.camera.readPrefix + 'y'],
 				    ratio: ratio
 				  }, 
-				  {duration: s.settings('animationsTime') || 500}
+				  {duration: 1500}
 				);
 			}
 
@@ -108,6 +128,17 @@ define(['sigma', 'jQuery', 'forceAtlas', 'customEdgesShapes'], function(sigma, $
 				if(typeof camera == "undefined"){
 			        camera = this.cameras[0];
 			    }
+
+			    s.graph.nodes().forEach(function(n) {
+		          n.color = '#333';
+		        });
+
+		        s.graph.edges().forEach(function(e) {
+		          e.color = '#222';
+		        });
+		        
+		        s.refresh();
+
 				sigma.misc.animation.camera(
 				  camera, 
 				  {
@@ -115,16 +146,10 @@ define(['sigma', 'jQuery', 'forceAtlas', 'customEdgesShapes'], function(sigma, $
 				    y: 0,
 				    ratio: 1
 				  }, 
-				  {duration: s.settings('animationsTime') || 500}
+				  {duration: 1500}
 				);
 			}
 
-			$scope.resetGraph = function() {
-				s.resetZoom();
-			}
-
-			var s;
-			
 			s = new sigma({
 				graph: g,
 				renderer: {
@@ -135,12 +160,14 @@ define(['sigma', 'jQuery', 'forceAtlas', 'customEdgesShapes'], function(sigma, $
 				  	//basic
 				  	doubleClickEnabled: false,
 
+
 				  	//nodes
 				  	minNodeSize: 1,
 			        maxNodeSize: 5,
-			        drawLabels: false,
 			        defaultNodeColor: '#333',
-
+			        labelThreshold: 10,
+			        labelColor: "node",
+			        defaultHoverLabelBGColor: "rgba(255, 255, 255, 0)",
 			        //edges
 			        minEdgeSize: 1,
 			        maxEdgeSize: 5,
@@ -148,52 +175,63 @@ define(['sigma', 'jQuery', 'forceAtlas', 'customEdgesShapes'], function(sigma, $
 		    	}
 			});
 
+			
+
 			s.bind('clickNode', function(e) {
-				var nodeId = e.data.node.id,
-					toKeep = s.graph.neighbors(nodeId);
-				toKeep[nodeId] = e.data.node;
-
-				s.graph.nodes().forEach(function(n) {
-					if(toKeep[n.id])
-						n.color = '#333';
-					else
-						n.color = '#555';
-				});
-
-				s.graph.edges().forEach(function(e) {
-					if((toKeep[e.source] && (e.target.localeCompare(nodeId) == 0))  || (toKeep[e.target] && (e.source.localeCompare(nodeId) == 0))) {
-						e.color = '#333';
-					} else {
-						e.color = '#555';
-					}
-				});
-
-				s.zoomToNode(e.data.node, 0.2);
-				s.refresh();
-
+				$scope.$apply(function() {
+					findChoosedNode(e.data.node.id, e.data.node);
+				});			
 			});
 
-			s.bind('clickStage', function(e) {
-
-				s.graph.nodes().forEach(function(n) {
-		          n.color = '#333';
-		        });
-
-		        s.graph.edges().forEach(function(e) {
-		          e.color = '#222';
-		        });
-
-		        s.refresh();
-			});
-
-
+			// beginning sort
 			s.startForceAtlas2({worker: true});
 
 			$timeout(function() {
 				s.stopForceAtlas2();
+				findNodeById();
 			}, 1500);
 		}
 
+		var findChoosedNode = function(nodeId, node) {
+			setActiveNode(node);
+			console.log(nodeId);
+			var toKeep = s.graph.neighbors(nodeId);
+			toKeep[nodeId] = node;
+
+			s.graph.nodes().forEach(function(n) {
+				if(toKeep[n.id])
+					n.color = '#333';
+				else
+					n.color = '#AAA';
+			});
+
+			s.graph.edges().forEach(function(e) {
+				if((toKeep[e.source] && (e.target.localeCompare(nodeId) == 0))  || (toKeep[e.target] && (e.source.localeCompare(nodeId) == 0))) {
+					e.color = '#333';
+				} else {
+					e.color = '#AAA';
+				}
+			});
+
+			s.zoomToNode(node, 0.2);
+			s.refresh();
+		}
+
+		var findNodeById = function() {
+			s.graph.nodes().forEach(function(node, i, a) {
+			  if (node.id.localeCompare($scope.nodeId) == 0) {
+			    findChoosedNode($scope.nodeId, node);
+			    $scope.
+			    return;
+			  }
+			});
+		}
+
+		var setActiveNode = function (node) {
+			$scope.activeNode = node;
+			$scope.nodeId = node.id;
+			
+		}
 		
 		//JSON
 		testFunction();

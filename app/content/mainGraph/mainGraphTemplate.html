@@ -1,15 +1,21 @@
-<h1>Main Graph</h1>
 
 <div class="row">
-	<div class="col-md-2">
-		<button ng-click="">RESET GRAPH</button>
+	<div class="col-md-3">
+		<h1>Main Graph</h1>
+		<div class="input-group">
+			<input type="text" class="form-control height45" placeholder="Poišči ustanovo..." ng-model="nodeId">
+			<span class="input-group-btn">
+				<button class="btn btn-default height45" ng-click="findNode()" type="button">
+					<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+				</button>
+			</span>
+		</div>
+		<br/> <br/>
+		<button ng-click="resetGraph()">RESET GRAPH</button>
+		<p>Trenutno izbrano vozlisce: {{ activeNode.label }}</p>
 	</div>
-	<div class="col-md-8">
-		
-	</div>
-	<div class="col-md-2">
-
+	<div class="col-md-9">
+		<div id="graph-container"></div>
 	</div>
 </div>
 
-<div id="graph-container"></div>
