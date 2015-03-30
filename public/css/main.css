@@ -11,8 +11,17 @@ body {
     padding-bottom: 20px;
 }
 
-.roAw {
-    margin: 0 auto;
+.font-size-11 {
+    font-size: 11px;
+}
+
+.scrollable {
+    overflow: auto;
+    height: 400px;
+}
+
+[ng-click] {
+    cursor: pointer;
 }
 
 /* ==========================================================================

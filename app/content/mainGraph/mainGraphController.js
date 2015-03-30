@@ -40,7 +40,7 @@ define(['sigma', 'jQuery', 'forceAtlas', 'customEdgesShapes'], function(sigma, $
 					transTotal += parseFloat(transacition.znesek);
 				});
 
-				if(transTotal < 30000) {
+				if(transTotal < 100000) {
 					return;
 				}
 
@@ -179,8 +179,8 @@ define(['sigma', 'jQuery', 'forceAtlas', 'customEdgesShapes'], function(sigma, $
 
 			s.bind('clickNode', function(e) {
 				$scope.$apply(function() {
-					findChoosedNode(e.data.node.id, e.data.node);
-				});			
+                    $scope.findChoosedNode(e.data.node);
+				});
 			});
 
 			// Beginning sort
@@ -193,11 +193,11 @@ define(['sigma', 'jQuery', 'forceAtlas', 'customEdgesShapes'], function(sigma, $
 		}
 
         // Get choosed node
-		var findChoosedNode = function(nodeId, node) {
+		$scope.findChoosedNode = function(node) {
 			setActiveNode(node);
-			console.log(nodeId);
-			var toKeep = s.graph.neighbors(nodeId);
-			toKeep[nodeId] = node;
+			console.log(node.id);
+			var toKeep = s.graph.neighbors(node.id);
+			toKeep[node.id] = node;
 			console.log(toKeep);
 			s.graph.nodes().forEach(function(n) {
 				if(toKeep[n.id])
@@ -207,16 +207,16 @@ define(['sigma', 'jQuery', 'forceAtlas', 'customEdgesShapes'], function(sigma, $
 			});
 			$scope.neighbours = [];
 			s.graph.edges().forEach(function(e) {
-				if(toKeep[e.source] && (e.target.localeCompare(nodeId) == 0)){
-					e.color = '#333';
-					$scope.neighbours.push({
-						node: toKeep[e.target],
-						edge: e
-					})
-				} else if (toKeep[e.target] && (e.source.localeCompare(nodeId) == 0)) {
+				if(toKeep[e.source] && (e.target.localeCompare(node.id) == 0)){
 					e.color = '#333';
 					$scope.neighbours.push({
 						node: toKeep[e.source],
+						edge: e
+					})
+				} else if (toKeep[e.target] && (e.source.localeCompare(node.id) == 0)) {
+					e.color = '#333';
+					$scope.neighbours.push({
+						node: toKeep[e.target],
 						edge: e
 					});
 				} else {
@@ -232,7 +232,7 @@ define(['sigma', 'jQuery', 'forceAtlas', 'customEdgesShapes'], function(sigma, $
 		var findNodeById = function() {
 			s.graph.nodes().forEach(function(node, i, a) {
                 if(node.id.localeCompare($scope.nodeId) == 0) {
-                    findChoosedNode($scope.nodeId, node);
+                    $scope.findChoosedNode(node);
                     return;
                 }
 			});
