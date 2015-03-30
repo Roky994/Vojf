@@ -6,12 +6,12 @@ html {
 }
 
 body {
-    height: 100% !important;
+    height: 100%;
     padding-top: 50px;
     padding-bottom: 20px;
 }
 
-.row {
+.roAw {
     margin: 0 auto;
 }
 

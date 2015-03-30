@@ -5,7 +5,6 @@ define(['sigma', 'jQuery'], function(sigma, $) {
 	    function demoBlink() {
 	        $("button").fadeTo(800, 0.5).fadeTo(800, 1.0);
 	    }
-	    
 	    setInterval(function(){demoBlink()}, 1500);
 
 	    $scope.redirect = function(){

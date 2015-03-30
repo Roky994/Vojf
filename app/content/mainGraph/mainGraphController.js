@@ -3,28 +3,31 @@ define(['sigma', 'jQuery', 'forceAtlas', 'customEdgesShapes'], function(sigma, $
 
 		var s;
 
+        // Search term
 		$scope.nodeId = $routeParams.nodeId;
 
-		$scope.graph = {};
-
+        // Find node by id
 		$scope.findNode = function() {
-			findNodeById();
+            if ($scope.nodeId !== 'undefined')
+                findNodeById();
 		}
 
+        // Reset the graph
 		$scope.resetGraph = function() {
 			s.resetZoom();
 		}
 
-		var testFunction = function() {
+        // Get data
+		var loadJson = function() {
 			$.getJSON('/vojf/public/data/trans201403_samo_pu.json', function( data ){
-				parseJsonForGraph( data );
+				parseJsonForGraph(data);
 			});
 		}
 
+        // Parse JSON
 		var parseJsonForGraph = function(data) {
-
+            // Graph
 			var g = {nodes: [], edges: []};
-
 			var maxTransTotal = 0;
 
 			$.each(data.edges, function(key, value) {
@@ -88,13 +91,11 @@ define(['sigma', 'jQuery', 'forceAtlas', 'customEdgesShapes'], function(sigma, $
 				});
 			});
 
-			
-
 			drawGraph(g);
 		}
 
+        // Draw the graph
 		var drawGraph = function(g) {
-
 			sigma.classes.graph.addMethod('neighbors',  function(nodeId) {
 				var k,
 					neighbors = {},
@@ -122,7 +123,6 @@ define(['sigma', 'jQuery', 'forceAtlas', 'customEdgesShapes'], function(sigma, $
 				  {duration: 1500}
 				);
 			}
-
 
 			sigma.prototype.resetZoom = function() {
 				if(typeof camera == "undefined"){
@@ -153,29 +153,26 @@ define(['sigma', 'jQuery', 'forceAtlas', 'customEdgesShapes'], function(sigma, $
 			s = new sigma({
 				graph: g,
 				renderer: {
-				  	container: document.getElementById('graph-container'),
+				  	container: $("#graph-container")[0],
 				  	type: "canvas"
 				},
 				settings: {
-				  	//basic
+				  	// Basic
 				  	doubleClickEnabled: false,
 
-
-				  	//nodes
+				  	// Nodes
 				  	minNodeSize: 1,
 			        maxNodeSize: 5,
 			        defaultNodeColor: '#333',
 			        labelThreshold: 10,
 			        labelColor: "node",
 			        defaultHoverLabelBGColor: "rgba(255, 255, 255, 0)",
-			        //edges
+			        // Edges
 			        minEdgeSize: 1,
 			        maxEdgeSize: 5,
 			        defaultEdgeColor: '#222',
 		    	}
 			});
-
-			
 
 			s.bind('clickNode', function(e) {
 				$scope.$apply(function() {
@@ -183,15 +180,16 @@ define(['sigma', 'jQuery', 'forceAtlas', 'customEdgesShapes'], function(sigma, $
 				});			
 			});
 
-			// beginning sort
+			// Beginning sort
 			s.startForceAtlas2({worker: true});
 
 			$timeout(function() {
 				s.stopForceAtlas2();
-				findNodeById();
+				$scope.findNode();
 			}, 1500);
 		}
 
+        // Get choosed node
 		var findChoosedNode = function(nodeId, node) {
 			setActiveNode(node);
 			console.log(nodeId);
@@ -217,24 +215,23 @@ define(['sigma', 'jQuery', 'forceAtlas', 'customEdgesShapes'], function(sigma, $
 			s.refresh();
 		}
 
+        // Find node by id
 		var findNodeById = function() {
 			s.graph.nodes().forEach(function(node, i, a) {
-			  if (node.id.localeCompare($scope.nodeId) == 0) {
-			    findChoosedNode($scope.nodeId, node);
-			    $scope.
-			    return;
-			  }
+            if(node.id.localeCompare($scope.nodeId) == 0) {
+                findChoosedNode($scope.nodeId, node);
+                return;
+            }
 			});
 		}
 
+        // Selected node
 		var setActiveNode = function (node) {
 			$scope.activeNode = node;
 			$scope.nodeId = node.id;
-			
 		}
 		
 		//JSON
-		testFunction();
-
+		loadJson();
 	}
 })
