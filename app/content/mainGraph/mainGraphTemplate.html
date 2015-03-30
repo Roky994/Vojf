@@ -1,18 +1,20 @@
-
 <div class="row">
 	<div class="col-md-3">
         <div class="row">
             <h1>Graf</h1>
+            <div class="space20"></div>
+
             <div class="input-group">
                 <input type="text" class="form-control height45" placeholder="Poišči ustanovo..." ng-model="nodeId">
-			<span class="input-group-btn">
-				<button class="btn btn-default height45" ng-click="findNode()" type="button">
-                    <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
-                </button>
-			</span>
+                <span class="input-group-btn">
+                    <button class="btn btn-default height45" ng-click="findNode()" type="button">
+                        <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                    </button>
+                </span>
             </div>
-            <button ng-click="resetGraph()">RESET GRAPH</button>
-            <br/> <br/>
+            <div class="space5"></div>
+            <button class="btn btn-default height45" ng-click="resetGraph()">Reset graph</button>
+            <div class="space20"></div>
         </div>
         <div class="row">
             <ul class="list-group">
@@ -25,6 +27,10 @@
                 </li>
             </ul>
         </div>
+
+		<p>Trenutno izbrano vozlisce:<p>
+		<p>{{ activeNode.label }}</p>
+		<p>Sosedi izbranega vozlišča: </p>
 
 	</div>
 	<div class="col-md-9">
