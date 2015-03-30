@@ -1,7 +1,9 @@
-
 <div class="row">
 	<div class="col-md-3">
 		<h1>Main Graph</h1>
+		<div class="space20"></div>
+
+		<h5>Poišči vozlišče po številki pu:</h5>
 		<div class="input-group">
 			<input type="text" class="form-control height45" placeholder="Poišči ustanovo..." ng-model="nodeId">
 			<span class="input-group-btn">
@@ -10,9 +12,15 @@
 				</button>
 			</span>
 		</div>
-		<br/> <br/>
-		<button ng-click="resetGraph()">RESET GRAPH</button>
-		<p>Trenutno izbrano vozlisce: {{ activeNode.label }}</p>
+		<div class="space5"></div>
+
+		<button class="btn btn-default height45" ng-click="resetGraph()">Reset graph</button>
+		<div class="space20"></div>
+
+		<p>Trenutno izbrano vozlisce:<p>
+		<p>{{ activeNode.label }}</p>
+		<p>Sosedi izbranega vozlišča: </p>
+		
 	</div>
 	<div class="col-md-9">
 		<div id="graph-container"></div>

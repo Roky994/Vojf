@@ -5,7 +5,7 @@ define(['sigma', 'jQuery', 'forceAtlas', 'customEdgesShapes'], function(sigma, $
 
 		$scope.nodeId = $routeParams.nodeId;
 
-		$scope.graph = {};
+		$scope.neighbours = [];
 
 		$scope.findNode = function() {
 			findNodeById();
@@ -35,7 +35,7 @@ define(['sigma', 'jQuery', 'forceAtlas', 'customEdgesShapes'], function(sigma, $
 					transTotal += parseFloat(transacition.znesek);
 				});
 
-				if(transTotal < 100000) {
+				if(transTotal < 30000) {
 					return;
 				}
 
@@ -68,16 +68,17 @@ define(['sigma', 'jQuery', 'forceAtlas', 'customEdgesShapes'], function(sigma, $
 					return;
 				}
 				var size = 0.5;
-				if(value.totalExpenses > maxTransTotal / 10) {
-					size = 3;
-				} else if( value.totalExpenses > maxTransTotal / 15) {
-					size = 2.5;
+				if(value.totalExpenses > maxTransTotal / 2) {
+					size = 10;
+				} else if( value.totalExpenses > maxTransTotal / 5) {
+					size = 4;
 				} else if ( value.totalExpenses > maxTransTotal / 30) {
-					size = 2;
+					size = 3;
 				} else if ( value.totalExpenses > maxTransTotal / 40) {
-					size = 1;
-				}
-
+					size = 2;
+				} else if (value.totalExpenses > maxTransTotal / 1000) {
+					size = 1.5;
+				} 
 				g.nodes.push({
 					"id": key,
 					"label": value.naziv,
@@ -163,7 +164,7 @@ define(['sigma', 'jQuery', 'forceAtlas', 'customEdgesShapes'], function(sigma, $
 
 				  	//nodes
 				  	minNodeSize: 1,
-			        maxNodeSize: 5,
+			        maxNodeSize: 10,
 			        defaultNodeColor: '#333',
 			        labelThreshold: 10,
 			        labelColor: "node",
@@ -197,23 +198,33 @@ define(['sigma', 'jQuery', 'forceAtlas', 'customEdgesShapes'], function(sigma, $
 			console.log(nodeId);
 			var toKeep = s.graph.neighbors(nodeId);
 			toKeep[nodeId] = node;
-
+			console.log(toKeep);
 			s.graph.nodes().forEach(function(n) {
 				if(toKeep[n.id])
 					n.color = '#333';
 				else
 					n.color = '#AAA';
 			});
-
+			$scope.neighbours = [];
 			s.graph.edges().forEach(function(e) {
-				if((toKeep[e.source] && (e.target.localeCompare(nodeId) == 0))  || (toKeep[e.target] && (e.source.localeCompare(nodeId) == 0))) {
+				if(toKeep[e.source] && (e.target.localeCompare(nodeId) == 0)){
 					e.color = '#333';
+					$scope.neighbours.push({
+						node: toKeep[e.target],
+						edge: e
+					})
+				} else if (toKeep[e.target] && (e.source.localeCompare(nodeId) == 0)) {
+					e.color = '#333';
+					$scope.neighbours.push({
+						node: toKeep[e.source],
+						edge: e
+					});
 				} else {
 					e.color = '#AAA';
 				}
 			});
 
-			s.zoomToNode(node, 0.2);
+			s.zoomToNode(node, 0.15);
 			s.refresh();
 		}
 
@@ -221,7 +232,6 @@ define(['sigma', 'jQuery', 'forceAtlas', 'customEdgesShapes'], function(sigma, $
 			s.graph.nodes().forEach(function(node, i, a) {
 			  if (node.id.localeCompare($scope.nodeId) == 0) {
 			    findChoosedNode($scope.nodeId, node);
-			    $scope.
 			    return;
 			  }
 			});
