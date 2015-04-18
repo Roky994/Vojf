@@ -21,7 +21,7 @@ define(['sigma', 'jQuery', 'forceAtlas', 'customEdgesShapes'], function(sigma, $
 
         // Get data
 		var loadJson = function() {
-			$.getJSON('/vojf/public/data/trans201403_samo_pu.json', function( data ){
+			$.getJSON('public/data/trans201403_samo_pu.json', function( data ){
 				parseJsonForGraph(data);
 			});
 		}
