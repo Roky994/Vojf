@@ -21,7 +21,7 @@ define(['sigma', 'jQuery', 'forceAtlas', 'customEdgesShapes'], function(sigma, $
 
         // Get data
 		var loadJson = function() {
-			$.getJSON('public/data/trans201403_samo_pu.json', function( data ){
+			$.getJSON('public/data/trans201403_samo_pu_koord.json', function( data ){
 				parseJsonForGraph(data);
 			});
 		}
@@ -72,28 +72,38 @@ define(['sigma', 'jQuery', 'forceAtlas', 'customEdgesShapes'], function(sigma, $
 				if(value.totalExpenses == undefined && value.isTarget == undefined) {
 					return;
 				}
-				var size = 0.5;
+				var size = 0.1;
 				if(value.totalExpenses > maxTransTotal / 2) {
-					size = 10;
-				} else if( value.totalExpenses > maxTransTotal / 5) {
-					size = 4;
-				} else if ( value.totalExpenses > maxTransTotal / 30) {
-					size = 3;
-				} else if ( value.totalExpenses > maxTransTotal / 40) {
 					size = 2;
-				} else if (value.totalExpenses > maxTransTotal / 1000) {
+				} else if( value.totalExpenses > maxTransTotal / 5) {
 					size = 1.5;
-				} 
+				} else if ( value.totalExpenses > maxTransTotal / 30) {
+					size = 1.2;
+				} else if ( value.totalExpenses > maxTransTotal / 40) {
+					size = 1;
+				} else if (value.totalExpenses > maxTransTotal / 1000) {
+					size = 0.5;
+				}
+
+				if(value.lon == 0) {
+					value.lon = 15;
+					value.lat = 46;
+				}
+
+				var x = ((parseFloat(value.lon) - 15)*5).toFixed(4);
+				var y = -((parseFloat(value.lat) - 46)*5).toFixed(4);
+
 				g.nodes.push({
 					"id": key,
 					"label": value.naziv,
-					"x": Math.random() * 1000,
-					"y": Math.random() * 1000,
+					"x": x,
+					"y": y,
 					"size": size,
 					"outcomeSum": 0
 				});
-			});
 
+			});
+			console.log(g);
 			drawGraph(g);
 		}
 
@@ -184,12 +194,12 @@ define(['sigma', 'jQuery', 'forceAtlas', 'customEdgesShapes'], function(sigma, $
 			});
 
 			// Beginning sort
-			s.startForceAtlas2({worker: true});
+			// s.startForceAtlas2({worker: true});
 
-			$timeout(function() {
-				s.stopForceAtlas2();
-				$scope.findNode();
-			}, 1500);
+			// $timeout(function() {
+			// 	s.stopForceAtlas2();
+			// 	$scope.findNode();
+			// }, 1500);
 		}
 
         // Get choosed node
