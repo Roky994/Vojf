@@ -109,17 +109,19 @@ define(['sigma', 'jQuery', 'forceAtlas', 'customEdgesShapes'], function(sigma, $
 
         // Draw the graph
 		var drawGraph = function(g) {
-			sigma.classes.graph.addMethod('neighbors',  function(nodeId) {
-				var k,
-					neighbors = {},
-					index = this.allNeighborsIndex[nodeId] || {};
+            if (sigma.classes.graph.neighbours) {
+                sigma.classes.graph.addMethod('neighbors', function (nodeId) {
+                    var k,
+                        neighbors = {},
+                        index = this.allNeighborsIndex[nodeId] || {};
 
-				for(k in index) {
-					neighbors[k] = this.nodesIndex[k];
-				}
+                    for (k in index) {
+                        neighbors[k] = this.nodesIndex[k];
+                    }
 
-				return neighbors;
-			});
+                    return neighbors;
+                });
+            }
 
 			sigma.prototype.zoomToNode = function(node, ratio){
 			    if(typeof camera == "undefined"){
