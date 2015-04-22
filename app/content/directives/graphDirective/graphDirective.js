@@ -4,11 +4,16 @@ define([], function() {
 		return {
 			restrict: 'E',
 			replace: true,
-			template: '<div id="graph-container"></div>',
+			template: '<div><button class="btn btn-default height45" ng-click="resetGraph()">Reset graph</button><div id="graph-container"></div></div>',
 			scope: {
 				settings: '=',
 				graph: '=',
-				drawgraph: '='
+				drawgraph: '=',
+				findnodebyid: '=',
+				nodeid: '=',
+				findnodebyid: '=',
+				neighbours:'=',
+				activenode:'='
 			},
 			controller: function($scope, $timeout){
 				
@@ -85,6 +90,67 @@ define([], function() {
 						});
 					});
 				
+				}
+
+				// Find node by id
+				$scope.findnodebyid = function(nodeId) {
+					s.graph.nodes().forEach(function(node, i, a) {
+		                if(node.id.localeCompare(nodeId) == 0) {
+		                    $scope.findChoosedNode(node);
+		                    return;
+		                }
+					});
+				}
+
+				// Get choosed node
+				$scope.findChoosedNode = function(node) {
+					$scope.nodeid = node.id;
+					$scope.activenode = node;
+
+					var toKeep = s.graph.neighbors(node.id);
+					toKeep[node.id] = node;
+					s.graph.nodes().forEach(function(n) {
+						if(n.id == node.id){
+							n.color = '#286090'
+						}
+						else if(toKeep[n.id])
+							n.color = '#888';
+						else
+							n.color = '#EEE';
+					});
+					$scope.neighbours = [];
+					s.graph.edges().forEach(function(e) {
+						if(toKeep[e.source] && (e.target.localeCompare(node.id) == 0)){
+							e.color = '#118811';
+							toKeep[e.source].color = '#881111';
+							$scope.neighbours.push({
+								node: toKeep[e.source],
+								edge: e,
+								color: '#118811'
+							});
+						} else if (toKeep[e.target] && (e.source.localeCompare(node.id) == 0)) {
+							e.color = '#881111';
+							toKeep[e.target].color = '#118811';
+							$scope.neighbours.push({
+								node: toKeep[e.target],
+								edge: e,
+								color: '#881111'
+							});
+						} else {
+							e.color = 'rgba(230,230,230,0.5)';
+						}
+					});
+
+					s.zoomToNode(node, 0.05);
+					s.refresh();
+				}
+
+				
+				 // Reset the graph
+				$scope.resetGraph = function() {
+					s.resetZoom();
+					$scope.nodeid = "";
+					$scope.activenode = undefined;
 				}
 				
 			}

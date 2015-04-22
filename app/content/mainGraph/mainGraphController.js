@@ -1,25 +1,41 @@
 define(['sigma', 'jQuery', 'forceAtlas', 'customEdgesShapes'], function(sigma, $) {
 	return function($scope, $timeout, $routeParams) {
-		var s;
+
+		//graph derictive settings
         // Search term
+
 		$scope.nodeId = $routeParams.nodeId;
 
 		$scope.neighbours = [];
 
 		$scope.graph = {nodes: [], edges: []};
 
-		$scope.drawGraph = function() {}
+		$scope.drawGraph = function() {};
+		$scope.findNodeById = function() {};
 
         // Find node by id
 		$scope.findNode = function() {
             if ($scope.nodeId !== 'undefined')
-                findNodeById();
+                $scope.findNodeById($scope.nodeId);
 		}
 
-        // Reset the graph
-		$scope.resetGraph = function() {
-			s.resetZoom();
-		}
+		$scope.settings = {
+		  	// Basic
+		  	doubleClickEnabled: false,
+
+		  	// Nodes
+		  	minNodeSize: 1,
+	        maxNodeSize: 3,
+	        defaultNodeColor: '#333',
+	        labelThreshold: 25,
+	        labelColor: "node",
+	        defaultHoverLabelBGColor: "rgba(255, 255, 255, 0)",
+	        // Edges
+	        minEdgeSize: 1,
+	        maxEdgeSize: 5,
+	        defaultEdgeColor: '#222',
+	        zoomMin: 1/30
+    	};
 
         // Get data
 		var loadJson = function() {
@@ -42,7 +58,7 @@ define(['sigma', 'jQuery', 'forceAtlas', 'customEdgesShapes'], function(sigma, $
 					transTotal += parseFloat(transacition.znesek);
 				});
 
-				if(transTotal < 100000) {
+				if(transTotal < 150000) {
 					return;
 				}
 
@@ -107,77 +123,6 @@ define(['sigma', 'jQuery', 'forceAtlas', 'customEdgesShapes'], function(sigma, $
 			});
 
 			$scope.drawGraph();
-		}
-
-		$scope.settings = {
-		  	// Basic
-		  	doubleClickEnabled: false,
-
-		  	// Nodes
-		  	minNodeSize: 1,
-	        maxNodeSize: 10,
-	        defaultNodeColor: '#333',
-	        labelThreshold: 10,
-	        labelColor: "node",
-	        defaultHoverLabelBGColor: "rgba(255, 255, 255, 0)",
-	        // Edges
-	        minEdgeSize: 1,
-	        maxEdgeSize: 5,
-	        defaultEdgeColor: '#222'
-    	};
-
-
-        
-        // Get choosed node
-		$scope.findChoosedNode = function(node) {
-			setActiveNode(node);
-			console.log(node.id);
-			var toKeep = s.graph.neighbors(node.id);
-			toKeep[node.id] = node;
-			console.log(toKeep);
-			s.graph.nodes().forEach(function(n) {
-				if(toKeep[n.id])
-					n.color = '#333';
-				else
-					n.color = '#AAA';
-			});
-			$scope.neighbours = [];
-			s.graph.edges().forEach(function(e) {
-				if(toKeep[e.source] && (e.target.localeCompare(node.id) == 0)){
-					e.color = '#333';
-					$scope.neighbours.push({
-						node: toKeep[e.source],
-						edge: e
-					})
-				} else if (toKeep[e.target] && (e.source.localeCompare(node.id) == 0)) {
-					e.color = '#333';
-					$scope.neighbours.push({
-						node: toKeep[e.target],
-						edge: e
-					});
-				} else {
-					e.color = '#AAA';
-				}
-			});
-
-			s.zoomToNode(node, 0.15);
-			s.refresh();
-		}
-
-        // Find node by id
-		var findNodeById = function() {
-			s.graph.nodes().forEach(function(node, i, a) {
-                if(node.id.localeCompare($scope.nodeId) == 0) {
-                    $scope.findChoosedNode(node);
-                    return;
-                }
-			});
-		}
-
-        // Selected node
-		var setActiveNode = function (node) {
-			$scope.activeNode = node;
-			$scope.nodeId = node.id;
 		}
 		
 		//JSON

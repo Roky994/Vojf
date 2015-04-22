@@ -14,11 +14,6 @@ define(['sigma', 'jQuery', 'forceAtlas', 'customEdgesShapes'], function(sigma, $
                 findNodeById();
 		}
 
-        // Reset the graph
-		$scope.resetGraph = function() {
-			s.resetZoom();
-		}
-
         // Get data
 		var loadJson = function() {
 			$.getJSON('public/data/trans201403_samo_pu.json', function( data ){

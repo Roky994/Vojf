@@ -12,9 +12,8 @@
                     </button>
                 </span>
             </div>
-            <div class="space5"></div>
-            <button class="btn btn-default height45" ng-click="resetGraph()">Reset graph</button>
             <div class="space20"></div>
+        
         </div>
         <div class="row" ng-show="activeNode">
             <a href="#" class="list-group-item active">
@@ -22,8 +21,8 @@
             </a>
             <ul class="list-group scrollable">
                 </li>
-                <li class="list-group-item font-size-11" ng-repeat="object in neighbours" ng-click="findChoosedNode(object.node)">
-                    <span class="badge"> {{ object.edge.label|currency:"EUR: " }}</span>
+                <li class="list-group-item font-size-11" ng-repeat="object in neighbours |  orderBy: 'edge.label'" ng-click="findNodeById(object.node.id)">
+                    <span class="badge" style="background-color: {{object.color}}"> {{ object.edge.label|currency:"EUR: " }}</span>
                     {{ object.node.label|uppercase }}
                 </li>
             </ul>
@@ -31,6 +30,7 @@
 
 	</div>
 	<div class="col-md-9">
-		<graph-directive settings="settings" graph="graph" drawgraph="drawGraph"></graph-directive>
+		<graph-directive settings="settings" graph="graph" drawgraph="drawGraph" findnodebyid="findNodeById" 
+                        nodeid="nodeId" neighbours="neighbours" activenode="activeNode"></graph-directive>
 	</div>
 </div>
