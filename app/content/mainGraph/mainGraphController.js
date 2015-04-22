@@ -109,7 +109,8 @@ define(['sigma', 'jQuery', 'forceAtlas', 'customEdgesShapes'], function(sigma, $
 
         // Draw the graph
 		var drawGraph = function(g) {
-            if (sigma.classes.graph.neighbours) {
+
+            try {
                 sigma.classes.graph.addMethod('neighbors', function (nodeId) {
                     var k,
                         neighbors = {},
@@ -121,12 +122,12 @@ define(['sigma', 'jQuery', 'forceAtlas', 'customEdgesShapes'], function(sigma, $
 
                     return neighbors;
                 });
+            } catch (err) {
+              //  console.log(err);
             }
 
 			sigma.prototype.zoomToNode = function(node, ratio){
-			    if(typeof camera == "undefined"){
-			        camera = this.cameras[0];
-			    }
+                camera = this.cameras[0];
 
 			    sigma.misc.animation.camera(
 				  camera, 

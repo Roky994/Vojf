@@ -88,10 +88,14 @@ body {
 }  
  
 #graph-container {
-	height: 750px;
-  width: 100%;
-  border-left: 2px solid;
+    height: 750px;
+    width: 100%;
+    /**border-left: 2px solid;*/
 
+}
+
+.list-group-item>.badge {
+    float: none;
 }
 
 /* ==========================================================================
