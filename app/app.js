@@ -1,10 +1,10 @@
 define([
 	'angular','angular-ui-router', 'content/home/homeController', 'content/mainGraph/mainGraphController',
-	'content/atlasGraph/atlasGraphController',
+	'content/atlasGraph/atlasGraphController', './content/directives/directive',
 	
 	'angular-route' 
 	], function(angular, router, homeController, mainGraphController, 
-		atlasGraphController) {
+		atlasGraphController, directive) {
 
 	var initialize = function() {
 		var app = angular.module('sigmaJsApp', ['ngRoute']);
@@ -23,8 +23,15 @@ define([
 				redirectTo: '/home'
 			});
 		});
+		
+		directive.initialize(app);
+
 		angular.bootstrap( document, [ 'sigmaJsApp' ] );
+
+
 	}
+
+
 
 	return {
 		initialize: initialize
