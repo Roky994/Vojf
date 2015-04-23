@@ -1,7 +1,7 @@
 define([
-	'angular','angular-ui-router', 'content/home/homeController', 'content/mainGraph/mainGraphController',
-	'content/atlasGraph/atlasGraphController', 'content/directives/directive',
-	
+	'angular','angular-ui-router', 'scripts/content/home/homeController', 'scripts/content/mainGraph/mainGraphController',
+	'scripts/content/atlasGraph/atlasGraphController', 'scripts/directives/directive',
+
 	'angular-route' 
 	], function(angular, router, homeController, mainGraphController, 
 		atlasGraphController, directive) {
@@ -12,13 +12,16 @@ define([
 		app.config(function($routeProvider) {
 			$routeProvider.when('/home', {
 				controller: homeController,
-				templateUrl: 'app/content/home/homeTemplate.html'
+				templateUrl: 'app/scripts/content/home/homeTemplate.html'
 			}).when('/mainGraph/:nodeId', {
 				controller: mainGraphController,
-				templateUrl: 'app/content/mainGraph/mainGraphTemplate.html'
+				templateUrl: 'app/scripts/content/mainGraph/categoryGraphTemplate.html'
 			}).when('/atlasGraph/:nodeId', {
 				controller: atlasGraphController,
-				templateUrl: 'app/content/atlasGraph/atlasGraphTemplate.html'
+				templateUrl: 'app/scripts/content/atlasGraph/atlasGraphTemplate.html'
+            }).when('/atlasGraph/:nodeId', {
+                controller: categoryGraphController,
+                templateUrl: 'app/scripts/content/categoryGraph/categoryGraphTemplate.html'
 			}).otherwise({
 				redirectTo: '/home'
 			});
@@ -28,14 +31,10 @@ define([
 
 		angular.bootstrap( document, [ 'sigmaJsApp' ] );
 
-
 	}
-
-
 
 	return {
 		initialize: initialize
 	};
-
 
 });
