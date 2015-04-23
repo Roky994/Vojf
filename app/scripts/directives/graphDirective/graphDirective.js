@@ -116,7 +116,6 @@ define([], function() {
 						}
 						else if(toKeep[n.id]) {
                             n.color = '#888';
-                            n.drawLabels = true;
                         }
 						else
 							n.color = '#EEE';
