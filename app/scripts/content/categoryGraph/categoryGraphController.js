@@ -1,6 +1,9 @@
 define(['sigma', 'jQuery', 'forceAtlas', 'customEdgesShapes'], function(sigma, $) {
 	return function($scope, $timeout, $routeParams) {
 
+        var latCenter = 46.0556;
+        var lonCenter = 14.5083;
+
 		// Graph directive settings
         // Search term
 		$scope.nodeId = $routeParams.nodeId;
@@ -24,7 +27,7 @@ define(['sigma', 'jQuery', 'forceAtlas', 'customEdgesShapes'], function(sigma, $
 		  	// Nodes
 		  	minNodeSize: 1,
 	        maxNodeSize: 3,
-	        defaultNodeColor: '#333',
+	        //defaultNodeColor: '#333',
 	        labelThreshold: 25,
 	        labelColor: "node",
 	        defaultHoverLabelBGColor: "rgba(255, 255, 255, 0)",
@@ -35,9 +38,14 @@ define(['sigma', 'jQuery', 'forceAtlas', 'customEdgesShapes'], function(sigma, $
 	        zoomMin: 1/30
     	};
 
+        var colors = [];
+        for (i=0; i < 18; i++) {
+            colors.push(getRandomColor());
+        }
+
         // Get data
 		var loadJson = function() {
-			$.getJSON('public/data/trans201403_samo_pu_koord.json', function( data ){
+			$.getJSON('public/data/trans201403_samo_pu_koord_kategorije.json', function( data ){
 				parseJsonForGraph(data);
 			});
 		}
@@ -105,18 +113,23 @@ define(['sigma', 'jQuery', 'forceAtlas', 'customEdgesShapes'], function(sigma, $
 					value.lat = 46;
 				}
 
-				var x = ((parseFloat(value.lon) - 15)*5).toFixed(4);
-				var y = -((parseFloat(value.lat) - 46)*5).toFixed(4);
+				var x = ((parseFloat(value.lon) - latCenter)*5).toFixed(4);
+				var y = -((parseFloat(value.lat) - lonCenter)*5).toFixed(4);
 
-				$scope.graph.nodes.push({
-					"id": key,
-					"label": value.naziv,
-					"x": x,
-					"y": y,
-					"size": size,
-					"outcomeSum": 0
-				});
-				
+                var node = {
+                    "id": key,
+                    "label": value.naziv,
+                    "x": x,
+                    "y": y,
+                    "size": size,
+                    "outcomeSum": 0,
+                    "color": colors[value.category-1]
+                };
+
+                console.log(value.category);
+
+                $scope.graph.nodes.push(node);
+
 			});
 
 			$scope.drawGraph();
@@ -124,5 +137,17 @@ define(['sigma', 'jQuery', 'forceAtlas', 'customEdgesShapes'], function(sigma, $
 		
 		//JSON
 		loadJson();
+
+
+
+        function getRandomColor() {
+            var letters = '0123456789ABCDEF'.split('');
+            var color = '#';
+            for (var i = 0; i < 6; i++ ) {
+                color += letters[Math.floor(Math.random() * 16)];
+            }
+            return color;
+        }
+
 	}
 })

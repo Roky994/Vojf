@@ -11,6 +11,9 @@ body {
     padding-bottom: 20px;
 }
 
+canvas { background:url(../img/map.png) }
+
+
 .font-size-11 {
     font-size: 11px;
 }

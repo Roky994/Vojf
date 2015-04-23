@@ -11,9 +11,9 @@ define([], function() {
 				drawgraph: '=',
 				findnodebyid: '=',
 				nodeid: '=',
-				findnodebyid: '=',
 				neighbours:'=',
-				activenode:'='
+				activenode:'=',
+                forceatlas:'='
 			},
 			controller: function($scope, $timeout){
 				
@@ -74,7 +74,7 @@ define([], function() {
 						  {duration: 1500}
 						);
 					}
-					console.log($scope.graph);
+
 					s = new sigma({
 						graph: $scope.graph,
 						renderer: {
@@ -89,7 +89,10 @@ define([], function() {
 		                    $scope.findChoosedNode(e.data.node);
 						});
 					});
-				
+
+                    if ($scope.forceatlas) {
+                        startForceatlas();
+                    }
 				}
 
 				// Find node by id
@@ -153,7 +156,15 @@ define([], function() {
 					$scope.nodeid = "";
 					$scope.activenode = undefined;
 				}
-				
+
+                var startForceatlas = function() {
+                    s.startForceAtlas2({worker: true});
+
+                    $timeout(function() {
+                        s.stopForceAtlas2();
+                      //  $scope.findNode();
+                    }, 5000);
+                }
 			}
 		}
 	}
