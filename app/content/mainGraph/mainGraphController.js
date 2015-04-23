@@ -1,13 +1,11 @@
 define(['sigma', 'jQuery', 'forceAtlas', 'customEdgesShapes'], function(sigma, $) {
 	return function($scope, $timeout, $routeParams) {
 
-		//graph derictive settings
+		// Graph directive settings
         // Search term
-
 		$scope.nodeId = $routeParams.nodeId;
 
 		$scope.neighbours = [];
-
 		$scope.graph = {nodes: [], edges: []};
 
 		$scope.drawGraph = function() {};
@@ -47,7 +45,6 @@ define(['sigma', 'jQuery', 'forceAtlas', 'customEdgesShapes'], function(sigma, $
         // Parse JSON
 		var parseJsonForGraph = function(data) {
             // Graph
-		
 			var maxTransTotal = 0;
 
 			$.each(data.edges, function(key, value) {

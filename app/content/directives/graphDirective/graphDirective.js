@@ -35,7 +35,7 @@ define([], function() {
 		              //  console.log(err);
 		            }
 
-					sigma.prototype.zoomToNode = function(node, ratio){
+					sigma.prototype.zoomToNode = function(node, ratio) {
 		                camera = this.cameras[0];
 
 					    sigma.misc.animation.camera(
@@ -50,7 +50,7 @@ define([], function() {
 					}
 
 					sigma.prototype.resetZoom = function() {
-						if(typeof camera == "undefined"){
+						if(typeof camera == "undefined") {
 					        camera = this.cameras[0];
 					    }
 
@@ -107,20 +107,23 @@ define([], function() {
 					$scope.nodeid = node.id;
 					$scope.activenode = node;
 
+                    // Neighoburs of searched node
 					var toKeep = s.graph.neighbors(node.id);
 					toKeep[node.id] = node;
 					s.graph.nodes().forEach(function(n) {
 						if(n.id == node.id){
 							n.color = '#286090'
 						}
-						else if(toKeep[n.id])
-							n.color = '#888';
+						else if(toKeep[n.id]) {
+                            n.color = '#888';
+                            n.drawLabels = true;
+                        }
 						else
 							n.color = '#EEE';
 					});
 					$scope.neighbours = [];
 					s.graph.edges().forEach(function(e) {
-						if(toKeep[e.source] && (e.target.localeCompare(node.id) == 0)){
+						if(toKeep[e.source] && (e.target.localeCompare(node.id) == 0)) {
 							e.color = '#118811';
 							toKeep[e.source].color = '#881111';
 							$scope.neighbours.push({
@@ -144,7 +147,6 @@ define([], function() {
 					s.zoomToNode(node, 0.05);
 					s.refresh();
 				}
-
 				
 				 // Reset the graph
 				$scope.resetGraph = function() {

@@ -28,14 +28,10 @@ define([
 
 		angular.bootstrap( document, [ 'sigmaJsApp' ] );
 
-
 	}
-
-
 
 	return {
 		initialize: initialize
 	};
-
 
 });

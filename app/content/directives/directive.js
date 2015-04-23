@@ -6,7 +6,7 @@ define(['./graphDirective/graphDirective'], function( graphDirective ){
 
 	var initialize = function( angModule ) {
 		angular.forEach( directives, function( directive, name ) {
-			angModule.directive( name, directive);
+			angModule.directive( name, directive );
 		})
 	};
 
