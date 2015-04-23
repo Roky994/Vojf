@@ -1,6 +1,6 @@
 define([
 	'angular','angular-ui-router', 'content/home/homeController', 'content/mainGraph/mainGraphController',
-	'content/atlasGraph/atlasGraphController', './content/directives/directive',
+	'content/atlasGraph/atlasGraphController', 'content/directives/directive',
 	
 	'angular-route' 
 	], function(angular, router, homeController, mainGraphController, 
