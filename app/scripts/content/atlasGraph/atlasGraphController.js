@@ -54,13 +54,19 @@ define(['sigma', 'jQuery', 'forceAtlas', 'customEdgesShapes'], function(sigma, $
 
 			$.each(data.edges, function(key, value) {
 
+				//preveri ce nakazuje sam sebi!
+				if(value[0].source == value[0].target){
+					return;
+				}
+
 				//interiraj po vseh transakcijah med vozliscema in sestej zneske
 				var transTotal = 0;
+
 				$.each(value, function(index, transacition) {
 					transTotal += parseFloat(transacition.znesek);
 				});
 
-				if(transTotal < 100000) {
+				if(transTotal < 200000) {
 					return;
 				}
 
@@ -75,6 +81,9 @@ define(['sigma', 'jQuery', 'forceAtlas', 'customEdgesShapes'], function(sigma, $
 				} else {
 					data.nodes[value[0].source].totalExpenses += transTotal;
 				}
+				if(value[0].target == 27715) {
+					console.log(transTotal);
+				}
 
 				data.nodes[value[0].target].isTarget = true;
 
@@ -82,7 +91,7 @@ define(['sigma', 'jQuery', 'forceAtlas', 'customEdgesShapes'], function(sigma, $
 					"id": key,
 					"source": value[0].source,
 					"target": value[0].target,
-					"label": value[0].znesek,
+					"label": transTotal,
 					"type": "arrow"
 				});
 
@@ -128,9 +137,11 @@ define(['sigma', 'jQuery', 'forceAtlas', 'customEdgesShapes'], function(sigma, $
         function getRandomColor() {
             var letters = '0123456789ABCDEF'.split('');
             var color = '#';
+
             for (var i = 0; i < 6; i++ ) {
                 color += letters[Math.floor(Math.random() * 16)];
             }
+
             return color;
         }
 	}

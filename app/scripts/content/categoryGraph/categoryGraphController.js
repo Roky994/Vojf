@@ -4,6 +4,16 @@ define(['sigma', 'jQuery', 'forceAtlas', 'customEdgesShapes'], function(sigma, $
         var latCenter = 46.0556;
         var lonCenter = 14.5083;
 
+        var categories = ["RS", "VLADA", "PROMET", "MINISTRSTVO", "IZOBRAŽEVANJE", "ZDRAVSTVO",
+        					"SOCIALNE ZADEVE", "KULTURA", "GOSPODARSTVO", "RAZVOJ IN TEHNOLOGIJA",
+        					"KMETIJSTVO IN GOSPODARSTVO", "PRAVOSODJE", "LOKALNA SAMOUPRAVA", 
+        					"ŠPORT", "TURIZEM", "ZAŠČITA IN VAROVANJE", "INFRASTRUKTURA", "NULL"];
+
+       	var colors = ["FF0000", "00FF00", "0000FF", "FFFF00", "FF00FF", "00FFFF", 
+        "800000", "008000", "000080", "808000", "800080", "008080", "808080", 
+        "C00000", "00C000", "0000C0", "C0C000", "C000C0", "00C0C0", "C0C0C0"];
+
+
 		// Graph directive settings
         // Search term
 		$scope.nodeId = $routeParams.nodeId;
@@ -13,6 +23,9 @@ define(['sigma', 'jQuery', 'forceAtlas', 'customEdgesShapes'], function(sigma, $
 
 		$scope.drawGraph = function() {};
 		$scope.findNodeById = function() {};
+
+
+		$scope.forceAtlas = true;
 
         // Find node by id
 		$scope.findNode = function() {
@@ -38,11 +51,6 @@ define(['sigma', 'jQuery', 'forceAtlas', 'customEdgesShapes'], function(sigma, $
 	        zoomMin: 1/30
     	};
 
-        var colors = [];
-        for (i=0; i < 18; i++) {
-            colors.push(getRandomColor());
-        }
-
         // Get data
 		var loadJson = function() {
 			$.getJSON('public/data/trans201403_samo_pu_koord_kategorije.json', function( data ){
@@ -50,92 +58,172 @@ define(['sigma', 'jQuery', 'forceAtlas', 'customEdgesShapes'], function(sigma, $
 			});
 		}
 
-        // Parse JSON
 		var parseJsonForGraph = function(data) {
-            // Graph
-			var maxTransTotal = 0;
+
+			var categorization =  new Array(18);
+			for(var i = 0; i < 18; i++) {
+				categorization[i] = new Array(18);
+				for(var j = 0; j < 18; j++) 
+					categorization[i][j] = 0;
+			}
 
 			$.each(data.edges, function(key, value) {
 
-				//interiraj po vseh transakcijah med vozliscema in sestej zneske
+				// preveri ce nakazuje sam sebi!
+				if(value[0].source == value[0].target){
+					return;
+				}
+
 				var transTotal = 0;
 				$.each(value, function(index, transacition) {
 					transTotal += parseFloat(transacition.znesek);
 				});
 
-				if(transTotal < 150000) {
-					return;
-				}
+				value[0].total = transTotal;
 
-				//shrani najvecji strosek za realizacijo velikosti vozlisc
-				if( transTotal > maxTransTotal ) {
-					maxTransTotal = transTotal;
-				}
-
-				//zacetnemu vozliscu dodaj izplacani znesek
+				// zacetnemu vozliscu dodaj izplacani znesek
 				if(data.nodes[value[0].source].totalExpenses == undefined) {
 					data.nodes[value[0].source].totalExpenses = transTotal;
 				} else {
 					data.nodes[value[0].source].totalExpenses += transTotal;
 				}
 
-				data.nodes[value[0].target].isTarget = true;
+			});
 
-				$scope.graph.edges.push({
-					"id": key,
-					"source": value[0].source,
-					"target": value[0].target,
-					"label": value[0].znesek,
-					"type": "arrow"
-				});
+			var minTotalExpenses = 1000000;
+			var minTransactionOnGraph = 1000;
+
+			$.each(data.nodes, function(key,value) {
+
+				if(value.totalExpenses != undefined && value.totalExpenses > minTotalExpenses) {
+					value.edgesToCategories = new Array(18);
+					for(var i = 0; i < 18; i++) 
+						value.edgesToCategories[i] = {income: 0, outcome: 0};
+
+				}
 
 			});
 
-			$.each(data.nodes, function(key, value) {
-				if(value.totalExpenses == undefined && value.isTarget == undefined) {
+			$.each(data.edges, function(key, value) {
+				// preveri ce nakazuje sam sebi!
+				if(value[0].source == value[0].target){
 					return;
 				}
-				var size = 0.1;
-				if(value.totalExpenses > maxTransTotal / 2) {
-					size = 2;
-				} else if( value.totalExpenses > maxTransTotal / 5) {
-					size = 1.5;
-				} else if ( value.totalExpenses > maxTransTotal / 30) {
-					size = 1.2;
-				} else if ( value.totalExpenses > maxTransTotal / 40) {
-					size = 1;
-				} else if (value.totalExpenses > maxTransTotal / 1000) {
-					size = 0.5;
+
+				if(data.nodes[value[0].source].totalExpenses > minTotalExpenses && data.nodes[value[0].target].totalExpenses > minTotalExpenses) {
+					//povezava med ustanovama
+
+					$scope.graph.edges.push({
+						"id": key,
+						"source": value[0].source,
+						"target": value[0].target,
+						"label": value[0].total,
+						"type": "curve",
+						"arrow": "target",
+						"color": "#AAA"
+					});
+
+				} else if(data.nodes[value[0].source].totalExpenses > minTotalExpenses) {
+					//samo source je ustanova target kategorija
+
+					data.nodes[value[0].source].edgesToCategories[data.nodes[value[0].target].category - 1].outcome += value[0].total;
+
+				} else if(data.nodes[value[0].target].totalExpenses > minTotalExpenses) {
+					//samo source je ustanova target kategorija
+
+					data.nodes[value[0].target].edgesToCategories[data.nodes[value[0].source].category - 1].income += value[0].total;
+					
+				} else {
+
+					categorization[data.nodes[value[0].source].category - 1][data.nodes[value[0].target].category - 1] += value[0].total;
+
 				}
 
-				if(value.lon == 0) {
-					value.lon = 15;
-					value.lat = 46;
-				}
-
-				var x = ((parseFloat(value.lon) - latCenter)*5).toFixed(4);
-				var y = -((parseFloat(value.lat) - lonCenter)*5).toFixed(4);
-
-                var node = {
-                    "id": key,
-                    "label": value.naziv,
-                    "x": x,
-                    "y": y,
-                    "size": size,
-                    "outcomeSum": 0,
-                    "color": colors[value.category-1]
-                };
-
-                console.log(value.category);
-
-                $scope.graph.nodes.push(node);
 
 			});
+
+
+			$.each(data.nodes, function(key,value){
+
+				if(value.totalExpenses != undefined && value.totalExpenses > minTotalExpenses) {
+
+					$scope.graph.nodes.push({
+		                "id": key,
+		                "label": value.naziv,
+		                "x": Math.random(),
+		                "y": Math.random(),
+		                "size": 1,
+		                "color": colors[value.category-1]
+		        	});
+
+		        	for(var i = 0; i < 18; i++) {
+		        		if(value.edgesToCategories[i].outcome > minTransactionOnGraph) {
+			        		$scope.graph.edges.push({
+			        			"id": key + "-" + i,
+								"source": key,
+								"target": i + "",
+								"label": value.edgesToCategories[i].outcome,
+								"type": "curve",
+								"arrow": "target",
+								"color": "#AAA"
+			        		});
+			        	}
+
+			        	if(value.edgesToCategories[i].income > minTransactionOnGraph) {
+			        		$scope.graph.edges.push({
+			        			"id": i + "-" + key,
+								"source": i + "",
+								"target": key,
+								"label": value.edgesToCategories[i].income,
+								"type": "curve",
+								"arrow": "target",
+								"color": "#AAA"
+			        		});
+			        	}
+
+		        	}
+
+				}
+
+			});
+			
+		
+			//kategorije in povezave med kategorijami
+			for(var i = 0; i < 18; i++) {
+
+				$scope.graph.nodes.push({
+		                "id": i + "",
+		                "label": categories[i],
+		                "x": Math.random(),
+		                "y": Math.random(),
+		                "size": 1,
+		                "color": colors[i]
+		        	});
+
+
+				for(var j = 0; j < 18; j++) {
+
+					if(categorization[i][j] < minTransactionOnGraph || i == j)
+						continue;
+
+					$scope.graph.edges.push({
+						"id": i + "-" + j,
+						"source": i + "",
+						"target": j + "",
+						"label": categorization[i][j],
+						"type": "curve",
+						"arrow": "source",
+						"color": "#AAA"
+					});
+
+				}
+			}
+
 
 			$scope.drawGraph();
 		}
-		
-		//JSON
+
+   
 		loadJson();
 
 

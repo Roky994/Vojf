@@ -54,16 +54,6 @@ define([], function() {
 					        camera = this.cameras[0];
 					    }
 
-					    s.graph.nodes().forEach(function(n) {
-				          n.color = '#333';
-				        });
-
-				        s.graph.edges().forEach(function(e) {
-				          e.color = '#222';
-				        });
-				        
-				        s.refresh();
-
 						sigma.misc.animation.camera(
 						  camera, 
 						  {
@@ -73,6 +63,22 @@ define([], function() {
 						  }, 
 						  {duration: 1500}
 						);
+					}
+
+					sigma.prototype.resetColors = function() {
+
+						var i = 0;
+						s.graph.nodes().forEach(function(n) {
+				          n.color = $scope.graph.nodes[i].color;
+				          i++;
+				        });
+
+				        s.graph.edges().forEach(function(e) {
+				          e.color = '#AAA';
+				        });
+				        
+				        s.refresh();
+
 					}
 
 					s = new sigma({
@@ -153,6 +159,7 @@ define([], function() {
 				 // Reset the graph
 				$scope.resetGraph = function() {
 					s.resetZoom();
+					s.resetColors();
 					$scope.nodeid = "";
 					$scope.activenode = undefined;
 				}
@@ -163,7 +170,7 @@ define([], function() {
                     $timeout(function() {
                         s.stopForceAtlas2();
                       //  $scope.findNode();
-                    }, 5000);
+                    }, 1000);
                 }
 			}
 		}
