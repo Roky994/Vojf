@@ -20,7 +20,7 @@ define(['sigma', 'jQuery', 'forceAtlas', 'customEdgesShapes'], function(sigma, $
             minNodeSize: 1,
             maxNodeSize: 10,
            // defaultNodeColor: '#333',
-            labelThreshold: 10,
+            labelThreshold: 8,
             labelColor: "node",
             defaultHoverLabelBGColor: "rgba(255, 255, 255, 0)",
             // Edges

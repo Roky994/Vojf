@@ -35,7 +35,7 @@ define([], function() {
 		              //  console.log(err);
 		            }
 
-					sigma.prototype.zoomToNode = function(node, ratio) {
+					sigma.prototype.zoomToNode = function(node) {
 		                camera = this.cameras[0];
 
 					    sigma.misc.animation.camera(
@@ -43,7 +43,7 @@ define([], function() {
 						  {
 						    x: node[s.camera.readPrefix + 'x'], 
 						    y: node[s.camera.readPrefix + 'y'],
-						    ratio: ratio
+						    ratio: $scope.settings.zoomMin * 15
 						  }, 
 						  {duration: 1500}
 						);
@@ -74,7 +74,7 @@ define([], function() {
 				        });
 
 				        s.graph.edges().forEach(function(e) {
-				          e.color = '#AAA';
+				          e.color = $scope.graph.edges[0].color;
 				        });
 				        
 				        s.refresh();
@@ -148,7 +148,7 @@ define([], function() {
 								color: '#881111'
 							});
 						} else {
-							e.color = 'rgba(230,230,230,0.5)';
+							e.color = $scope.graph.edges[0].color;
 						}
 					});
 

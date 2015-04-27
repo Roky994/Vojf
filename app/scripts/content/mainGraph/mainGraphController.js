@@ -1,8 +1,12 @@
 define(['sigma', 'jQuery', 'forceAtlas', 'customEdgesShapes'], function(sigma, $) {
     return function($scope, $timeout, $routeParams) {
 
-        var latCenter = 46.0556;
-        var lonCenter = 14.5083;
+        var latCenter = 46.0499335;
+        var lonCenter = 14.5067506;
+
+        var colors = ["FF0000", "00FF00", "0000FF", "FFFF00", "FF00FF", "00FFFF", 
+        "800000", "008000", "000080", "808000", "800080", "008080", "808080", 
+        "C00000", "00C000", "0000C0", "C0C000", "C000C0", "00C0C0", "C0C0C0"];
 
         // Graph directive settings
         // Search term
@@ -38,14 +42,9 @@ define(['sigma', 'jQuery', 'forceAtlas', 'customEdgesShapes'], function(sigma, $
             zoomMin: 1/80
         };
 
-        var colors = [];
-        for (i=0; i < 18; i++) {
-            colors.push(getRandomColor());
-        }
-
         // Get data
         var loadJson = function() {
-            $.getJSON('public/data/trans201403_samo_pu_koord_kategorije.json', function( data ){
+            $.getJSON('public/data/trans201403_samo_pu_koord_kategorije-popravljeno.json', function( data ){
                 parseJsonForGraph(data);
             });
         }
@@ -85,8 +84,10 @@ define(['sigma', 'jQuery', 'forceAtlas', 'customEdgesShapes'], function(sigma, $
                     "id": key,
                     "source": value[0].source,
                     "target": value[0].target,
-                    "label": value[0].znesek,
-                    "type": "arrow"
+                    "label": transTotal,
+                    "type": "arrow",
+                    "color": "#FFF"
+
                 });
 
             });
@@ -113,8 +114,15 @@ define(['sigma', 'jQuery', 'forceAtlas', 'customEdgesShapes'], function(sigma, $
                     value.lat = 46;
                 }
 
-                var x = ((parseFloat(value.lon) - latCenter)*5).toFixed(4);
-                var y = -((parseFloat(value.lat) - lonCenter)*5).toFixed(4);
+                var x = ((parseFloat(value.lon) - lonCenter)).toFixed(4);
+                var y = -((parseFloat(value.lat) - latCenter)).toFixed(4);
+                if(Math.abs(x) < 0.03 || Math.abs(y) < 0.03) {
+                    console.log(value.naziv);
+                    x *= 3;
+                    y *= 3;
+                } else if(x < 0.5 || y < 0.5) {
+                   
+                }
 
                 var node = {
                     "id": key,
