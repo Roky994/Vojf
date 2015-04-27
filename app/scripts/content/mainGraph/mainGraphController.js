@@ -44,7 +44,7 @@ define(['sigma', 'jQuery', 'forceAtlas', 'customEdgesShapes'], function(sigma, $
 
         // Get data
         var loadJson = function() {
-            $.getJSON('public/data/trans201403_samo_pu_koord_kategorije-popravljeno.json', function( data ){
+            $.getJSON('public/data/trans201403_samo_pu_koord_kategorije-popravljeno-1.json', function( data ){
                 parseJsonForGraph(data);
             });
         }
