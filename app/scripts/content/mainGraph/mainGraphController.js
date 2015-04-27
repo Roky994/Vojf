@@ -4,9 +4,9 @@ define(['sigma', 'jQuery', 'forceAtlas', 'customEdgesShapes'], function(sigma, $
         var latCenter = 46.0499335;
         var lonCenter = 14.5067506;
 
-        var colors = ["FF0000", "00FF00", "0000FF", "FFFF00", "FF00FF", "00FFFF", 
-        "800000", "008000", "000080", "808000", "800080", "008080", "808080", 
-        "C00000", "00C000", "0000C0", "C0C000", "C000C0", "00C0C0", "C0C0C0"];
+        var colors = ["#FF0000", "#00FF00", "#0000FF", "#FFFF00", "#FF00FF", "#00FFFF", 
+        "#800000", "#008000", "#000080", "#808000", "#800080", "#008080", "#808080", 
+        "#C00000", "#00C000", "#0000C0", "#C0C000", "#C000C0", "#00C0C0", "#C0C0C0"];
 
         // Graph directive settings
         // Search term
@@ -62,7 +62,7 @@ define(['sigma', 'jQuery', 'forceAtlas', 'customEdgesShapes'], function(sigma, $
                     transTotal += parseFloat(transacition.znesek);
                 });
 
-                if(transTotal < 150000) {
+                if(transTotal < 50000) {
                     return;
                 }
 

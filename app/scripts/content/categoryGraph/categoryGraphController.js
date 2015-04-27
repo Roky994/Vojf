@@ -9,9 +9,9 @@ define(['sigma', 'jQuery', 'forceAtlas', 'customEdgesShapes'], function(sigma, $
         					"KMETIJSTVO IN GOSPODARSTVO", "PRAVOSODJE", "LOKALNA SAMOUPRAVA", 
         					"ŠPORT", "TURIZEM", "ZAŠČITA IN VAROVANJE", "INFRASTRUKTURA", "NULL"];
 
-       	var colors = ["FF0000", "00FF00", "0000FF", "FFFF00", "FF00FF", "00FFFF", 
-        "800000", "008000", "000080", "808000", "800080", "008080", "808080", 
-        "C00000", "00C000", "0000C0", "C0C000", "C000C0", "00C0C0", "C0C0C0"];
+       	var colors = ["#FF0000", "#00FF00", "#0000FF", "#FFFF00", "#FF00FF", "#00FFFF", 
+        "#800000", "#008000", "#000080", "#808000", "#800080", "#008080", "#808080", 
+        "#C00000", "#00C000", "#0000C0", "#C0C000", "#C000C0", "#00C0C0", "#C0C0C0"];
 
 
 		// Graph directive settings
