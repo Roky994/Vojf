@@ -13,7 +13,6 @@ define(['sigma', 'jQuery', 'forceAtlas', 'customEdgesShapes'], function(sigma, $
         "#800000", "#008000", "#000080", "#808000", "#800080", "#008080", "#808080", 
         "#C00000", "#00C000", "#0000C0", "#C0C000", "#C000C0", "#00C0C0", "#C0C0C0"];
 
-
 		// Graph directive settings
         // Search term
 		$scope.nodeId = $routeParams.nodeId;
@@ -139,9 +138,7 @@ define(['sigma', 'jQuery', 'forceAtlas', 'customEdgesShapes'], function(sigma, $
 
 				}
 
-
 			});
-
 
 			$.each(data.nodes, function(key,value){
 
@@ -186,7 +183,6 @@ define(['sigma', 'jQuery', 'forceAtlas', 'customEdgesShapes'], function(sigma, $
 				}
 
 			});
-			
 		
 			//kategorije in povezave med kategorijami
 			for(var i = 0; i < 18; i++) {
@@ -222,20 +218,8 @@ define(['sigma', 'jQuery', 'forceAtlas', 'customEdgesShapes'], function(sigma, $
 
 			$scope.drawGraph();
 		}
-
    
 		loadJson();
-
-
-
-        function getRandomColor() {
-            var letters = '0123456789ABCDEF'.split('');
-            var color = '#';
-            for (var i = 0; i < 6; i++ ) {
-                color += letters[Math.floor(Math.random() * 16)];
-            }
-            return color;
-        }
 
 	}
 })

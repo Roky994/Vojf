@@ -15,7 +15,7 @@ define([], function() {
 				activenode:'=',
                 forceatlas:'='
 			},
-			controller: function($scope, $timeout){
+			controller: function($scope, $timeout) {
 				
 				$scope.drawgraph = function() {
 
@@ -66,7 +66,6 @@ define([], function() {
 					}
 
 					sigma.prototype.resetColors = function() {
-
 						var i = 0;
 						s.graph.nodes().forEach(function(n) {
 				          n.color = $scope.graph.nodes[i].color;
@@ -104,7 +103,7 @@ define([], function() {
 				// Find node by id
 				$scope.findnodebyid = function(nodeId) {
 					s.graph.nodes().forEach(function(node, i, a) {
-		                if(node.id.localeCompare(nodeId) == 0) {
+		                if (node.id.localeCompare(nodeId) == 0) {
 		                    $scope.findChoosedNode(node);
 		                    return;
 		                }
@@ -113,6 +112,11 @@ define([], function() {
 
 				// Get choosed node
 				$scope.findChoosedNode = function(node) {
+
+                    // Ignore border nodes
+                    if (node.id.charAt(0) == "b")
+                        return;
+
 					$scope.nodeid = node.id;
 					$scope.activenode = node;
 
@@ -126,7 +130,7 @@ define([], function() {
 						else if(toKeep[n.id]) {
                             n.color = '#888';
                         }
-						else
+						else if (n.id.charAt(0) != "b")
 							n.color = '#EEE';
 					});
 					$scope.neighbours = [];

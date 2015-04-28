@@ -8,7 +8,7 @@ requirejs.config({
         'bootstrap': 'vendor/bootstrap.min',
         'sigma': 'vendor/sigmajs/sigma.min',
         'forceAtlas' : 'vendor/sigmajs/plugins/sigma.layout.forceAtlas2.min',
-    	'customEdgesShapes' : 'vendor/sigmajs/plugins/sigma.renderers.customEdgeShapes.min'
+    	'customEdgesShapes' : 'vendor/sigmajs/plugins/sigma.renderers.customEdgeShapes.min',
     },
     shim: {
         'angular': {
@@ -38,7 +38,7 @@ requirejs.config({
 	    },
 	    'customEdgesShapes' : {
 	    	deps: ['sigma']
-	    }
+	    },
     }
 });
 

@@ -20,14 +20,14 @@ define(['sigma', 'jQuery', 'forceAtlas', 'customEdgesShapes'], function(sigma, $
 
         // Find node by id
         $scope.findNode = function() {
-            if ($scope.nodeId !== 'undefined')
+            // Ignore border points
+            if ($scope.nodeId !== 'undefined' && $scope.nodeId.charAt(0) !== "b")
                 $scope.findNodeById($scope.nodeId);
         }
 
         $scope.settings = {
             // Basic
             doubleClickEnabled: false,
-
             // Nodes
             minNodeSize: 1,
             maxNodeSize: 3,
@@ -46,6 +46,10 @@ define(['sigma', 'jQuery', 'forceAtlas', 'customEdgesShapes'], function(sigma, $
         var loadJson = function() {
             $.getJSON('public/data/trans201403_samo_pu_koord_kategorije-popravljeno-1.json', function( data ){
                 parseJsonForGraph(data);
+            });
+
+            $.getJSON('public/data/slovenia.geojson', function( data ) {
+                parseJsonForBorder(data);
             });
         }
 
@@ -87,7 +91,6 @@ define(['sigma', 'jQuery', 'forceAtlas', 'customEdgesShapes'], function(sigma, $
                     "label": transTotal,
                     "type": "arrow",
                     "color": "#FFF"
-
                 });
 
             });
@@ -117,7 +120,6 @@ define(['sigma', 'jQuery', 'forceAtlas', 'customEdgesShapes'], function(sigma, $
                 var x = ((parseFloat(value.lon) - lonCenter)).toFixed(4);
                 var y = -((parseFloat(value.lat) - latCenter)).toFixed(4);
                 if(Math.abs(x) < 0.03 || Math.abs(y) < 0.03) {
-                    console.log(value.naziv);
                     x *= 3;
                     y *= 3;
                 } else if(x < 0.5 || y < 0.5) {
@@ -139,19 +141,43 @@ define(['sigma', 'jQuery', 'forceAtlas', 'customEdgesShapes'], function(sigma, $
             });
 
             $scope.drawGraph();
+
         }
 
-        //JSON
-        loadJson();
+        var parseJsonForBorder = function (data) {
+            var t0 = performance.now();
 
-        function getRandomColor() {
-            var letters = '0123456789ABCDEF'.split('');
-            var color = '#';
-            for (var i = 0; i < 6; i++ ) {
-                color += letters[Math.floor(Math.random() * 16)];
+            data = data.features[0].geometry.coordinates[0];
+
+            for (var i in data) {
+                var node = {
+                    "id": "b" + i.toString(),
+                    "x": ((parseFloat(data[i][0]) - lonCenter)).toFixed(4),
+                    "y": -((parseFloat(data[i][1]) - latCenter)).toFixed(4),
+                    "size": 0.1,
+                    //"outcomeSum": 0,
+                    "color": '#000000'
+                };
+
+                $scope.graph.nodes.push(node);
             }
-            return color;
-        }
+
+            for (var j = 0; j < data.length - 1; j++) {
+                $scope.graph.edges.push({
+                    "id": "be" + j,
+                    "source": ("b" + j).toString(),
+                    "target": ("b" + (j + 1)).toString(),
+                    "size": 0.3,
+                    "color": "#000000"
+                });
+            }
+
+            var t1 = performance.now();
+           // console.log("Slovenia border loading took: " + (t1 - t0) + " milliseconds.");
+        };
+
+        // JSON
+        loadJson();
 
     }
 })
