@@ -9,6 +9,7 @@ body {
     height: 100%;
     padding-top: 50px;
     padding-bottom: 20px;
+    color: #333;
 }
 
 
@@ -104,6 +105,15 @@ body {
   display: block;
   margin: 200px auto;
   z-index: 100;
+}
+
+.legend span {
+    color: #333;
+    font-size: 14px;
+}
+
+.legend li {
+    font-size: 20px;
 }
 
 /* ==========================================================================

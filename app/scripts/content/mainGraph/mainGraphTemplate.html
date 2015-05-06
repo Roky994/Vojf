@@ -20,10 +20,17 @@
                 {{ activeNode.label }} <span class="badge"> {{ neighbours.length }} </span>
             </a>
             <ul class="list-group scrollable">
-                </li>
+
                 <li class="list-group-item font-size-11" ng-repeat="object in neighbours |  orderBy: 'edge.label'" ng-click="findNodeById(object.node.id)">
                     <span class="badge" style="background-color: {{object.color}}"> {{ object.edge.label|currency:"EUR: " }}</span>
                     {{ object.node.label|uppercase }}
+                </li>
+            </ul>
+        </div>
+        <div class="row" ng-hide="activeNode">
+            <ul class="legend">
+                <li ng-repeat="obj in legend track by $index" style="color: {{ obj.color }}" ng-click="showCategory($index)">
+                    <span>{{ obj.category }}</span>
                 </li>
             </ul>
         </div>
@@ -31,6 +38,6 @@
 	</div>
 	<div class="col-md-9">
 		<graph-directive settings="settings" graph="graph" drawgraph="drawGraph" findnodebyid="findNodeById" 
-                        nodeid="nodeId" neighbours="neighbours" activenode="activeNode"></graph-directive>
+                        nodeid="nodeId" neighbours="neighbours" activenode="activeNode" showcategory="showCategory"></graph-directive>
 	</div>
 </div>

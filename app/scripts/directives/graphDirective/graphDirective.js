@@ -13,10 +13,26 @@ define(['jQuery'], function() {
 				nodeid: '=',
 				neighbours:'=',
 				activenode:'=',
-                forceatlas:'='
+                forceatlas:'=',
+				showcategory: '='
 			},
 			controller: function($scope, $timeout) {
-
+				
+				$scope.showcategory = function(categoryIndex) {
+					console.log(categoryIndex);
+		            s.graph.nodes().forEach(function(n, index) {
+						if (n.id.charAt(0) == "b")
+                        	return;
+		
+					  	if(categoryIndex == $scope.graph.nodes[index].category) {
+							  n.color = $scope.graph.nodes[index].color;
+						} else {
+							n.color = "#EEE";
+						}
+			        });
+					s.refresh();
+		        }
+					
 				$scope.drawgraph = function() {
 
 		            try {
@@ -67,16 +83,14 @@ define(['jQuery'], function() {
 					}
 
 					sigma.prototype.resetColors = function() {
-						var i = 0;
-						s.graph.nodes().forEach(function(n) {
+						
+						s.graph.nodes().forEach(function(n,i) {
 				          n.color = $scope.graph.nodes[i].color;
-				          i++;
 				        });
 
-						var i = 0;
-				        s.graph.edges().forEach(function(e) {
+
+				        s.graph.edges().forEach(function(e,i) {
 				          e.color = $scope.graph.edges[i].color;
-				          i++;
 				        });
 				        
 				        s.refresh();
@@ -180,7 +194,7 @@ define(['jQuery'], function() {
 				$scope.resetGraph = function() {
 					s.resetZoom();
 					s.resetColors();
-					$scope.nodeid = "";
+					$scope.nodeid = undefined;
 					$scope.activenode = undefined;
 				}
 
