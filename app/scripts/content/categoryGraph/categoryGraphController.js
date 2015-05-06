@@ -44,8 +44,8 @@ define(['sigma', 'jQuery', 'forceAtlas', 'customEdgesShapes'], function(sigma, $
 	        labelColor: "node",
 	        defaultHoverLabelBGColor: "rgba(255, 255, 255, 0)",
 	        // Edges
-	        minEdgeSize: 1,
-	        maxEdgeSize: 5,
+	        minEdgeSize: 0.5,
+	        maxEdgeSize: 2.5,
 	        defaultEdgeColor: '#222',
 	        zoomMin: 1/30
     	};
@@ -89,7 +89,7 @@ define(['sigma', 'jQuery', 'forceAtlas', 'customEdgesShapes'], function(sigma, $
 
 			});
 
-			var minTotalExpenses = 1000000;
+			var minTotalExpenses = 500000;
 			var minTransactionOnGraph = 1000;
 
 			$.each(data.nodes, function(key,value) {
@@ -119,7 +119,8 @@ define(['sigma', 'jQuery', 'forceAtlas', 'customEdgesShapes'], function(sigma, $
 						"label": value[0].total,
 						"type": "curve",
 						"arrow": "target",
-						"color": "#AAA"
+						"color": "#AAA",
+						"size": value[0].total / 100000000
 					});
 
 				} else if(data.nodes[value[0].source].totalExpenses > minTotalExpenses) {
@@ -162,7 +163,8 @@ define(['sigma', 'jQuery', 'forceAtlas', 'customEdgesShapes'], function(sigma, $
 								"label": value.edgesToCategories[i].outcome,
 								"type": "curve",
 								"arrow": "target",
-								"color": "#AAA"
+								"color": "#AAA",
+								"size": value.edgesToCategories[i].outcome / 100000000
 			        		});
 			        	}
 
@@ -174,7 +176,8 @@ define(['sigma', 'jQuery', 'forceAtlas', 'customEdgesShapes'], function(sigma, $
 								"label": value.edgesToCategories[i].income,
 								"type": "curve",
 								"arrow": "target",
-								"color": "#AAA"
+								"color": "#AAA",
+								"size": value.edgesToCategories[i].income / 100000000
 			        		});
 			        	}
 

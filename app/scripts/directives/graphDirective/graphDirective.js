@@ -1,10 +1,10 @@
-define([], function() {
+define(['jQuery'], function() {
 
 	return function() {
 		return {
 			restrict: 'E',
 			replace: true,
-			template: '<div><button class="btn btn-default height45" ng-click="resetGraph()">Reset graph</button><div id="graph-container"></div></div>',
+			templateUrl: '/app/scripts/directives/graphDirective/graphDirectiveTemplate.html',
 			scope: {
 				settings: '=',
 				graph: '=',
@@ -16,7 +16,7 @@ define([], function() {
                 forceatlas:'='
 			},
 			controller: function($scope, $timeout) {
-				
+
 				$scope.drawgraph = function() {
 
 		            try {
@@ -72,8 +72,10 @@ define([], function() {
 				          i++;
 				        });
 
+						var i = 0;
 				        s.graph.edges().forEach(function(e) {
-				          e.color = $scope.graph.edges[0].color;
+				          e.color = $scope.graph.edges[i].color;
+				          i++;
 				        });
 				        
 				        s.refresh();
@@ -88,6 +90,15 @@ define([], function() {
 						},
 						settings: $scope.settings
 					});
+					
+					$('#graph-overlay').css({
+						top: 50,
+						left: 15,
+						width: $('#graph-container').width(),
+						height: $('#graph-container').height()
+
+					});
+
 
 					s.bind('clickNode', function(e) {
 						$scope.$apply(function() {
@@ -97,6 +108,8 @@ define([], function() {
 
                     if ($scope.forceatlas) {
                         startForceatlas();
+                    } else {
+                    	$('#graph-overlay').hide();
                     }
 				}
 
@@ -134,6 +147,7 @@ define([], function() {
 							n.color = '#EEE';
 					});
 					$scope.neighbours = [];
+					var j = 0;
 					s.graph.edges().forEach(function(e) {
 						if(toKeep[e.source] && (e.target.localeCompare(node.id) == 0)) {
 							e.color = '#118811';
@@ -152,8 +166,9 @@ define([], function() {
 								color: '#881111'
 							});
 						} else {
-							e.color = $scope.graph.edges[0].color;
+							e.color = $scope.graph.edges[j].color;
 						}
+						j++;
 					});
 
 					s.zoomToNode(node, 0.05);
@@ -174,6 +189,8 @@ define([], function() {
                     $timeout(function() {
                         s.stopForceAtlas2();
                       //  $scope.findNode();
+                      
+                      $('#graph-overlay').hide();
                     }, 1000);
                 }
 			}

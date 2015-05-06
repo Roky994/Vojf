@@ -44,7 +44,7 @@ define(['sigma', 'jQuery', 'forceAtlas', 'customEdgesShapes'], function(sigma, $
 
         // Get data
         var loadJson = function() {
-            $.getJSON('public/data/trans201403_samo_pu_koord_kategorije-popravljeno-1.json', function( data ){
+            $.getJSON('public/data/trans201403_samo_pu_koord_kategorije-popravljeno-2.json', function( data ){
                 parseJsonForGraph(data);
             });
 
@@ -90,7 +90,7 @@ define(['sigma', 'jQuery', 'forceAtlas', 'customEdgesShapes'], function(sigma, $
                     "target": value[0].target,
                     "label": transTotal,
                     "type": "arrow",
-                    "color": "#FFF"
+                    "color": "rgba(255,255,255,0)"
                 });
 
             });
@@ -119,12 +119,12 @@ define(['sigma', 'jQuery', 'forceAtlas', 'customEdgesShapes'], function(sigma, $
 
                 var x = ((parseFloat(value.lon) - lonCenter)).toFixed(4);
                 var y = -((parseFloat(value.lat) - latCenter)).toFixed(4);
-                if(Math.abs(x) < 0.03 || Math.abs(y) < 0.03) {
-                    x *= 3;
-                    y *= 3;
-                } else if(x < 0.5 || y < 0.5) {
-                   
-                }
+
+                var distanceFromCenter = x*x + y*y;
+                if(distanceFromCenter < 0.01) {
+                    x *= 1.75;
+                    y *= 1.75;
+                } 
 
                 var node = {
                     "id": key,
@@ -156,7 +156,7 @@ define(['sigma', 'jQuery', 'forceAtlas', 'customEdgesShapes'], function(sigma, $
                     "y": -((parseFloat(data[i][1]) - latCenter)).toFixed(4),
                     "size": 0.1,
                     //"outcomeSum": 0,
-                    "color": '#000000'
+                    "color": '#333'
                 };
 
                 $scope.graph.nodes.push(node);
@@ -168,7 +168,7 @@ define(['sigma', 'jQuery', 'forceAtlas', 'customEdgesShapes'], function(sigma, $
                     "source": ("b" + j).toString(),
                     "target": ("b" + (j + 1)).toString(),
                     "size": 0.3,
-                    "color": "#000000"
+                    "color": "#333"
                 });
             }
 
