@@ -4,7 +4,7 @@ define(['jQuery'], function() {
 		return {
 			restrict: 'E',
 			replace: true,
-			templateUrl: '/app/scripts/directives/graphDirective/graphDirectiveTemplate.html',
+			templateUrl: 'app/scripts/directives/graphDirective/graphDirectiveTemplate.html',
 			scope: {
 				settings: '=',
 				graph: '=',
@@ -47,6 +47,7 @@ define(['jQuery'], function() {
 						  }, 
 						  {duration: 1500}
 						);
+
 					}
 
 					sigma.prototype.resetZoom = function() {
