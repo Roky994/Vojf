@@ -4,14 +4,24 @@ define(['sigma', 'jQuery', 'forceAtlas', 'customEdgesShapes'], function(sigma, $
         var latCenter = 46.0556;
         var lonCenter = 14.5083;
 
-        var categories = ["RS", "VLADA", "PROMET", "MINISTRSTVO", "IZOBRAŽEVANJE", "ZDRAVSTVO",
-        					"SOCIALNE ZADEVE", "KULTURA", "GOSPODARSTVO", "RAZVOJ IN TEHNOLOGIJA",
-        					"KMETIJSTVO IN GOSPODARSTVO", "PRAVOSODJE", "LOKALNA SAMOUPRAVA", 
-        					"ŠPORT", "TURIZEM", "ZAŠČITA IN VAROVANJE", "INFRASTRUKTURA", "NULL"];
-
-       	var colors = ["#FF0000", "#00FF00", "#0000FF", "#FFFF00", "#FF00FF", "#00FFFF", 
-        "#800000", "#008000", "#000080", "#808000", "#800080", "#008080", "#808080", 
-        "#C00000", "#00C000", "#0000C0", "#C0C000", "#C000C0", "#00C0C0", "#C0C0C0"];
+        $scope.legend = [{category: "Republika Slovenija", color: "#FF0000"},
+                            {category: "Vlada", color: "#00FF00"},
+                            {category: "Promet", color: "#0000FF"}, 
+                            {category: "Ministrstva", color: "#FFFF00"},
+                            {category: "Izobraževanje", color: "#FF00FF"}, 
+                            {category: "Zdravstvo", color: "#00FFFF"},
+                            {category: "Socialne zadeve", color: "#800000"},
+                            {category: "Kultura", color: "#008000"}, 
+                            {category: "Gospodarstvo", color: "#000080"},
+                            {category: "Razvoj in tehnologija", color: "#808000"}, 
+                            {category: "Kmetijstvo in gozdarstvo", color: "#800080"},
+                            {category: "Pravosodje", color: "#008080"},
+                            {category: "Lokalna samouprava", color: "#808080"}, 
+                            {category: "Šport", color: "#C00000"},
+                            {category: "Turizem", color: "#00C000"}, 
+                            {category: "Zaščita in varovanje", color: "#0000C0"},
+                            {category: "Infrastruktura", color: "#C0C000"},
+                            {category: "Ostalo", color: "#00C0C0"}];
 
 		// Graph directive settings
         // Search term
@@ -22,9 +32,10 @@ define(['sigma', 'jQuery', 'forceAtlas', 'customEdgesShapes'], function(sigma, $
 
 		$scope.drawGraph = function() {};
 		$scope.findNodeById = function() {};
-
+		$scope.reset = function(){};
 
 		$scope.forceAtlas = true;
+		$scope.showCategory = function() {};
 
         // Find node by id
 		$scope.findNode = function() {
@@ -151,7 +162,7 @@ define(['sigma', 'jQuery', 'forceAtlas', 'customEdgesShapes'], function(sigma, $
 		                "x": Math.random(),
 		                "y": Math.random(),
 		                "size": 1,
-		                "color": colors[value.category-1]
+		                "color": $scope.legend[value.category-1].color
 		        	});
 
 		        	for(var i = 0; i < 18; i++) {
@@ -192,11 +203,11 @@ define(['sigma', 'jQuery', 'forceAtlas', 'customEdgesShapes'], function(sigma, $
 
 				$scope.graph.nodes.push({
 		                "id": i + "",
-		                "label": categories[i],
+		                "label": $scope.legend[i].category,
 		                "x": Math.random(),
 		                "y": Math.random(),
 		                "size": 1,
-		                "color": colors[i]
+		                "color": $scope.legend[i].color
 		        	});
 
 

@@ -5,11 +5,18 @@
             <div class="space20"></div>
 
             <div class="input-group">
+                <span class="input-group-btn">
+                    <button class="btn btn-default height45" ng-click="reset()" type="button">
+                        <span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span>
+                    </button>
+                </span>
                 <input type="text" class="form-control height45" placeholder="Poišči ustanovo..." ng-model="nodeId">
                 <span class="input-group-btn">
+                    
                     <button class="btn btn-default height45" ng-click="findNode()" type="button">
                         <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
                     </button>
+                    
                 </span>
             </div>
             <div class="space20"></div>
@@ -38,6 +45,6 @@
 	</div>
 	<div class="col-md-9">
 		<graph-directive settings="settings" graph="graph" drawgraph="drawGraph" findnodebyid="findNodeById" 
-                        nodeid="nodeId" neighbours="neighbours" activenode="activeNode" showcategory="showCategory"></graph-directive>
+                        nodeid="nodeId" neighbours="neighbours" activenode="activeNode" showcategory="showCategory" reset="reset"></graph-directive>
 	</div>
 </div>

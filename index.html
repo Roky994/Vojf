@@ -12,16 +12,10 @@
         <link rel="stylesheet" href="public/css/main.css">
     </head>
     <body>
-    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-    <div class="container margin-top-20">
-          <div class="navbar-header">
-                <a class="navbar-brand" href="#/home">Vizualizacija omrežij javnih financ</a>
-          </div>
-    </div>
-    </nav>
-    <div class="container padding-top-20">
+    <div ng-include="'app/template/navigation.html'"></div>
     <!-- View -->    
-    <div ng-view></div>
+    <div class="container padding-top-20">
+        <div ng-view></div>
     </div>
     <!--</div>-->
 
@@ -30,6 +24,6 @@
                 <p class="footer-text">&copy vojf</p>
             </div>
         </footer> -->
-        <script data-main="app/main" src="app/vendor/require.js"></script>
+    <script data-main="app/main" src="app/vendor/require.js"></script>
     </body>
 </html>

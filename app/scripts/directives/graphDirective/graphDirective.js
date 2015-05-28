@@ -14,7 +14,8 @@ define(['jQuery'], function() {
 				neighbours:'=',
 				activenode:'=',
                 forceatlas:'=',
-				showcategory: '='
+				showcategory: '=',
+				reset:'='
 			},
 			controller: function($scope, $timeout) {
 				
@@ -191,7 +192,7 @@ define(['jQuery'], function() {
 				}
 				
 				 // Reset the graph
-				$scope.resetGraph = function() {
+				$scope.reset = function() {
 					s.resetZoom();
 					s.resetColors();
 					$scope.nodeid = undefined;

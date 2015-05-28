@@ -4,21 +4,17 @@
             <h1>Graf</h1>
             <div class="space20"></div>
 
-            <div class="input-group">
-                <input type="text" class="form-control height45" placeholder="Poišči ustanovo..." ng-model="nodeId">
-                <span class="input-group-btn">
-                    <button class="btn btn-default height45" ng-click="findNode()" type="button">
-                        <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
-                    </button>
-                </span>
-            </div>
+            
             <div class="space20"></div>
         
         </div>
         <div class="row" ng-show="activeNode">
-            <a href="#" class="list-group-item active">
-                {{ activeNode.label }} <span class="badge"> {{ neighbours.length }} </span>
+            <a class="list-group-item active">
+                {{ activeNode.label }} <span class="badge"> {{ neighbours.length }} </span>    
+                <span ng-click="reset()" class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span>
+            </span>
             </a>
+           
             <ul class="list-group scrollable">
                 </li>
                 <li class="list-group-item font-size-11" ng-repeat="object in neighbours |  orderBy: 'node.label'" ng-click="findNodeById(object.node.id)">
@@ -27,10 +23,18 @@
                 </li>
             </ul>
         </div>
+        
+        <div class="row" ng-hide="activeNode">
+            <ul class="legend">
+                <li ng-repeat="obj in legend track by $index" style="color: {{ obj.color }}">
+                    <span>{{ obj.category }}</span>
+                </li>
+            </ul>
+        </div>
 
 	</div>
 	<div class="col-md-9">
 		<graph-directive settings="settings" graph="graph" drawgraph="drawGraph" findnodebyid="findNodeById" 
-                        nodeid="nodeId" neighbours="neighbours" activenode="activeNode" forceatlas="forceAtlas"></graph-directive>
+                        nodeid="nodeId" neighbours="neighbours" activenode="activeNode" forceatlas="forceAtlas" showcategory="showCategory" reset="reset"></graph-directive>
 	</div>
 </div>

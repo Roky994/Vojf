@@ -25,13 +25,16 @@ define(['sigma', 'jQuery', 'forceAtlas', 'customEdgesShapes'], function(sigma, $
                          
         // Graph directive settings
         // Search term
-        $scope.nodeId = $routeParams.nodeId;
-
+        
+        if($routeParams.nodeId !== 'undefined') {
+            $scope.nodeId = $routeParams.nodeId;
+        }
         $scope.neighbours = [];
         $scope.graph = {nodes: [], edges: []};
 
         $scope.drawGraph = function() {};
         $scope.findNodeById = function() {};
+        $scope.reset = function() {};
         $scope.showCategory = function(index){
 
         };

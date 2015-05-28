@@ -1,10 +1,12 @@
 define([
 	'angular','angular-ui-router', 'scripts/content/home/homeController', 'scripts/content/mainGraph/mainGraphController',
-	'scripts/content/atlasGraph/atlasGraphController', 'scripts/content/categoryGraph/categoryGraphController', 'scripts/directives/directive',
+	'scripts/content/atlasGraph/atlasGraphController', 'scripts/content/categoryGraph/categoryGraphController', 'scripts/content/instructions/instructionsController',
+	'scripts/directives/directive',
 
 	'angular-route' 
 	], function(angular, router, homeController, mainGraphController, 
-		atlasGraphController, categoryGraphController, directive) {
+		atlasGraphController, categoryGraphController, instructionsController,
+		 directive) {
 
 	var initialize = function() {
 		var app = angular.module('sigmaJsApp', ['ngRoute']);
@@ -19,7 +21,10 @@ define([
 			}).when('/atlasGraph/:nodeId', {
 				controller: atlasGraphController,
 				templateUrl: 'app/scripts/content/atlasGraph/atlasGraphTemplate.html'
-            }).when('/categoryGraph/:nodeId', {
+            }).when('/instructions', {
+				controller: instructionsController,
+				templateUrl: 'app/scripts/content/'
+			}).when('/categoryGraph/:nodeId', {
                 controller: categoryGraphController,
                 templateUrl: 'app/scripts/content/categoryGraph/categoryGraphTemplate.html'
 			}).otherwise({

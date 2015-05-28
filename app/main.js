@@ -8,10 +8,10 @@ requirejs.config({
         'bootstrap': 'vendor/bootstrap.min',
         'sigma': 'vendor/sigmajs/sigma.min',
         'forceAtlas' : 'vendor/sigmajs/plugins/sigma.layout.forceAtlas2.min',
-    	'customEdgesShapes' : 'vendor/sigmajs/plugins/sigma.renderers.customEdgeShapes.min',
+    	  'customEdgesShapes' : 'vendor/sigmajs/plugins/sigma.renderers.customEdgeShapes.min',
     },
     shim: {
-        'angular': {
+      'angular': {
 	      exports: 'angular',
 	      deps: [ 'jQuery' ]
 	    },
@@ -24,7 +24,7 @@ requirejs.config({
 	    'angular-resource': {
 	      deps: [ 'angular' ]
 	    },
-        'jQuery': {
+      'jQuery': {
 	      exports: '$'
 	    },
 	    'bootstrap': {
@@ -43,7 +43,8 @@ requirejs.config({
 });
 
 require( [
-  'app'
+  'app',
+  'bootstrap'
 ], function ( App ) {
   App.initialize();
 } );
