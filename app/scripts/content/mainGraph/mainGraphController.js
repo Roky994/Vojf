@@ -49,6 +49,7 @@ define(['sigma', 'jQuery', 'forceAtlas', 'customEdgesShapes'], function(sigma, $
 
         $scope.settings = {
             // Basic
+            graphName: "Lokacijski graf",
             doubleClickEnabled: false,
             // Nodes
             minNodeSize: 1,
