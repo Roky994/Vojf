@@ -1,0 +1,9 @@
+<div>   
+    <div class="row" ng-hide="activeNode">
+        <ul class="legend">
+            <li ng-repeat="obj in legend track by $index" style="color: {{ obj.color }}" ng-click="showCategory($index)">
+                <span>{{ obj.category }}</span>
+            </li>
+        </ul>
+    </div>
+</div>

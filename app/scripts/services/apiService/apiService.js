@@ -5,38 +5,33 @@ define([], function() {
     return function($http) {
 
         return {
-            getInstitutes: getInstitutes
-          //  getGraphs: getGraph
+            getInstitutes: getInstitutes,
+            getGraph: getGraph,
+            getCategories: getCategories
         };
 
-        function getInstitutes() {
+        function getInstitutes(callback) {
             return $http.get(url + '/institutes')
-                    .then(apiSuccess)
+                    .then(callback)
                     .catch(apiFail);
-
-            function apiSuccess(response) {
-                return response.data;
-            }
-
-            function apiFail(error) {
-                console.log("Error: " + error.data)
-            }
         }
 
-        function getGraph() {
+        function getGraph(callback) {
             return $http.get(url + '/graph')
-                .then(apiSuccess)
+                .then(callback)
                 .catch(apiFail);
-
-            function apiSuccess(response) {
-                return response.data;
-            }
-
-            function apiFail(error) {
-                console.log("Error: " + error.data)
-            }
         }
+        
+        function getCategories(callback) {
+            return $http.get(url + '/categories')
+                .then(callback)
+                .catch(apiFail);
+        }
+        
+    }
 
+    function apiFail(error) {
+        console.log("Error: " + error.data)
     }
 
 });

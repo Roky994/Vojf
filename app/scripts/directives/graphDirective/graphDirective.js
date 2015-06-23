@@ -108,7 +108,7 @@ define(['jQuery'], function() {
 					});
 					
 					$('#graph-overlay').css({
-						top: 50,
+						top: 0,
 						left: 15,
 						width: $('#graph-container').width(),
 						height: $('#graph-container').height()

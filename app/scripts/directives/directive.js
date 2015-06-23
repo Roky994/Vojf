@@ -1,8 +1,11 @@
-define(['./graphDirective/graphDirective', './searchDirective/searchDirective'], function( graphDirective, searchDirective ){
+define(['./graphDirective/graphDirective', './searchDirective/searchDirective',
+		'./legendDirective/legendDirective', './activeNodeDirective/activeNodeDirective'], function( graphDirective, searchDirective, legendDirective, activeNodeDirective ){
 	
 	var directives = {
 		graphDirective: graphDirective,
-		searchDirective: searchDirective
+		searchDirective: searchDirective,
+		legendDirective: legendDirective,
+		activeNodeDirective: activeNodeDirective
 	};
 
 	var initialize = function( angModule ) {

@@ -4,25 +4,24 @@ define(['sigma', 'jQuery', 'forceAtlas', 'customEdgesShapes'], function(sigma, $
         var latCenter = 46.0499335;
         var lonCenter = 14.5067506;
         
-        $scope.legend = [{category: "Republika Slovenija", color: "#FF0000"},
-                            {category: "Vlada", color: "#00FF00"},
-                            {category: "Promet", color: "#0000FF"}, 
-                            {category: "Ministrstva", color: "#FFFF00"},
-                            {category: "Izobraževanje", color: "#FF00FF"}, 
-                            {category: "Zdravstvo", color: "#00FFFF"},
-                            {category: "Socialne zadeve", color: "#800000"},
-                            {category: "Kultura", color: "#008000"}, 
-                            {category: "Gospodarstvo", color: "#000080"},
-                            {category: "Razvoj in tehnologija", color: "#808000"}, 
-                            {category: "Kmetijstvo in gozdarstvo", color: "#800080"},
-                            {category: "Pravosodje", color: "#008080"},
-                            {category: "Lokalna samouprava", color: "#808080"}, 
-                            {category: "Šport", color: "#C00000"},
-                            {category: "Turizem", color: "#00C000"}, 
-                            {category: "Zaščita in varovanje", color: "#0000C0"},
-                            {category: "Infrastruktura", color: "#C0C000"},
-                            {category: "Ostalo", color: "#00C0C0"}];
-                         
+        $scope.legend = [];
+        
+        var colors = ["#FF0000","#00FF00","#0000FF","#FFFF00","#FF00FF","#00FFFF", 
+                        "#800000","#008000","#000080", "#808000", "#800080", "#008080", "#808080", 
+                         "#C00000", "#00C000", "#0000C0", "#C0C000","#00C0C0"];
+        
+        apiService.getCategories(function(data) {
+            for(var i = 0; i < data.data.length; i++) {
+                $scope.legend.push({category: data.data[i].name, color: colors[i]});
+            }
+            loadJson();
+        });
+        
+        
+        
+        
+        
+                   
         // Graph directive settings
         // Search term
         
@@ -63,9 +62,7 @@ define(['sigma', 'jQuery', 'forceAtlas', 'customEdgesShapes'], function(sigma, $
             zoomMin: 1/80
         };
 
-        // Get data from API service
-        var data = apiService.getInstitutes();
-        console.log(data);
+        
 
 
         // Get data
@@ -244,7 +241,9 @@ define(['sigma', 'jQuery', 'forceAtlas', 'customEdgesShapes'], function(sigma, $
                     x *= 1.75;
                     y *= 1.75;
                 } 
-
+                
+                    	 
+                
                 var node = {
                     "id": key,
                     "label": value.naziv,
@@ -297,7 +296,7 @@ define(['sigma', 'jQuery', 'forceAtlas', 'customEdgesShapes'], function(sigma, $
         };
 
         // JSON
-        loadJson();
+        
         
        
 

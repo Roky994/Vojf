@@ -1,6 +1,21 @@
 define(['sigma', 'jQuery', 'forceAtlas', 'customEdgesShapes'], function(sigma, $) {
 	return function($scope, $timeout, $routeParams) {
-
+		
+		$scope.legend = [];
+        
+        var colors = ["#FF0000","#00FF00","#0000FF","#FFFF00","#FF00FF","#00FFFF", 
+                        "#800000","#008000","#000080", "#808000", "#800080", "#008080", "#808080", 
+                         "#C00000", "#00C000", "#0000C0", "#C0C000","#00C0C0"];
+        
+        apiService.getCategories(function(data) {
+            for(var i = 0; i < data.data.length; i++) {
+                $scope.legend.push({category: data.data[i].name, color: colors[i]});
+            }
+            $scope.legend.push({category: "OSTALO", color: colors[17]});
+            console.log($scope.legend);
+            loadJson();
+        });
+		
         // Graph directive settings
         // Search term
         $scope.nodeId = $routeParams.nodeId;
