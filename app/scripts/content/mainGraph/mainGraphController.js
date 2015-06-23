@@ -14,13 +14,11 @@ define(['sigma', 'jQuery', 'forceAtlas', 'customEdgesShapes'], function(sigma, $
             for(var i = 0; i < data.data.length; i++) {
                 $scope.legend.push({category: data.data[i].name, color: colors[i]});
             }
-            loadJson();
+            //loadJson();
+
+            loadInstitutes();
         });
-        
-        
-        
-        
-        
+
                    
         // Graph directive settings
         // Search term
@@ -62,17 +60,45 @@ define(['sigma', 'jQuery', 'forceAtlas', 'customEdgesShapes'], function(sigma, $
             zoomMin: 1/80
         };
 
-        
 
+        var institutes = [];
+        var edges      = [];
+
+        var loadEdges = function() {
+
+            apiService.getGraph(function(response) {
+                edges = response.data;
+
+                // Draw graph
+                parseDataForGraph();
+
+                // Draw border
+                loadJson();
+            });
+
+        }
+
+        var loadInstitutes = function() {
+
+            apiService.getInstitutes(function(response) {
+
+                institutes = response.data;
+
+                loadEdges()
+
+            });
+
+        }
 
         // Get data
         var loadJson = function() {
 
-            $.getJSON('public/data/trans201403_samo_pu_koord_kategorije-popravljeno-2.json', function( data ){
-                parseJsonForGraph(data);
-            });
+           // $.getJSON('public/data/trans201403_samo_pu_koord_kategorije-popravljeno-2.json', function( data ){
+              //  parseJsonForGraph(data);
+            //});
 
-            $.getJSON('public/data/slovenia.geojson', function( data ) {
+            $.getJSON('public/data/slovenia.geojson', function(data) {
+                console.log("banana");
                 parseJsonForBorder(data);
             });
         }
@@ -169,7 +195,116 @@ define(['sigma', 'jQuery', 'forceAtlas', 'customEdgesShapes'], function(sigma, $
 
         }
 
-        // Parse JSON from file - OLD
+
+
+        var parseDataForGraph = function() {
+
+            var maxAmount = 0;
+
+            var t0 = performance.now();
+
+            angular.forEach(edges, function(edge, key) {
+
+                //shrani najvecji strosek za realizacijo velikosti vozlisc
+
+                if(edge.amount > maxAmount) {
+                    maxAmount = edge.amount;
+                }
+
+                var sourceInstitute, targetInstitute;
+                for (var i=0; i < institutes.length; i++) {
+                    if (institutes[i].bu_code == edge.source_bu_code) {
+                        sourceInstitute = institutes[i];
+                    }
+
+                    if (institutes[i].bu_code == edge.target_bu_code) {
+                        targetInstitute = institutes[i];
+                    }
+
+                    if (sourceInstitute && targetInstitute)
+                        break;
+                }
+
+                //zacetnemu vozliscu dodaj izplacani znesek
+                if(sourceInstitute.totalExpenses == undefined) {
+                    sourceInstitute.totalExpenses = edge.amount;
+                } else {
+                    sourceInstitute.totalExpenses += edge.amount;
+                }
+
+                sourceInstitute.lon = edge.source_lon;
+                sourceInstitute.lat = edge.source_lat;
+                targetInstitute.lon = edge.target_lon;
+                targetInstitute.lat = edge.target_lat;
+
+                targetInstitute.isTarget = true;
+
+                $scope.graph.edges.push({
+                    "id": key.toString(),
+                    "source": edge.source_bu_code.toString(),
+                    "target": edge.target_bu_code.toString(),
+                    "label": edge.amount,
+                    "type": "arrow",
+                    "color": "rgba(255,255,255,0)"
+                });
+
+            });
+
+            angular.forEach(institutes, function(institute, key) {
+
+                if(institute.totalExpenses == undefined && institute.isTarget == undefined) {
+                    return;
+                }
+                var size = 0.1;
+                if(institute.totalExpenses > maxAmount / 2) {
+                    size = 2;
+                } else if(institute.totalExpenses > maxAmount / 5) {
+                    size = 1.5;
+                } else if (institute.totalExpenses > maxAmount / 30) {
+                    size = 1.2;
+                } else if (institute.totalExpenses > maxAmount / 40) {
+                    size = 1;
+                } else if (institute.totalExpenses > maxAmount / 1000) {
+                    size = 0.5;
+                }
+
+                var x = institute.lon.toFixed(4);
+                var y = -institute.lat.toFixed(4);
+
+                var distanceFromCenter = x*x + y*y;
+                if(distanceFromCenter < 0.01) {
+                    x *= 1.75;
+                    y *= 1.75;
+                }
+
+                var node = {
+                    "id": institute.bu_code.toString(),
+                    "label": institute.name,
+                    "x": x,
+                    "y": y,
+                    "size": size,
+                    "outcomeSum": 0,
+                    "color": $scope.legend[parseFloat(institute.category.id) - 1].color,
+                    "category": parseFloat(institute.category.id) - 1
+                };
+
+                $scope.graph.nodes.push(node);
+
+            });
+
+            //console.log($scope.graph);
+
+
+            var t1 = performance.now();
+            console.log(t1-t0 + " miliseconds");
+
+            $scope.drawGraph();
+        }
+
+
+
+
+        // Parse JSON from file
         var parseJsonForGraph = function(data) {
             // Graph
             var maxTransTotal = 0;
@@ -242,8 +377,7 @@ define(['sigma', 'jQuery', 'forceAtlas', 'customEdgesShapes'], function(sigma, $
                     y *= 1.75;
                 } 
                 
-                    	 
-                
+
                 var node = {
                     "id": key,
                     "label": value.naziv,
@@ -264,7 +398,6 @@ define(['sigma', 'jQuery', 'forceAtlas', 'customEdgesShapes'], function(sigma, $
         }
 
         var parseJsonForBorder = function (data) {
-            var t0 = performance.now();
 
             data = data.features[0].geometry.coordinates[0];
 
@@ -291,14 +424,10 @@ define(['sigma', 'jQuery', 'forceAtlas', 'customEdgesShapes'], function(sigma, $
                 });
             }
 
-            var t1 = performance.now();
-           // console.log("Slovenia border loading took: " + (t1 - t0) + " milliseconds.");
         };
 
-        // JSON
-        
-        
-       
+        // API
+        //loadInstitutes();
 
     }
 })
