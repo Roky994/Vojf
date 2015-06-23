@@ -73,7 +73,7 @@ define(['sigma', 'jQuery', 'forceAtlas', 'customEdgesShapes'], function(sigma, $
                 parseDataForGraph();
 
                 // Draw border
-                loadJson();
+                
             });
 
         }
@@ -84,8 +84,9 @@ define(['sigma', 'jQuery', 'forceAtlas', 'customEdgesShapes'], function(sigma, $
 
                 institutes = response.data;
 
-                loadEdges()
-
+                loadEdges();
+                
+                loadJson();
             });
 
         }
@@ -297,7 +298,7 @@ define(['sigma', 'jQuery', 'forceAtlas', 'customEdgesShapes'], function(sigma, $
 
             var t1 = performance.now();
             console.log(t1-t0 + " miliseconds");
-
+            
             $scope.drawGraph();
         }
 
@@ -422,6 +423,7 @@ define(['sigma', 'jQuery', 'forceAtlas', 'customEdgesShapes'], function(sigma, $
                     "size": 0.3,
                     "color": "#333"
                 });
+
             }
 
         };
