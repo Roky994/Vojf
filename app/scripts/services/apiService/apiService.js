@@ -16,8 +16,15 @@ define([], function() {
                     .catch(apiFail);
         }
 
-        function getGraph(callback) {
-            return $http.get(url + '/graph')
+        function getGraph(callback, filter) {
+            console.log(filter);
+            return $http.post(url + '/graph/query', {
+                    amount_min : filter.amount.minAmount,
+                    amount_max : filter.amount.maxAmount,
+                    month_from: filter.month.monthFrom,
+                    year_from: filter.year,
+                    month_until: filter.month.monthUntil,
+                    year_until: filter.year})
                 .then(callback)
                 .catch(apiFail);
         }

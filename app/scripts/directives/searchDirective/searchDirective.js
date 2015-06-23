@@ -4,13 +4,8 @@ define(['jQuery'], function() {
 		return {
 			restrict: 'E',
 			replace: true,
-			templateUrl: 'app/scripts/directives/searchDirective/searchDirectiveTemplate.html',
-			scope: {
-				settings: '='
-			},
+			templateUrl: 'app/scripts/directives/searchDirective/searchDirectiveTemplate.html'
 
-			controller: function($scope, $timeout) {
-			}
 		}
 	}
 

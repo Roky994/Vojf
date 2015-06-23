@@ -19,7 +19,11 @@ define(['sigma', 'jQuery', 'forceAtlas', 'customEdgesShapes'], function(sigma, $
             loadInstitutes();
         });
 
-                   
+        $scope.filter = {
+            month: {},
+            year: undefined,
+            amount: {}
+        }  
         // Graph directive settings
         // Search term
         
@@ -64,6 +68,10 @@ define(['sigma', 'jQuery', 'forceAtlas', 'customEdgesShapes'], function(sigma, $
         var institutes = [];
         var edges      = [];
 
+        $scope.loadEdges = function() {
+            loadEdges();
+        }
+
         var loadEdges = function() {
 
             apiService.getGraph(function(response) {
@@ -71,10 +79,10 @@ define(['sigma', 'jQuery', 'forceAtlas', 'customEdgesShapes'], function(sigma, $
 
                 // Draw graph
                 parseDataForGraph();
-
+        
                 // Draw border
                 
-            });
+            }, $scope.filter);
 
         }
 
@@ -99,7 +107,6 @@ define(['sigma', 'jQuery', 'forceAtlas', 'customEdgesShapes'], function(sigma, $
             //});
 
             $.getJSON('public/data/slovenia.geojson', function(data) {
-                console.log("banana");
                 parseJsonForBorder(data);
             });
         }
@@ -108,6 +115,8 @@ define(['sigma', 'jQuery', 'forceAtlas', 'customEdgesShapes'], function(sigma, $
         var parseJsonForGraph = function(data) {
             // Graph
             var maxTransTotal = 0;
+            
+            $scope.graph = {nodes: [], edges: []};
 
             $.each(data.edges, function(key, value) {
 
