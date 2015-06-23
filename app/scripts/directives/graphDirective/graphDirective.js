@@ -35,7 +35,9 @@ define(['jQuery'], function() {
 		        }
 					
 				$scope.drawgraph = function() {
-
+					$('#graph').remove(); 
+					$('#graph-container').html('<div id="graph"></div>'); 
+					
 		            try {
 		                sigma.classes.graph.addMethod('neighbors', function (nodeId) {
 		                    var k,
@@ -101,7 +103,7 @@ define(['jQuery'], function() {
 					s = new sigma({
 						graph: $scope.graph,
 						renderer: {
-						  	container: $('#graph-container')[0],
+						  	container: $('#graph')[0],
 						  	type: "canvas"
 						},
 						settings: $scope.settings
@@ -160,7 +162,7 @@ define(['jQuery'], function() {
                             n.color = '#888';
                         }
 						else if (n.id.charAt(0) != "b")
-							n.color = '#D8D8D8';
+							n.color = '#EEE';
 					});
 					$scope.neighbours = [];
 					var j = 0;
@@ -197,6 +199,7 @@ define(['jQuery'], function() {
 					s.resetColors();
 					$scope.nodeid = undefined;
 					$scope.activenode = undefined;
+					s
 				}
 
                 var startForceatlas = function() {
