@@ -6,16 +6,13 @@ Ljubljana, 2015
 ## Resources & Frameworks
 
 - SigmaJS http://sigmajs.org/
+- AngularJS https://angularjs.org/
 
 ## TODO
 
-- Mockup application
-- Frameworks (JS -> AngularJS)
-- GUI basics
-- Simple demo application
+- Dynamic data feeding - API
+- Testing
 
-# API Needs
-- /graph - vrni se vozlisca
 
 ## Useful links
 
@@ -24,10 +21,11 @@ Ljubljana, 2015
 
 ## Authors
 
-Urban Marovt, 
-um5606@student.uni-lj.si
+* Frontend
 
-Rok Založnik, 
-rok.zaloznik@student.uni-lj.si
+* Backend
+
+* Graph (visualizations)
+
 
 ---
