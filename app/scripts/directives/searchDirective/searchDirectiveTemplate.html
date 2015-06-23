@@ -8,29 +8,14 @@
 	<div class="col-lg-6">
 
 		<div class="form-inline pull-right">
+			
+			<select class="form-control" ng-options="item.value as item.label for item in monthFilter" ng-model="filter.month"></select>
+			
+			<select class="form-control" ng-options="item.value as item.value for item in yearFilter" ng-model="filter.year"></select>
 
-			<select ng-model="filter.month" class="form-control" id="year-part">
-				<option value="" disabled selected >Četrtletje</option>
-				<option value="{monthFrom: 1, monthUntil: 3}">Prvi kvartar</option>
-				<option value="{monthFrom: 4, monthUntil: 6}">Drugi kvartar</option>
-				<option value="{monthFrom: 7, monthUntil: 9}">Tretji kvartar</option>
-				<option value="{monthFrom: 10, monthUntil: 12}">Četrti kvartar</option>
-			</select>
+			<select class="form-control" ng-options="item.value as item.label for item in amountFilter" ng-model="filter.amount"></select>
+			
 
-			<select ng-model="filter.year" class="form-control" id="year">
-				<option value="" disabled selected >Leto</option>
-				<option value="2012">2012</option>
-				<option value="2013">2013</option>
-				<option value="2014">2014</option>
-			</select>
-
-			<select ng-model="filter.amount" class="form-control" id="range">
-				<option value="" disabled selected >Velikost transakcije (EUR)</option>
-				<option value="{ maxAmount: 10000.00 }">0 - 10000</option>
-				<option value="{ minAmount: 10000.00, maxAmount: 50000.00 }">10000 - 50000</option>
-				<option value="{ minAmount: 50000.00, maxAmount: 100000.00 }">50000 - 100000</option>
-				<option value="{ minAmount: 100000.00 }">več kot 100000</option>
-			</select>
 
 			<button class="btn-success btn" ng-click="loadEdges()">Posodobi</button>
 

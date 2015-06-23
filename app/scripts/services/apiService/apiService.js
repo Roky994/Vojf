@@ -18,6 +18,13 @@ define([], function() {
 
         function getGraph(callback, filter) {
             console.log(filter);
+            console.log(filter.amount.minAmount);
+            console.log(filter.amount.maxAmount);
+            console.log(filter.month.monthFrom);
+            console.log(filter.month.monthUntil);
+            console.log(filter.amount.minAmount);
+            console.log(filter.amount.minAmount);
+            console.log(filter.amount.minAmount);
             return $http.post(url + '/graph/query', {
                     amount_min : filter.amount.minAmount,
                     amount_max : filter.amount.maxAmount,
