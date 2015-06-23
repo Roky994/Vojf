@@ -1,14 +1,13 @@
 define([
 	'angular','angular-ui-router', 'scripts/content/home/homeController', 'scripts/content/mainGraph/mainGraphController',
 	'scripts/content/atlasGraph/atlasGraphController', 'scripts/content/categoryGraph/categoryGraphController', 'scripts/content/instructions/instructionsController',
-	'scripts/directives/directive',
-
-	'angular-route' 
+	'scripts/directives/directive', 'scripts/services/service', 'angular-route'
 	], function(angular, router, homeController, mainGraphController, 
 		atlasGraphController, categoryGraphController, instructionsController,
-		 directive) {
+		 directive, service) {
 
 	var initialize = function() {
+
 		var app = angular.module('sigmaJsApp', ['ngRoute']);
 
 		app.config(function($routeProvider) {
@@ -31,8 +30,9 @@ define([
 				redirectTo: '/home'
 			});
 		});
-		
+
 		directive.initialize(app);
+		service.initialize(app);
 
 		angular.bootstrap( document, [ 'sigmaJsApp' ] );
 

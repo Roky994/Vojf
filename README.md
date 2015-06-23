@@ -7,12 +7,15 @@ Ljubljana, 2015
 
 - SigmaJS http://sigmajs.org/
 
-## To do
+## TODO
 
 - Mockup application
 - Frameworks (JS -> AngularJS)
 - GUI basics
 - Simple demo application
+
+# API Needs
+- /graph - vrni se vozlisca
 
 ## Useful links
 
