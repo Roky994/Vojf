@@ -17,21 +17,15 @@ define([], function() {
         }
 
         function getGraph(callback, filter) {
-            console.log(filter);
-            console.log(filter.amount.minAmount);
-            console.log(filter.amount.maxAmount);
-            console.log(filter.month.monthFrom);
-            console.log(filter.month.monthUntil);
-            console.log(filter.amount.minAmount);
-            console.log(filter.amount.minAmount);
-            console.log(filter.amount.minAmount);
             return $http.post(url + '/graph/query', {
                     amount_min : filter.amount.minAmount,
                     amount_max : filter.amount.maxAmount,
                     month_from: filter.month.monthFrom,
                     year_from: filter.year,
                     month_until: filter.month.monthUntil,
-                    year_until: filter.year})
+                    year_until: filter.year,
+                    limit: 4500
+                    })
                 .then(callback)
                 .catch(apiFail);
         }

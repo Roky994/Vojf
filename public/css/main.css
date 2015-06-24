@@ -117,6 +117,12 @@ body {
   z-index: 100;
 }
 
+#query-loader {
+    height: 24px;
+    width: 24px;
+    margin-right: 10px;
+}
+
 .legend span {
     color: #333;
     font-size: 14px;

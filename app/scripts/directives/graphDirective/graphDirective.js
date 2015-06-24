@@ -56,13 +56,14 @@ define(['jQuery'], function() {
 
 					sigma.prototype.zoomToNode = function(node) {
 		                camera = this.cameras[0];
-
+						
+						ratio = camera.ratio < $scope.settings.zoomMin * 15 ? camera.ratio : $scope.settings.zoomMin * 15;
 					    sigma.misc.animation.camera(
 						  camera, 
 						  {
 						    x: node[s.camera.readPrefix + 'x'], 
 						    y: node[s.camera.readPrefix + 'y'],
-						    ratio: $scope.settings.zoomMin * 15
+						    ratio: ratio
 						  }, 
 						  {duration: 1500}
 						);
@@ -188,7 +189,8 @@ define(['jQuery'], function() {
 						}
 						j++;
 					});
-
+					
+					console.log(s);
 					s.zoomToNode(node, 0.05);
 					s.refresh();
 				}

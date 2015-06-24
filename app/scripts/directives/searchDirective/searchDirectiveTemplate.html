@@ -1,23 +1,29 @@
 <div class="row search-containter">
 
-	<div class="col-lg-6">
+	<div class="col-lg-3">
 		<h3>{{ settings.graphName }}</h3>
 	</div>
 
 
-	<div class="col-lg-6">
+	<div class="col-lg-9">
 
 		<div class="form-inline pull-right">
 			
-			<select class="form-control" ng-options="item.value as item.label for item in monthFilter" ng-model="filter.month"></select>
+			<img ng-show="peddingQuery" id="query-loader" src="public/img/loader.gif"/>
 			
-			<select class="form-control" ng-options="item.value as item.value for item in yearFilter" ng-model="filter.year"></select>
-
-			<select class="form-control" ng-options="item.value as item.label for item in amountFilter" ng-model="filter.amount"></select>
+			<select class="form-control" ng-options="item.value as item.label for item in monthFilter" ng-model="filter.month">
+				<option value='' disabled>- Izberi kvartar -</option>
+			</select>
 			
+			<select class="form-control" ng-options="item.value as item.value for item in yearFilter" ng-model="filter.year">
+				<option value='' disabled>- Izberi leto -</option>
+			</select>
 
-
-			<button class="btn-success btn" ng-click="loadEdges()">Posodobi</button>
+			<select class="form-control" ng-options="item.value as item.label for item in amountFilter" ng-model="filter.amount">
+				<option value='' disabled>- Izberi količino denarja -</option>
+			</select>
+			
+			<button ng-disabled="peddingQuery" class="btn-success btn" ng-click="loadEdges()">Posodobi</button>
 
 		</div>
 
