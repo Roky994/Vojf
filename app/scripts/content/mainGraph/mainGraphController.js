@@ -17,7 +17,6 @@ define(['sigma', 'jQuery', 'forceAtlas', 'customEdgesShapes'], function(sigma, $
                 $scope.legend.push({category: data.data[i].name, color: colors[i]});
             }
             //loadJson();
-            console.log($scope.legend);
             loadInstitutes();
         });
 
@@ -209,8 +208,6 @@ define(['sigma', 'jQuery', 'forceAtlas', 'customEdgesShapes'], function(sigma, $
 //
 //        }
 
-
-
         var parseDataForGraph = function() {
 
             var maxAmount = 0;
@@ -297,7 +294,6 @@ define(['sigma', 'jQuery', 'forceAtlas', 'customEdgesShapes'], function(sigma, $
 
                 var distanceFromCenter = x*x + y*y;
                 if(distanceFromCenter < 0.05) {
-                    console.log("bravo");
                     x *= 1.75;
                     y *= 1.75;
                 }
@@ -316,8 +312,6 @@ define(['sigma', 'jQuery', 'forceAtlas', 'customEdgesShapes'], function(sigma, $
                 $scope.graph.nodes.push(node);
 
             });
-
-            //console.log($scope.graph);
 
 
             var t1 = performance.now();

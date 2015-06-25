@@ -163,7 +163,7 @@ define(['jQuery'], function() {
                             n.color = '#888';
                         }
 						else if (n.id.charAt(0) != "b")
-							n.color = '#EEE';
+							n.color = '#A6A6A6';
 					});
 					$scope.neighbours = [];
 					var j = 0;
