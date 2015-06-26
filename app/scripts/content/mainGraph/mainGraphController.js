@@ -1,4 +1,4 @@
-define(['sigma', 'jQuery', 'forceAtlas', 'customEdgesShapes'], function(sigma, $) {
+define(['sigma', 'jQuery','lodash', 'forceAtlas', 'customEdgesShapes'], function(sigma, $, _) {
     return function($scope, $timeout, $routeParams, apiService) {
 
         var latCenter = 46.0499335;
@@ -7,11 +7,12 @@ define(['sigma', 'jQuery', 'forceAtlas', 'customEdgesShapes'], function(sigma, $
         $scope.legend = [];
         
         $scope.peddingQuery = true;
-
         apiService.getCategories(function(response) {
-            for(var i = 0; i < response.data.length; i++) {
-                $scope.legend.push({category: response.data[i].name, color: '#' + response.data[i].color});
-            }
+            $scope.legend = _.map(response.data, function(obj) {
+                obj.color = "#" + obj.color;
+                return obj;
+            })
+
             loadInstitutes();
         });
 
@@ -342,4 +343,4 @@ define(['sigma', 'jQuery', 'forceAtlas', 'customEdgesShapes'], function(sigma, $
         };
 
     }
-})
+});
