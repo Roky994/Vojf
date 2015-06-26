@@ -19,12 +19,12 @@ define(['sigma', 'jQuery','lodash', 'forceAtlas', 'customEdgesShapes'], function
         $scope.filter = {
             month: {},
             year: undefined,
-            amount: {}
+            amount: {},
         }
 
         // Search term
-        if($routeParams.nodeId !== 'undefined') {
-            $scope.nodeId = $routeParams.nodeId;
+        if($routeParams.acSearch !== 'undefined') {
+            $scope.acSearch = $routeParams.acSearch;
         }
         $scope.neighbours = [];
         $scope.graph = {nodes: [], edges: []};
@@ -40,23 +40,26 @@ define(['sigma', 'jQuery','lodash', 'forceAtlas', 'customEdgesShapes'], function
         $scope.autocomplete = function() {
             apiService.getInstitutes(function(response) {
                 $scope.acResponse = response.data;
-
-                //console.log($scope.acResponse);
-
-                $scope.acResult = (response.data.length > 0
-                                    && $scope.acSearch.length > 0) ? true : false;
+                $scope.acResult = (response.data.length > 0 && $scope.acSearch.length > 0) ? true : false;
 
             }, {name: $scope.acSearch});
         }
 
-        // Find node by id
-        $scope.findNode = function(nodeId) {
+        // Draw graph for given node
+        $scope.findNode = function(buCode) {
+            // Transactions including given institute
 
-            console.log(nodeId);
+            // WAITING API...
+            $scope.filter.target_bu_code = buCode;
+            loadEdges();
 
-            // Ignore border points
-            if ($scope.acSearch !== undefined && $scope.acSearch.charAt(0) !== "b")
-                $scope.findNodeById($scope.acSearch);
+            //$scope.filter.target_bu_code = buCode;
+           // loadEdges()
+
+            //console.log(institutes.length);
+
+            $scope.findNodeById(buCode.toString());
+
         }
 
         // Graph directive settings
@@ -81,20 +84,22 @@ define(['sigma', 'jQuery','lodash', 'forceAtlas', 'customEdgesShapes'], function
         var institutes = [];
         var edges      = [];
 
+        /*
         $scope.loadEdges = function() {
             loadEdges();
-        }
+        }*/
 
         var loadEdges = function() {
             $scope.peddingQuery = true;
             $scope.graph = {nodes: [], edges: []};
-            loadJson();
+            // Slovenia border
+            loadBorder();
+            // Get graph from API
             apiService.getGraph(function(response) {
                 edges = response.data;
                 // Draw graph
                 parseDataForGraph();
             }, $scope.filter);
-
         }
 
         var loadInstitutes = function() {
@@ -104,8 +109,8 @@ define(['sigma', 'jQuery','lodash', 'forceAtlas', 'customEdgesShapes'], function
             }, {name: {}});
         }
 
-        // Get data
-        var loadJson = function() {
+        // Get data for border
+        var loadBorder = function() {
             $.getJSON('public/data/slovenia.geojson', function(data) {
                 parseJsonForBorder(data);
             });
@@ -208,9 +213,6 @@ define(['sigma', 'jQuery','lodash', 'forceAtlas', 'customEdgesShapes'], function
         var parseDataForGraph = function() {
 
             var maxAmount = 0;
-
-            var t0 = performance.now();
-            //console.log(edges);
             
             angular.forEach(institutes, function(institute, key) {
                 institute.totalExpenses = undefined;
@@ -304,11 +306,7 @@ define(['sigma', 'jQuery','lodash', 'forceAtlas', 'customEdgesShapes'], function
 
             });
 
-
-            var t1 = performance.now();
-            //console.log(t1-t0 + " miliseconds");
             $scope.peddingQuery = false;
-            //console.log($scope.peddingQuery);
             $scope.drawGraph();
         }
 
@@ -322,7 +320,6 @@ define(['sigma', 'jQuery','lodash', 'forceAtlas', 'customEdgesShapes'], function
                     "x": ((parseFloat(data[i][0]) - lonCenter)).toFixed(4),
                     "y": -((parseFloat(data[i][1]) - latCenter)).toFixed(4),
                     "size": 0.1,
-                    //"outcomeSum": 0,
                     "color": '#333'
                 };
 
