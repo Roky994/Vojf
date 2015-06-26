@@ -1,4 +1,4 @@
-define(['sigma', 'jQuery', 'forceAtlas', 'customEdgesShapes'], function(sigma, $) {
+define(['sigma', 'jQuery','lodash', 'forceAtlas', 'customEdgesShapes'], function(sigma, $, _) {
     return function($scope, $timeout, $routeParams, apiService) {
 
         var latCenter = 46.0499335;
@@ -7,15 +7,15 @@ define(['sigma', 'jQuery', 'forceAtlas', 'customEdgesShapes'], function(sigma, $
         $scope.legend = [];
         
         $scope.peddingQuery = true;
-        
-        var colors = ["#FF0000","#00FF00","#0000FF","#FFFF00","#FF00FF","#00FFFF", 
-                        "#800000","#008000","#000080", "#808000", "#800080", "#008080", "#808080", 
-                         "#C00000", "#00C000", "#0000C0", "#C0C000","#00C0C0"];
-        
+       
         apiService.getCategories(function(data) {
-            for(var i = 0; i < data.data.length; i++) {
-                $scope.legend.push({category: data.data[i].name, color: colors[i]});
-            }
+            //color string ne vsebuje #
+            $scope.legend = _.map(data.data, function(obj) {
+                obj.color = "#" + obj.color;
+                return obj;
+            })
+            
+            console.log(data);
             //loadJson();
             loadInstitutes();
         });
