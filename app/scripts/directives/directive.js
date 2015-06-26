@@ -1,9 +1,11 @@
 define(['./graphDirective/graphDirective', './searchDirective/searchDirective',
-		'./legendDirective/legendDirective', './activeNodeDirective/activeNodeDirective'], function( graphDirective, searchDirective, legendDirective, activeNodeDirective ){
+		'./legendDirective/legendDirective', './activeNodeDirective/activeNodeDirective',
+		'./autocompleteDirective/autocompleteDirective'], function( graphDirective, searchDirective, legendDirective, activeNodeDirective, autocompleteDirective){
 	
 	var directives = {
 		graphDirective: graphDirective,
 		searchDirective: searchDirective,
+		autocompleteDirective : autocompleteDirective,
 		legendDirective: legendDirective,
 		activeNodeDirective: activeNodeDirective
 	};

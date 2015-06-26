@@ -7,16 +7,11 @@ define(['sigma', 'jQuery', 'forceAtlas', 'customEdgesShapes'], function(sigma, $
         $scope.legend = [];
         
         $scope.peddingQuery = true;
-        
-        var colors = ["#FF0000","#00FF00","#0000FF","#FFFF00","#FF00FF","#00FFFF", 
-                        "#800000","#008000","#000080", "#808000", "#800080", "#008080", "#808080", 
-                         "#C00000", "#00C000", "#0000C0", "#C0C000","#00C0C0"];
-        
-        apiService.getCategories(function(data) {
-            for(var i = 0; i < data.data.length; i++) {
-                $scope.legend.push({category: data.data[i].name, color: colors[i]});
+
+        apiService.getCategories(function(response) {
+            for(var i = 0; i < response.data.length; i++) {
+                $scope.legend.push({category: response.data[i].name, color: '#' + response.data[i].color});
             }
-            //loadJson();
             loadInstitutes();
         });
 
@@ -24,29 +19,46 @@ define(['sigma', 'jQuery', 'forceAtlas', 'customEdgesShapes'], function(sigma, $
             month: {},
             year: undefined,
             amount: {}
-        }  
-        // Graph directive settings
+        }
+
         // Search term
-        
         if($routeParams.nodeId !== 'undefined') {
             $scope.nodeId = $routeParams.nodeId;
         }
         $scope.neighbours = [];
         $scope.graph = {nodes: [], edges: []};
 
-        $scope.drawGraph = function() {};
+        $scope.drawGraph    = function() {};
         $scope.findNodeById = function() {};
-        $scope.reset = function() {};
-        $scope.showCategory = function(index){
+        $scope.reset        = function() {};
+        $scope.showCategory = function(){};
 
-        };
-        // Find node by id
-        $scope.findNode = function() {
-            // Ignore border points
-            if ($scope.nodeId !== 'undefined' && $scope.nodeId.charAt(0) !== "b")
-                $scope.findNodeById($scope.nodeId);
+        // Autocomplete
+        $scope.acResult = false;
+
+        $scope.autocomplete = function() {
+            apiService.getInstitutes(function(response) {
+                $scope.acResponse = response.data;
+
+                //console.log($scope.acResponse);
+
+                $scope.acResult = (response.data.length > 0
+                                    && $scope.acSearch.length > 0) ? true : false;
+
+            }, {name: $scope.acSearch});
         }
 
+        // Find node by id
+        $scope.findNode = function(nodeId) {
+
+            console.log(nodeId);
+
+            // Ignore border points
+            if ($scope.acSearch !== undefined && $scope.acSearch.charAt(0) !== "b")
+                $scope.findNodeById($scope.acSearch);
+        }
+
+        // Graph directive settings
         $scope.settings = {
             // Basic
             graphName: "Lokacijski graf",
@@ -65,7 +77,6 @@ define(['sigma', 'jQuery', 'forceAtlas', 'customEdgesShapes'], function(sigma, $
             zoomMin: 1/80
         };
 
-
         var institutes = [];
         var edges      = [];
 
@@ -79,36 +90,21 @@ define(['sigma', 'jQuery', 'forceAtlas', 'customEdgesShapes'], function(sigma, $
             loadJson();
             apiService.getGraph(function(response) {
                 edges = response.data;
-
                 // Draw graph
                 parseDataForGraph();
-        
-                // Draw border
-                
             }, $scope.filter);
 
         }
 
         var loadInstitutes = function() {
-
             apiService.getInstitutes(function(response) {
-
                 institutes = response.data;
-
                 loadEdges();
-                
-                
-            });
-
+            }, {name: {}});
         }
 
         // Get data
         var loadJson = function() {
-
-           // $.getJSON('public/data/trans201403_samo_pu_koord_kategorije-popravljeno-2.json', function( data ){
-              //  parseJsonForGraph(data);
-            //});
-
             $.getJSON('public/data/slovenia.geojson', function(data) {
                 parseJsonForBorder(data);
             });
@@ -206,28 +202,23 @@ define(['sigma', 'jQuery', 'forceAtlas', 'customEdgesShapes'], function(sigma, $
 //
 //            $scope.drawGraph();
 //
-//        }
+//
 
         var parseDataForGraph = function() {
 
             var maxAmount = 0;
 
             var t0 = performance.now();
-            
-
-            console.log(edges);
+            //console.log(edges);
             
             angular.forEach(institutes, function(institute, key) {
-
                 institute.totalExpenses = undefined;
                 institute.isTarget = undefined;
-
             });
 
             angular.forEach(edges, function(edge, key) {
 
                 //shrani najvecji strosek za realizacijo velikosti vozlisc
-
                 if(edge.amount > maxAmount) {
                     maxAmount = edge.amount;
                 }
@@ -257,7 +248,6 @@ define(['sigma', 'jQuery', 'forceAtlas', 'customEdgesShapes'], function(sigma, $
                 sourceInstitute.lat = edge.source_lat;
                 targetInstitute.lon = edge.target_lon;
                 targetInstitute.lat = edge.target_lat;
-
                 targetInstitute.isTarget = true;
 
                 $scope.graph.edges.push({
@@ -315,9 +305,9 @@ define(['sigma', 'jQuery', 'forceAtlas', 'customEdgesShapes'], function(sigma, $
 
 
             var t1 = performance.now();
-            console.log(t1-t0 + " miliseconds");
+            //console.log(t1-t0 + " miliseconds");
             $scope.peddingQuery = false;
-            console.log($scope.peddingQuery);
+            //console.log($scope.peddingQuery);
             $scope.drawGraph();
         }
 
@@ -350,9 +340,6 @@ define(['sigma', 'jQuery', 'forceAtlas', 'customEdgesShapes'], function(sigma, $
             }
 
         };
-
-        // API
-        //loadInstitutes();
 
     }
 })

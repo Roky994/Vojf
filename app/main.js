@@ -24,7 +24,7 @@ requirejs.config({
 	    'angular-resource': {
 	      deps: [ 'angular' ]
 	    },
-      'jQuery': {
+        'jQuery': {
 	      exports: '$'
 	    },
 	    'bootstrap': {
@@ -38,7 +38,7 @@ requirejs.config({
 	    },
 	    'customEdgesShapes' : {
 	    	deps: ['sigma']
-	    },
+	    }
     }
 });
 
