@@ -134,6 +134,7 @@ define(['jQuery'], function() {
 
 				// Find node by id
 				$scope.findnodebyid = function(nodeId) {
+					console.log(nodeId);
 					s.graph.nodes().forEach(function(node, i, a) {
 		                if (node.id === nodeId) {
 		                    $scope.findChoosedNode(node);

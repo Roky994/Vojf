@@ -35,30 +35,42 @@ define(['sigma', 'jQuery','lodash', 'forceAtlas', 'customEdgesShapes'], function
         $scope.showCategory = function(){};
 
         // Autocomplete
-        $scope.acResult = false;
+        result = [];
+        $scope.autocomplete = function(term) {
+            var name = undefined;
+            var bu   = undefined;
+            var reg  = undefined;
+            var vat  = undefined;
 
-        $scope.autocomplete = function() {
-            apiService.getInstitutes(function(response) {
-                $scope.acResponse = response.data;
-                $scope.acResult = (response.data.length > 0 && $scope.acSearch.length > 0) ? true : false;
+            // Determine if it's name, bu, reg or vat number
+            var num;
+            if (num = parseInt(term)) {
+                bu  = term.length < 8  ? num : undefined;
+                vat = term.length == 8 ? num : undefined;
+                reg = term.length > 8  ? num : undefined;
+            } else {
+                name = term;
+            }
 
-            }, {name: $scope.acSearch});
+            console.log("bu: " + bu);
+            console.log("kljucna beseda: " + name);
+            console.log("maticna: " + reg);
+            console.log("davcna: " + vat);
+
+            apiService.getInstitutes(function (response) {
+                result = response.data;
+            }, {name: name, bu_code: bu, reg_number: reg, vat_number: vat});
+
+            return result;
+        };
+
+        $scope.onSelect = function(id) {
+            $scope.nodeId = id.bu_code.toString();
         }
 
         // Draw graph for given node
-        $scope.findNode = function(buCode) {
-            // Transactions including given institute
-
-            // WAITING API...
-            $scope.filter.target_bu_code = buCode;
-            loadEdges();
-
-            //$scope.filter.target_bu_code = buCode;
-           // loadEdges()
-
-            //console.log(institutes.length);
-
-            $scope.findNodeById(buCode.toString());
+        $scope.findNode = function() {
+            $scope.findNodeById($scope.nodeId);
 
         }
 

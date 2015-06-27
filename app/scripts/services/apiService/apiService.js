@@ -14,8 +14,8 @@ define([], function() {
         function getInstitutes(callback, filter) {
             return $http.post(url + '/institutes/query', {
                         bu_code : filter.bu_code,
-                     //   reg_number : filter.reg_number,
-                      //  vat_number : filter.vat_number,
+                        reg_number : filter.reg_number,
+                        vat_number : filter.vat_number,
                         name : filter.name,
                         limit : 4500
                     })

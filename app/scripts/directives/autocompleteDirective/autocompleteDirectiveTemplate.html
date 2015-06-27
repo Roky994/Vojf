@@ -6,16 +6,12 @@
         </button>
     </span>
 
-    <input type="text" class="form-control height45" placeholder="Poišči ustanovo..." ng-change="autocomplete()" ng-model="acSearch">
-
-    <ul class="autocomplete" ng-show="acResult">
-        <li ng-repeat="inst in acResponse" ng-click="findNode(inst.bu_code)">
-            {{ inst.name }}
-        </li>
-    </ul>
+    <input type="text" ng-model="acSelected" placeholder="ključna beseda, matična, davčna, pu" typeahead="obj.name for obj in autocomplete($viewValue) | limitTo: 8"
+           typeahead-on-select="onSelect($item)" typeahead-min-length="2"  typeahead-wait-ms="10" class="form-control height45">
+    <i ng-show="loadingLocations" class="glyphicon glyphicon-refresh"></i>
 
     <span class="input-group-btn">
-        <button class="btn btn-default height45" ng-click="findNode()" type="button">
+        <button class="btn btn-default height45" ng-click="findNode()" ng-disabled="peddingQuery" type="button">
             <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
         </button>
     </span>

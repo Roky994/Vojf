@@ -1,14 +1,14 @@
 define([
 	'angular','angular-ui-router', 'scripts/content/home/homeController', 'scripts/content/mainGraph/mainGraphController',
 	'scripts/content/atlasGraph/atlasGraphController', 'scripts/content/categoryGraph/categoryGraphController', 'scripts/content/instructions/instructionsController',
-	'scripts/directives/directive', 'scripts/services/service', 'angular-route'
+	'scripts/directives/directive', 'scripts/services/service', 'angular-route', 'uiBootstrap'
 	], function(angular, router, homeController, mainGraphController, 
 		atlasGraphController, categoryGraphController, instructionsController,
 		 directive, service) {
 
 	var initialize = function() {
 
-		var app = angular.module('sigmaJsApp', ['ngRoute']);
+		var app = angular.module('sigmaJsApp', ['ngRoute', 'ui.bootstrap']);
 
 		app.config(function($routeProvider) {
 			$routeProvider.when('/home', {
