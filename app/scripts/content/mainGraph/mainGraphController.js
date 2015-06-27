@@ -1,11 +1,18 @@
 define(['sigma', 'jQuery','lodash', 'forceAtlas', 'customEdgesShapes'], function(sigma, $, _) {
     return function($scope, $timeout, $routeParams, apiService) {
 
+        $scope.drawGraph    = function() {};
+        $scope.findNodeById = function() {};
+        $scope.reset        = function() {};
+        $scope.showCategory = function() {};
+
         var latCenter = 46.0499335;
         var lonCenter = 14.5067506;
-        
+
+        $scope.nodeId = $routeParams.nodeId.toString();
+
         $scope.legend = [];
-        
+
         $scope.peddingQuery = true;
         apiService.getCategories(function(response) {
             $scope.legend = _.map(response.data, function(obj) {
@@ -22,17 +29,8 @@ define(['sigma', 'jQuery','lodash', 'forceAtlas', 'customEdgesShapes'], function
             amount: {},
         }
 
-        // Search term
-        if($routeParams.acSearch !== 'undefined') {
-            $scope.acSearch = $routeParams.acSearch;
-        }
         $scope.neighbours = [];
         $scope.graph = {nodes: [], edges: []};
-
-        $scope.drawGraph    = function() {};
-        $scope.findNodeById = function() {};
-        $scope.reset        = function() {};
-        $scope.showCategory = function(){};
 
         // Autocomplete
         result = [];
@@ -71,7 +69,6 @@ define(['sigma', 'jQuery','lodash', 'forceAtlas', 'customEdgesShapes'], function
         // Draw graph for given node
         $scope.findNode = function() {
             $scope.findNodeById($scope.nodeId);
-
         }
 
         // Graph directive settings
@@ -320,6 +317,12 @@ define(['sigma', 'jQuery','lodash', 'forceAtlas', 'customEdgesShapes'], function
 
             $scope.peddingQuery = false;
             $scope.drawGraph();
+
+            // Find node from URL parameter
+            if ($scope.nodeId!== 'undefined') {
+                console.log($scope.nodeId);
+                $scope.findNodeById($scope.nodeId);
+            }
         }
 
         var parseJsonForBorder = function (data) {

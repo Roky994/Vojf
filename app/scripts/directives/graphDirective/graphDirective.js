@@ -5,7 +5,7 @@ define(['jQuery'], function() {
 			restrict: 'E',
 			replace: true,
 			templateUrl: 'app/scripts/directives/graphDirective/graphDirectiveTemplate.html',
-				scope: {
+			scope: {
 				settings: '=',
 				graph: '=',
 				drawgraph: '=',
