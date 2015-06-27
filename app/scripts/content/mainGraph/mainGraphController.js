@@ -93,10 +93,9 @@ define(['sigma', 'jQuery','lodash', 'forceAtlas', 'customEdgesShapes'], function
         var institutes = [];
         var edges      = [];
 
-        /*
         $scope.loadEdges = function() {
             loadEdges();
-        }*/
+        }
 
         var loadEdges = function() {
             $scope.peddingQuery = true;
