@@ -1,6 +1,6 @@
 define(['sigma', 'jQuery','lodash', 'forceAtlas', 'customEdgesShapes'], function(sigma, $, _) {
-    return function($scope, $timeout, $routeParams, apiService) {
-
+    return function($scope, $timeout, $routeParams, $location, apiService) {
+        
         $scope.drawGraph    = function() {};
         $scope.findNodeById = function() {};
         $scope.reset        = function() {};
@@ -8,20 +8,11 @@ define(['sigma', 'jQuery','lodash', 'forceAtlas', 'customEdgesShapes'], function
 
         var latCenter = 46.0499335;
         var lonCenter = 14.5067506;
-
-        $scope.nodeId = $routeParams.nodeId.toString();
-
+        
         $scope.legend = [];
 
         $scope.peddingQuery = true;
-        apiService.getCategories(function(response) {
-            $scope.legend = _.map(response.data, function(obj) {
-                obj.color = "#" + obj.color;
-                return obj;
-            })
-
-            loadInstitutes();
-        });
+       
 
         $scope.filter = {
             month: {},
@@ -92,14 +83,19 @@ define(['sigma', 'jQuery','lodash', 'forceAtlas', 'customEdgesShapes'], function
 
         var institutes = [];
         var edges      = [];
-
+        
+        //for query function call
         $scope.loadEdges = function() {
             loadEdges();
         }
 
         var loadEdges = function() {
+            //update url
+            setUrlParams();
+            
             $scope.peddingQuery = true;
             $scope.graph = {nodes: [], edges: []};
+
             // Slovenia border
             loadBorder();
             // Get graph from API
@@ -116,6 +112,41 @@ define(['sigma', 'jQuery','lodash', 'forceAtlas', 'customEdgesShapes'], function
                 loadEdges();
             }, {name: {}});
         }
+        
+        var loadCategories = function() {
+            apiService.getCategories(function(response) {
+                $scope.legend = _.map(response.data, function(obj) {
+                    obj.color = "#" + obj.color;
+                    return obj;
+                })
+                loadInstitutes();
+            });
+        }
+        
+        var processUrlParams = function() {
+            
+            $scope.nodeId = $routeParams.nodeId.toString();
+            
+            $scope.filter.amount = $routeParams.amount ? $scope.amountFilter[$routeParams.amount].value : $scope.filter.amount;
+
+            $scope.filter.month = $routeParams.quaternery ? $scope.monthFilter[$routeParams.quaternery].value : $scope.filter.month;
+            
+            $scope.filter.year = $routeParams.year ? parseInt($routeParams.year) : 2014;
+            
+            console.log($scope.filter);
+                
+            loadCategories();
+        }
+        
+        var setUrlParams = function() {
+
+            if($scope.filter.amount)
+                $location.search('amount', $scope.filter.amount.urlParam);
+            if($scope.filter.month)
+                $location.search('quaternery', $scope.filter.month.urlParam);
+            
+            $location.search('year', $scope.filter.year);
+        }
 
         // Get data for border
         var loadBorder = function() {
@@ -123,101 +154,8 @@ define(['sigma', 'jQuery','lodash', 'forceAtlas', 'customEdgesShapes'], function
                 parseJsonForBorder(data);
             });
         }
-
-//        // Parse JSON
-//        var parseJsonForGraph = function(data) {
-//            // Graph
-//            var maxTransTotal = 0;
-//            
-//            
-//
-//            $.each(data.edges, function(key, value) {
-//
-//                //interiraj po vseh transakcijah med vozliscema in sestej zneske
-//                var transTotal = 0;
-//                $.each(value, function(index, transacition) {
-//                    transTotal += parseFloat(transacition.znesek);
-//                });
-//
-//                if(transTotal < 50000) {
-//                    return;
-//                }
-//
-//                //shrani najvecji strosek za realizacijo velikosti vozlisc
-//                if( transTotal > maxTransTotal ) {
-//                    maxTransTotal = transTotal;
-//                }
-//
-//                //zacetnemu vozliscu dodaj izplacani znesek
-//                if(data.nodes[value[0].source].totalExpenses == undefined) {
-//                    data.nodes[value[0].source].totalExpenses = transTotal;
-//                } else {
-//                    data.nodes[value[0].source].totalExpenses += transTotal;
-//                }
-//
-//                data.nodes[value[0].target].isTarget = true;
-//
-//                $scope.graph.edges.push({
-//                    "id": key,
-//                    "source": value[0].source,
-//                    "target": value[0].target,
-//                    "label": transTotal,
-//                    "type": "arrow",
-//                    "color": "rgba(255,255,255,0)"
-//                });
-//
-//            });
-//
-//            $.each(data.nodes, function(key, value) {
-//                if(value.totalExpenses == undefined && value.isTarget == undefined) {
-//                    return;
-//                }
-//                var size = 0.1;
-//                if(value.totalExpenses > maxTransTotal / 2) {
-//                    size = 2;
-//                } else if( value.totalExpenses > maxTransTotal / 5) {
-//                    size = 1.5;
-//                } else if ( value.totalExpenses > maxTransTotal / 30) {
-//                    size = 1.2;
-//                } else if ( value.totalExpenses > maxTransTotal / 40) {
-//                    size = 1;
-//                } else if (value.totalExpenses > maxTransTotal / 1000) {
-//                    size = 0.5;
-//                }
-//
-//                if(value.lon == 0) {
-//                    value.lon = 15;
-//                    value.lat = 46;
-//                }
-//
-//                var x = ((parseFloat(value.lon) - lonCenter)).toFixed(4);
-//                var y = -((parseFloat(value.lat) - latCenter)).toFixed(4);
-//
-//                var distanceFromCenter = x*x + y*y;
-//                if(distanceFromCenter < 0.01) {
-//                    x *= 1.75;
-//                    y *= 1.75;
-//                }
-//
-//                var node = {
-//                    "id": key,
-//                    "label": value.naziv,
-//                    "x": x,
-//                    "y": y,
-//                    "size": size,
-//                    "outcomeSum": 0,
-//                    "color": $scope.legend[value.category-1].color,
-//                    "category": value.category-1
-//                };
-//
-//                $scope.graph.nodes.push(node);
-//
-//            });
-//
-//            $scope.drawGraph();
-//
-//
-
+        
+        //Parse data from API for Sigma.js 
         var parseDataForGraph = function() {
 
             var maxAmount = 0;
@@ -352,6 +290,65 @@ define(['sigma', 'jQuery','lodash', 'forceAtlas', 'customEdgesShapes'], function
             }
 
         };
+        
+        //search data 
+        $scope.monthFilter = [{
+			label: "Prvi kvartar",
+			value: {monthFrom: 1, monthUntil: 3, urlParam: 0}
+		}, {
+			label: "Drugi kvartar",
+			value: {monthFrom: 4, monthUntil: 6, urlParam: 1}
+		}, {
+			label: "Tretji kvartar",
+			value: {monthFrom: 7, monthUntil: 9, urlParam: 2}
+		}, {
+			label: "Četrti kvartar",
+			value: {monthFrom: 10, monthUntil: 12, urlParam: 3}
+		}];
+		
+		$scope.yearFilter = [{
+			value: 2003
+		},{
+			value: 2004
+		},{
+			value: 2005
+		},{
+			value: 2006
+		},{
+			value: 2007
+		},{
+			value: 2008
+		},{
+			value: 2009
+		},{
+			value: 2010
+		},{
+			value: 2011
+		},{
+			value: 2012
+		}, {
+			value: 2013
+		}, {
+			value: 2014
+		}];
+		
+		$scope.amountFilter = [{
+			label: "0 - 10000",
+			value: { minAmount: 0, maxAmount: 10000, urlParam: 0 }
+		}, {
+			label: "10000 - 50000",
+			value: { minAmount: 10000, maxAmount: 50000, urlParam: 1 }
+		}, {
+			label: "50000 - 100000",
+			value: { minAmount: 50000, maxAmount: 100000, urlParam: 2 }
+		}, {
+			label: "več kot 100000",
+			value: { minAmount: 100000, urlParam: 3 }
+		}];
 
+        //call first function
+        processUrlParams();
+        
+        
     }
 });

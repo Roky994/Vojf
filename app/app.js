@@ -16,7 +16,8 @@ define([
 				templateUrl: 'app/scripts/content/home/homeTemplate.html'
 			}).when('/mainGraph/:nodeId', {
 				controller: mainGraphController,
-				templateUrl: 'app/scripts/content/mainGraph/mainGraphTemplate.html'
+				templateUrl: 'app/scripts/content/mainGraph/mainGraphTemplate.html',
+				reloadOnSearch: false
 			}).when('/atlasGraph/:nodeId', {
 				controller: atlasGraphController,
 				templateUrl: 'app/scripts/content/atlasGraph/atlasGraphTemplate.html'
