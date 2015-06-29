@@ -22,36 +22,7 @@ define(['sigma', 'jQuery','lodash', 'forceAtlas', 'customEdgesShapes'], function
         $scope.neighbours = [];
         $scope.graph = {nodes: [], edges: []};
 
-        // Autocomplete
-        var result = [];
-        
-        $scope.autocomplete = function(term) {
-            var name = undefined;
-            var bu   = undefined;
-            var reg  = undefined;
-            var vat  = undefined;
-
-            // Determine if it's name, bu, reg or vat number
-            var num;
-            if (num = parseInt(term)) {
-                bu  = term.length < 8  ? num : undefined;
-                vat = term.length == 8 ? num : undefined;
-                reg = term.length > 8  ? num : undefined;
-            } else {
-                name = term;
-            }
-
-            console.log("bu: " + bu);
-            console.log("kljucna beseda: " + name);
-            console.log("maticna: " + reg);
-            console.log("davcna: " + vat);
-
-            apiService.getInstitutes(function (response) {
-                result = response.data;
-            }, {name: name, bu_code: bu, reg_number: reg, vat_number: vat});
-
-            return result;
-        };
+        $scope.autocomplete();
 
         $scope.onSelect = function(id) {
             $scope.nodeId = id.bu_code.toString();
@@ -97,7 +68,7 @@ define(['sigma', 'jQuery','lodash', 'forceAtlas', 'customEdgesShapes'], function
             $scope.graph = {nodes: [], edges: []};
 
             // Slovenia border
-            loadBorder();
+            $scope.loadBorder();
             // Get graph from API
             apiService.getGraph(function(response) {
                 edges = response.data;
@@ -124,7 +95,7 @@ define(['sigma', 'jQuery','lodash', 'forceAtlas', 'customEdgesShapes'], function
         }
 
         // Get data for border
-        $rootScope.loadBorder = function() {
+        $scope.loadBorder = function() {
             $.getJSON('public/data/slovenia.geojson', function(data) {
                 parseJsonForBorder(data);
             });
@@ -267,6 +238,5 @@ define(['sigma', 'jQuery','lodash', 'forceAtlas', 'customEdgesShapes'], function
 
         //call first function
         loadCategories();
-        
     }
 });

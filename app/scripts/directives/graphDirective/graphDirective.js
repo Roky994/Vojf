@@ -57,7 +57,7 @@ define(['jQuery'], function() {
 					sigma.prototype.zoomToNode = function(node) {
 		                camera = this.cameras[0];
 						
-						ratio = camera.ratio < $scope.settings.zoomMin * 15 ? camera.ratio : $scope.settings.zoomMin * 15;
+						ratio = camera.ratio < $scope.settings.zoomMin * 10 ? camera.ratio : $scope.settings.zoomMin * 10;
 					    sigma.misc.animation.camera(
 						  camera, 
 						  {
@@ -126,7 +126,6 @@ define(['jQuery'], function() {
 					});
 
                     if ($scope.forceatlas) {
-						console.log("BRAVO");
                         startForceatlas();
                     } else {
                     	$('#graph-overlay').hide();
