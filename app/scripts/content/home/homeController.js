@@ -43,5 +43,7 @@ define(['sigma', 'jQuery'], function(sigma, $) {
 			$location.path("/mainGraph/" + $scope.nodeId);
 		}
 
+		$scope.parseUrl();
+
 	}
 })

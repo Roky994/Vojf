@@ -295,11 +295,10 @@ define(['sigma', 'jQuery','lodash', 'forceAtlas', 'customEdgesShapes'], function
             }
 
         };
-        
 
         //call first function
         processUrlParams();
-        
+        $scope.parseUrl();
         
     }
 });

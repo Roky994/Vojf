@@ -182,5 +182,7 @@ define(['sigma', 'jQuery', 'forceAtlas', 'customEdgesShapes'], function(sigma, $
 
             return color;
         }
+
+        $scope.parseUrl();
 	}
 })
