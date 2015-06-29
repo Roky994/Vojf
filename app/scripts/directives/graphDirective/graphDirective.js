@@ -18,7 +18,7 @@ define(['jQuery'], function() {
 				reset:'='
 			},
 			controller: function($scope, $timeout) {
-				
+				$scope.atlasRunning = false;
 				$scope.showcategory = function(categoryIndex) {
 					console.log(categoryIndex);
 		            s.graph.nodes().forEach(function(n, index) {
@@ -127,14 +127,11 @@ define(['jQuery'], function() {
 
                     if ($scope.forceatlas) {
                         startForceatlas();
-                    } else {
-                    	$('#graph-overlay').hide();
-                    }
+                    } 
 				}
 
 				// Find node by id
 				$scope.findnodebyid = function(nodeId) {
-					console.log(nodeId);
 					s.graph.nodes().forEach(function(node, i, a) {
 		                if (node.id === nodeId) {
 		                    $scope.findChoosedNode(node);
@@ -202,17 +199,18 @@ define(['jQuery'], function() {
 					s.resetColors();
 					$scope.nodeid = undefined;
 					$scope.activenode = undefined;
-					s
+					
 				}
 
                 var startForceatlas = function() {
+					$scope.atlasRunning = true;
                     s.startForceAtlas2({worker: true});
 
                     $timeout(function() {
                         s.stopForceAtlas2();
                       //  $scope.findNode();
-                      
-                      $('#graph-overlay').hide();
+                      	$scope.atlasRunning = false;
+
                     }, 1000);
                 }
 			}

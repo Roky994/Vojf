@@ -124,7 +124,7 @@ define(['sigma', 'jQuery', 'forceAtlas', 'customEdgesShapes'], function(sigma, $
 			});
 			
 			var minTotalExpenses = 500000;
-			var minTransactionOnGraph = 1000;
+			var minTransactionOnGraph = 1;
 			
 			angular.forEach(institutes, function(institute, key) {
 				
@@ -159,7 +159,7 @@ define(['sigma', 'jQuery', 'forceAtlas', 'customEdgesShapes'], function(sigma, $
 					//povezava med ustanovama
 
 					$scope.graph.edges.push({
-						"id": key,
+						"id": key + "",
 						"source": edge.source_bu_code.toString(),
 						"target": edge.target_bu_code.toString(),
 						"label": edge.amount,
@@ -192,19 +192,20 @@ define(['sigma', 'jQuery', 'forceAtlas', 'customEdgesShapes'], function(sigma, $
 				if(institute.totalExpenses != undefined && institute.totalExpenses > minTotalExpenses) {
 
 					$scope.graph.nodes.push({
-		                "id": key,
-		                "label": institute.naziv,
+		                "id": institute.bu_code.toString(),
+		                "label": institute.name,
 		                "x": Math.random(),
 		                "y": Math.random(),
 		                "size": 1,
 		                "color": $scope.legend[institute.category-1].color
 		        	});
 
-		        	for(var i = 0; i < 18; i++) {
-		        		if(institute.edgesToCategories[i].outcome > minTransactionOnGraph) {
+		        	angular.forEach($scope.legend, function(category, i){
+						
+						if(institute.edgesToCategories[i].outcome > minTransactionOnGraph) {
 			        		$scope.graph.edges.push({
 			        			"id": key + "-" + i,
-								"source": key,
+								"source": institute.bu_code.toString(),
 								"target": i + "",
 								"label": institute.edgesToCategories[i].outcome,
 								"type": "curve",
@@ -218,7 +219,7 @@ define(['sigma', 'jQuery', 'forceAtlas', 'customEdgesShapes'], function(sigma, $
 			        		$scope.graph.edges.push({
 			        			"id": i + "-" + key,
 								"source": i + "",
-								"target": key,
+								"target": institute.bu_code.toString(),
 								"label": institute.edgesToCategories[i].income,
 								"type": "curve",
 								"arrow": "target",
@@ -226,13 +227,45 @@ define(['sigma', 'jQuery', 'forceAtlas', 'customEdgesShapes'], function(sigma, $
 								"size": institute.edgesToCategories[i].income / 100000000
 			        		});
 			        	}
-
-		        	}
+					});
 
 				}
 				
 			});
 			
+			//kategorije in povezave med kategorijami
+		    angular.forEach($scope.legend, function(category, i){
+
+				$scope.graph.nodes.push({
+		                "id": i + "",
+		                "label": category.name,
+		                "x": Math.random(),
+		                "y": Math.random(),
+		                "size": 1,
+		                "color": $scope.legend[i].color
+		        	});
+
+
+				for(var j = 0; j < 18; j++) {
+
+					if(categorization[i][j] < minTransactionOnGraph || i == j)
+						continue;
+
+					$scope.graph.edges.push({
+						"id": i + "-" + j,
+						"source": i + "",
+						"target": j + "",
+						"label": categorization[i][j],
+						"type": "curve",
+						"arrow": "source",
+						"color": "#AAA"
+					});
+
+				}
+			});
+		
+			console.log($scope.graph);
+			$scope.peddingQuery = false;
 			$scope.drawGraph();
 
 			

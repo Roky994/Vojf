@@ -132,6 +132,9 @@ body {
     font-size: 20px;
 }
 
+.border-radius-0 {
+    border-radius: 0 !important;
+}
 
 /* ==========================================================================
    Search

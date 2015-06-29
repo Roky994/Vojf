@@ -1,8 +1,11 @@
 <div class="row">
 	<search-directive></search-directive>
-    <active-node-directive></active-node-directive>
-    <legend-directive></legend-directive>
 
+    <div class="space20"></div>
+	<div class="col-md-3">
+        <active-node-directive></active-node-directive>
+    	<legend-directive></legend-directive>
+	</div>
 	<div class="col-md-9">
 		<graph-directive settings="settings" graph="graph" drawgraph="drawGraph" findnodebyid="findNodeById" 
                         nodeid="nodeId" neighbours="neighbours" activenode="activeNode" forceatlas="forceAtlas" showcategory="showCategory" reset="reset"></graph-directive>

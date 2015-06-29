@@ -1,7 +1,7 @@
 <div class="input-group">
 
     <input type="text" ng-model="acSelected" placeholder="{{placeholder}}" typeahead="obj.name for obj in autocomplete($viewValue) | limitTo: 8"
-           typeahead-on-select="onSelect($item)" typeahead-min-length="2"  typeahead-wait-ms="10" class="form-control {{searchHeight}}">
+           typeahead-on-select="onSelect($item)" typeahead-min-length="2"  typeahead-wait-ms="10" class="border-radius-0 form-control {{searchHeight}}">
     <i ng-show="loadingLocations" class="glyphicon glyphicon-refresh"></i>
 
     <span class="input-group-btn">
