@@ -1,6 +1,9 @@
 define(['sigma', 'jQuery','lodash', 'forceAtlas', 'customEdgesShapes'], function(sigma, $, _) {
     return function($scope, $timeout, $routeParams, $location, apiService) {
         
+        //firt process url params
+        $scope.processUrlParams();
+        
         $scope.drawGraph    = function() {};
         $scope.findNodeById = function() {};
         $scope.reset        = function() {};
@@ -9,24 +12,15 @@ define(['sigma', 'jQuery','lodash', 'forceAtlas', 'customEdgesShapes'], function
         var latCenter = 46.0499335;
         var lonCenter = 14.5067506;
         
-        console.log($scope);
-        
         $scope.legend = [];
 
         $scope.peddingQuery = true;
-       
-
-        $scope.filter = {
-            month: {},
-            year: undefined,
-            amount: {},
-        }
 
         $scope.neighbours = [];
         $scope.graph = {nodes: [], edges: []};
 
         // Autocomplete
-        result = [];
+        var result = [];
         
         $scope.autocomplete = function(term) {
             var name = undefined;
@@ -94,7 +88,7 @@ define(['sigma', 'jQuery','lodash', 'forceAtlas', 'customEdgesShapes'], function
 
         var loadEdges = function() {
             //update url
-            setUrlParams();
+            $scope.setUrlParams();
             
             $scope.peddingQuery = true;
             $scope.graph = {nodes: [], edges: []};
@@ -125,34 +119,9 @@ define(['sigma', 'jQuery','lodash', 'forceAtlas', 'customEdgesShapes'], function
                 loadInstitutes();
             });
         }
-        
-        var processUrlParams = function() {
-            
-            $scope.nodeId = $routeParams.nodeId.toString();
-            
-            $scope.filter.amount = $routeParams.amount ? $scope.amountFilter[$routeParams.amount].value : $scope.amountFilter[3].value;
-
-            $scope.filter.month = $routeParams.quaternery ? $scope.monthFilter[$routeParams.quaternery].value : $scope.monthFilter[0].value ;
-            
-            $scope.filter.year = $routeParams.year ? parseInt($routeParams.year) : 2014;
-            
-            console.log($scope.filter);
-                
-            loadCategories();
-        }
-        
-        var setUrlParams = function() {
-
-            if($scope.filter.amount)
-                $location.search('amount', $scope.filter.amount.urlParam);
-            if($scope.filter.month)
-                $location.search('quaternery', $scope.filter.month.urlParam);
-            
-            $location.search('year', $scope.filter.year);
-        }
 
         // Get data for border
-        var loadBorder = function() {
+        $rootScope.loadBorder = function() {
             $.getJSON('public/data/slovenia.geojson', function(data) {
                 parseJsonForBorder(data);
             });
@@ -260,7 +229,6 @@ define(['sigma', 'jQuery','lodash', 'forceAtlas', 'customEdgesShapes'], function
 
             // Find node from URL parameter
             if ($scope.nodeId!== 'undefined') {
-                console.log($scope.nodeId);
                 $scope.findNodeById($scope.nodeId);
             }
         }
@@ -296,7 +264,7 @@ define(['sigma', 'jQuery','lodash', 'forceAtlas', 'customEdgesShapes'], function
         
 
         //call first function
-        processUrlParams();
+        loadCategories();
         
         
     }

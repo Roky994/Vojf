@@ -24,13 +24,15 @@ define([
 				reloadOnSearch: false
 			}).when('/atlasGraph/:nodeId', {
 				controller: atlasGraphController,
-				templateUrl: 'app/scripts/content/atlasGraph/atlasGraphTemplate.html'
+				templateUrl: 'app/scripts/content/atlasGraph/atlasGraphTemplate.html',
+				reloadOnSearch: false
             }).when('/instructions', {
 				controller: instructionsController,
 				templateUrl: 'app/scripts/content/'
 			}).when('/categoryGraph/:nodeId', {
                 controller: categoryGraphController,
-                templateUrl: 'app/scripts/content/categoryGraph/categoryGraphTemplate.html'
+                templateUrl: 'app/scripts/content/categoryGraph/categoryGraphTemplate.html',
+				reloadOnSearch: false
 			}).otherwise({
 				redirectTo: '/home'
 			});

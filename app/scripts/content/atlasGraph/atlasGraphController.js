@@ -1,17 +1,60 @@
 define(['sigma', 'jQuery', 'forceAtlas', 'customEdgesShapes'], function(sigma, $) {
-	return function($scope, $timeout, $routeParams) {
-		
-		$scope.legend = [];
+	return function($scope, $timeout, $routeParams, apiService) {
         
-		var loadEdges = function() {
+        //firt process url params
+        $scope.processUrlParams();
+        
+        var institutes = [];
+        var edges      = [];
+        
+	    $scope.legend = [];
+        $scope.peddingQuery = true;
+
+        $scope.neighbours = [];
+        $scope.graph = {nodes: [], edges: []};
+
+        $scope.drawGraph = function() {};
+        $scope.findNodeById = function() {};
+        $scope.reset        = function() {};
+        $scope.showCategory = function() {};
+        
+        $scope.forceAtlas = true;
+
+        $scope.settings = {
+            // Basic
+            doubleClickEnabled: false,
+
+            // Nodes
+            minNodeSize: 1,
+            maxNodeSize: 6,
+           // defaultNodeColor: '#333',
+            labelThreshold: 6,
+            labelColor: "node",
+            defaultHoverLabelBGColor: "rgba(255, 255, 255, 0)",
+            // Edges
+            minEdgeSize: 1,
+            maxEdgeSize: 5,
+            defaultEdgeColor: '#222'
+        }
+
+        // Find node by id
+        $scope.findNode = function() {
+            if ($scope.nodeId !== 'undefined')
+                $scope.findNodeById($scope.nodeId);
+        }
+        
+        //for query function call
+        $scope.loadEdges = function() {
+            loadEdges();
+        }
+        
+        var loadEdges = function() {
             //update url
-            setUrlParams();
+            $scope.setUrlParams();
             
             $scope.peddingQuery = true;
             $scope.graph = {nodes: [], edges: []};
 
-            // Slovenia border
-            loadBorder();
             // Get graph from API
             apiService.getGraph(function(response) {
                 edges = response.data;
@@ -19,14 +62,14 @@ define(['sigma', 'jQuery', 'forceAtlas', 'customEdgesShapes'], function(sigma, $
                 parseDataForGraph();
             }, $scope.filter);
         }
-		
-		var loadInstitutes = function() {
+
+        var loadInstitutes = function() {
             apiService.getInstitutes(function(response) {
                 institutes = response.data;
                 loadEdges();
             }, {name: {}});
         }
-		
+        
         var loadCategories = function() {
             apiService.getCategories(function(response) {
                 $scope.legend = _.map(response.data, function(obj) {
@@ -36,151 +79,103 @@ define(['sigma', 'jQuery', 'forceAtlas', 'customEdgesShapes'], function(sigma, $
                 loadInstitutes();
             });
         }
-		
-        // Graph directive settings
-        // Search term
-        $scope.nodeId = $routeParams.nodeId;
-
-        $scope.neighbours = [];
-        $scope.graph = {nodes: [], edges: []};
-
-        $scope.drawGraph = function() {};
-        $scope.findNodeById = function() {};
-        $scope.forceAtlas = true;
-
-        $scope.settings = {
-            // Basic
-            doubleClickEnabled: false,
-
-            // Nodes
-            minNodeSize: 1,
-            maxNodeSize: 10,
-           // defaultNodeColor: '#333',
-            labelThreshold: 8,
-            labelColor: "node",
-            defaultHoverLabelBGColor: "rgba(255, 255, 255, 0)",
-            // Edges
-            minEdgeSize: 1,
-            maxEdgeSize: 5,
-            defaultEdgeColor: '#222'
-        }
-
-        var colors = [];
-        for (i=0; i < 18; i++) {
-            colors.push(getRandomColor());
-        }
-
-        // Find node by id
-        $scope.findNode = function() {
-            if ($scope.nodeId !== 'undefined')
-                $scope.findNodeById($scope.nodeId);
-        }
-
-        // Get data
-		var loadJson = function() {
-			$.getJSON('public/data/trans201403_samo_pu_koord_kategorije.json', function( data ){
-				parseJsonForGraph(data);
-			});
-		}
         
-       
-        
-        // Parse JSON
-		var parseJsonForGraph = function(data) {
+        var parseDataForGraph = function() {
             // Graph
-			var maxTransTotal = 0;
-
-			$.each(data.edges, function(key, value) {
-
-				//preveri ce nakazuje sam sebi!
-				if(value[0].source == value[0].target){
-					return;
-				}
+			var maxAmount = 0;
+            
+            angular.forEach(institutes, function(institute, key) {
+                institute.totalExpenses = undefined;
+                institute.isTarget = undefined;
+            });
+            
+            angular.forEach(edges, function(edge, key) {
 
 				//interiraj po vseh transakcijah med vozliscema in sestej zneske
-				var transTotal = 0;
+				if(edge.amount > maxAmount) {
+                    maxAmount = edge.amount;
+                }
 
-				$.each(value, function(index, transacition) {
-					transTotal += parseFloat(transacition.znesek);
-				});
+                var sourceInstitute, targetInstitute;
+                for (var i=0; i < institutes.length; i++) {
+                    if (institutes[i].bu_code == edge.source_bu_code) {
+                        sourceInstitute = institutes[i];
+                    }
 
-				if(transTotal < 200000) {
-					return;
-				}
+                    if (institutes[i].bu_code == edge.target_bu_code) {
+                        targetInstitute = institutes[i];
+                    }
 
-				//shrani najvecji strosek za realizacijo velikosti vozlisc
-				if( transTotal > maxTransTotal ) {
-					maxTransTotal = transTotal;
-				}
+                    if (sourceInstitute && targetInstitute)
+                        break;
+                }
 
-				//zacetnemu vozliscu dodaj izplacani znesek
-				if(data.nodes[value[0].source].totalExpenses == undefined) {
-					data.nodes[value[0].source].totalExpenses = transTotal;
-				} else {
-					data.nodes[value[0].source].totalExpenses += transTotal;
-				}
-				if(value[0].target == 27715) {
-					console.log(transTotal);
-				}
+                //zacetnemu vozliscu dodaj izplacani znesek
+                if(sourceInstitute.totalExpenses == undefined) {
+                    sourceInstitute.totalExpenses = edge.amount;
+                } else {
+                    sourceInstitute.totalExpenses += edge.amount;
+                }
 
-				data.nodes[value[0].target].isTarget = true;
+                sourceInstitute.lon = edge.source_lon;
+                sourceInstitute.lat = edge.source_lat;
+                targetInstitute.lon = edge.target_lon;
+                targetInstitute.lat = edge.target_lat;
+                targetInstitute.isTarget = true;
 
                 $scope.graph.edges.push({
-					"id": key,
-					"source": value[0].source,
-					"target": value[0].target,
-					"label": transTotal,
-					"type": "arrow"
-				});
-
+                    "id": key.toString(),
+                    "source": edge.source_bu_code.toString(),
+                    "target": edge.target_bu_code.toString(),
+                    "label": edge.amount,
+                    "type": "arrow",
+                    "color": "#AAA"
+                });
 			});
 
-			$.each(data.nodes, function(key, value) {
-				if(value.totalExpenses == undefined && value.isTarget == undefined) {
-					return;
-				}
-				var size = 0.5;
-				if(value.totalExpenses > maxTransTotal / 2) {
-					size = 10;
-				} else if( value.totalExpenses > maxTransTotal / 5) {
-					size = 4;
-				} else if ( value.totalExpenses > maxTransTotal / 30) {
-					size = 3;
-				} else if ( value.totalExpenses > maxTransTotal / 40) {
-					size = 2;
-				} else if (value.totalExpenses > maxTransTotal / 1000) {
-					size = 1.5;
-				}
+            angular.forEach(institutes, function(institute, key) {
+
+                if(institute.totalExpenses == undefined && institute.isTarget == undefined) {
+                    return;
+                }
+                var size = 0.1;
+                if(institute.totalExpenses > maxAmount / 1.1) {
+                    size = 2;
+                } else if(institute.totalExpenses > maxAmount / 1.5) {
+                    size = 1.5;
+                } else if (institute.totalExpenses > maxAmount / 2) {
+                    size = 1.2;
+                } else if (institute.totalExpenses > maxAmount / 3) {
+                    size = 1;
+                } else if (institute.totalExpenses > maxAmount / 5) {
+                    size = 0.5;
+                }
 
                 var node = {
-                    "id": key,
-                    "label": value.naziv,
+                    "id": institute.bu_code.toString(),
+                    "label": institute.name,
                     "x": Math.random() * 1000,
                     "y": Math.random() * 1000,
                     "size": size,
                     "outcomeSum": 0,
-                    "color": colors[value.category-1]
+                    "color": $scope.legend[institute.category - 1].color,
+                    "category": institute.category - 1
                 };
 
                 $scope.graph.nodes.push(node);
-			});
 
+            });
+
+            $scope.peddingQuery = false;
             $scope.drawGraph();
 
-		}
-		
-		//JSON
-		loadJson();
-
-        function getRandomColor() {
-            var letters = '0123456789ABCDEF'.split('');
-            var color = '#';
-
-            for (var i = 0; i < 6; i++ ) {
-                color += letters[Math.floor(Math.random() * 16)];
+            // Find node from URL parameter
+            if ($scope.nodeId!== 'undefined') {
+                $scope.findNodeById($scope.nodeId);
             }
-
-            return color;
         }
+        
+        loadCategories();
+        
 	}
 })

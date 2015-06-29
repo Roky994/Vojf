@@ -126,6 +126,7 @@ define(['jQuery'], function() {
 					});
 
                     if ($scope.forceatlas) {
+						console.log("BRAVO");
                         startForceatlas();
                     } else {
                     	$('#graph-overlay').hide();
