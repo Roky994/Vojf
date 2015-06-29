@@ -33,7 +33,7 @@ define([], function() {
                     year_from: filter.year,
                     month_until: filter.month.monthUntil,
                     year_until: filter.year,
-                    limit: 4500
+                    limit: 6000
                     })
                 .then(callback)
                 .catch(apiFail);

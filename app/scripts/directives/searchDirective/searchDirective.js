@@ -4,7 +4,9 @@ define(['jQuery'], function() {
 		return {
 			restrict: 'E',
 			replace: true,
-			templateUrl: 'app/scripts/directives/searchDirective/searchDirectiveTemplate.html'
+			templateUrl: 'app/scripts/directives/searchDirective/searchDirectiveTemplate.html',
+
+		
 		}
 	}
 

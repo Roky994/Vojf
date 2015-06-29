@@ -3,18 +3,39 @@ define(['sigma', 'jQuery', 'forceAtlas', 'customEdgesShapes'], function(sigma, $
 		
 		$scope.legend = [];
         
-        var colors = ["#FF0000","#00FF00","#0000FF","#FFFF00","#FF00FF","#00FFFF", 
-                        "#800000","#008000","#000080", "#808000", "#800080", "#008080", "#808080", 
-                         "#C00000", "#00C000", "#0000C0", "#C0C000","#00C0C0"];
-        
-        apiService.getCategories(function(data) {
-            for(var i = 0; i < data.data.length; i++) {
-                $scope.legend.push({category: data.data[i].name, color: colors[i]});
-            }
-            $scope.legend.push({category: "OSTALO", color: colors[17]});
-            console.log($scope.legend);
-            loadJson();
-        });
+		var loadEdges = function() {
+            //update url
+            setUrlParams();
+            
+            $scope.peddingQuery = true;
+            $scope.graph = {nodes: [], edges: []};
+
+            // Slovenia border
+            loadBorder();
+            // Get graph from API
+            apiService.getGraph(function(response) {
+                edges = response.data;
+                // Draw graph
+                parseDataForGraph();
+            }, $scope.filter);
+        }
+		
+		var loadInstitutes = function() {
+            apiService.getInstitutes(function(response) {
+                institutes = response.data;
+                loadEdges();
+            }, {name: {}});
+        }
+		
+        var loadCategories = function() {
+            apiService.getCategories(function(response) {
+                $scope.legend = _.map(response.data, function(obj) {
+                    obj.color = "#" + obj.color;
+                    return obj;
+                })
+                loadInstitutes();
+            });
+        }
 		
         // Graph directive settings
         // Search term
@@ -61,7 +82,9 @@ define(['sigma', 'jQuery', 'forceAtlas', 'customEdgesShapes'], function(sigma, $
 				parseJsonForGraph(data);
 			});
 		}
-
+        
+       
+        
         // Parse JSON
 		var parseJsonForGraph = function(data) {
             // Graph
