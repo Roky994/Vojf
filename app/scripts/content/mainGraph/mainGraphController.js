@@ -1,6 +1,8 @@
 define(['sigma', 'jQuery','lodash', 'forceAtlas', 'customEdgesShapes'], function(sigma, $, _) {
     return function($scope, $timeout, $routeParams, $location, apiService) {
-        
+
+        $scope.searchHeight = "height20";
+
         $scope.drawGraph    = function() {};
         $scope.findNodeById = function() {};
         $scope.reset        = function() {};

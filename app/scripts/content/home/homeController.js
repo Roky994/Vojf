@@ -2,6 +2,7 @@ define(['sigma', 'jQuery'], function(sigma, $) {
     
 	return function($scope, $http, $location, apiService) {
 
+		$scope.searchHeight = "height45";
 		$scope.findNodeById = function() {};
 
 		result = [];

@@ -1,11 +1,11 @@
 <div class="input-group">
 
     <input type="text" ng-model="acSelected" placeholder="{{placeholder}}" typeahead="obj.name for obj in autocomplete($viewValue) | limitTo: 8"
-           typeahead-on-select="onSelect($item)" typeahead-min-length="2"  typeahead-wait-ms="10" class="form-control height20">
+           typeahead-on-select="onSelect($item)" typeahead-min-length="2"  typeahead-wait-ms="10" class="form-control {{searchHeight}}">
     <i ng-show="loadingLocations" class="glyphicon glyphicon-refresh"></i>
 
     <span class="input-group-btn">
-        <button class="btn btn-default height20" ng-click="findNode()" ng-disabled="peddingQuery" type="button">
+        <button class="btn btn-default  {{searchHeight}}" ng-click="findNode()" ng-disabled="peddingQuery" type="button">
             <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
         </button>
     </span>
