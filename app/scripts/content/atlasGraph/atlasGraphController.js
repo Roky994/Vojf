@@ -3,6 +3,7 @@ define(['sigma', 'jQuery', 'forceAtlas', 'customEdgesShapes'], function(sigma, $
         
         //firt process url params
         $scope.processUrlParams();
+        $scope.parseUrl();
         
         var institutes = [];
         var edges      = [];
@@ -176,6 +177,6 @@ define(['sigma', 'jQuery', 'forceAtlas', 'customEdgesShapes'], function(sigma, $
         }
         
         loadCategories();
-        
+
 	}
 })

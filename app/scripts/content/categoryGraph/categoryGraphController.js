@@ -227,6 +227,7 @@ define(['sigma', 'jQuery', 'forceAtlas', 'customEdgesShapes'], function(sigma, $
 
 
 			$scope.drawGraph();
+			$scope.parseUrl();
 		}
   
 

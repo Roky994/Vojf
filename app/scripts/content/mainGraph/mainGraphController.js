@@ -3,7 +3,10 @@ define(['sigma', 'jQuery','lodash', 'forceAtlas', 'customEdgesShapes'], function
         
         //firt process url params
         $scope.processUrlParams();
-        
+        $scope.parseUrl();
+
+        $scope.searchHeight = "height20";
+
         $scope.drawGraph    = function() {};
         $scope.findNodeById = function() {};
         $scope.reset        = function() {};
@@ -261,11 +264,9 @@ define(['sigma', 'jQuery','lodash', 'forceAtlas', 'customEdgesShapes'], function
             }
 
         };
-        
 
         //call first function
         loadCategories();
-        
         
     }
 });

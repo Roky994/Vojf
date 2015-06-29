@@ -71,7 +71,8 @@ define([], function() {
             $rootScope.filter.month = $routeParams.quaternery ? $rootScope.monthFilter[$routeParams.quaternery].value : $rootScope.monthFilter[0].value ;
             
             $rootScope.filter.year = $routeParams.year ? parseInt($routeParams.year) : 2014;
-             
+            
+ 
         }
         
         $rootScope.setUrlParams = function() {
@@ -83,13 +84,21 @@ define([], function() {
             
             $location.search('year', $rootScope.filter.year);
         }
-		
-		// Get data for border
-        $rootScope.loadBorder = function() {
-            $.getJSON('public/data/slovenia.geojson', function(data) {
-                parseJsonForBorder(data);
-            });
-        }
-	
+			
+		$rootScope.parseUrl = function() {
+			var graphName = $location.path().split("/")[1];
+			var name;
+			if (graphName == "mainGraph") {
+				name = "Lokacijski graf";
+			} else if (graphName == "categoryGraph") {
+				name = "Kategoriziran graf";
+			} else if (graphName == "atlasGraph") {
+				name = "Kategoriziran graf 2";
+			} else {
+				name = "Prikaz";
+			}
+
+			$rootScope.selectedItem = name;
+		};
     }
 });

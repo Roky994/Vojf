@@ -1,11 +1,19 @@
 <div class="row search-containter">
 
-	<div class="col-lg-3">
-		<h3>{{ settings.graphName }}</h3>
+	<div class="col-lg-5">
+
+		<div class="input-group" style="width:100%">
+			<span class="input-group-btn">
+				<button class="btn btn-default {{searchHeight}}" ng-click="reset()" type="button">
+					<span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span>
+				</button>
+			</span>
+			<autocomplete-directive></autocomplete-directive>
+		</div>
+
 	</div>
 
-
-	<div class="col-lg-9">
+	<div class="col-lg-7">
 
 		<div class="form-inline pull-right">
 			
