@@ -1,5 +1,5 @@
 define([], function() {
-    return function($rootScope, $routeParams, $location) {
+    return function($rootScope, $routeParams, $location, apiService) {
         
 		$rootScope.filter = {
             month: {},
@@ -71,8 +71,7 @@ define([], function() {
             $rootScope.filter.month = $routeParams.quaternery ? $rootScope.monthFilter[$routeParams.quaternery].value : $rootScope.monthFilter[0].value ;
             
             $rootScope.filter.year = $routeParams.year ? parseInt($routeParams.year) : 2014;
-            
- 
+
         }
         
         $rootScope.setUrlParams = function() {
@@ -100,5 +99,37 @@ define([], function() {
 
 			$rootScope.selectedItem = name;
 		};
+
+		// Autocomplete
+		var result = [];
+
+		$rootScope.autocomplete = function(term) {
+			var name = undefined;
+			var bu   = undefined;
+			var reg  = undefined;
+			var vat  = undefined;
+
+			// Determine if it's name, bu, reg or vat number
+			var num;
+			if (num = parseInt(term)) {
+				bu  = term.length < 8  ? num : undefined;
+				vat = term.length == 8 ? num : undefined;
+				reg = term.length > 8  ? num : undefined;
+			} else {
+				name = term;
+			}
+
+			console.log("bu: " + bu);
+			console.log("kljucna beseda: " + name);
+			console.log("maticna: " + reg);
+			console.log("davcna: " + vat);
+
+			apiService.getInstitutes(function (response) {
+				result = response.data;
+			}, {name: name, bu_code: bu, reg_number: reg, vat_number: vat});
+
+			return result;
+		};
+
     }
 });

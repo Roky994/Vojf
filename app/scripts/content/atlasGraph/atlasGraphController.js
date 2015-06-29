@@ -21,10 +21,20 @@ define(['sigma', 'jQuery', 'forceAtlas', 'customEdgesShapes'], function(sigma, $
         
         $scope.forceAtlas = true;
 
+        $scope.autocomplete();
+
+        $scope.onSelect = function(id) {
+            $scope.nodeId = id.bu_code.toString();
+        }
+
+        // Draw graph for given node
+        $scope.findNode = function() {
+            $scope.findNodeById($scope.nodeId);
+        }
+
         $scope.settings = {
             // Basic
             doubleClickEnabled: false,
-
             // Nodes
             minNodeSize: 1,
             maxNodeSize: 6,
@@ -35,7 +45,9 @@ define(['sigma', 'jQuery', 'forceAtlas', 'customEdgesShapes'], function(sigma, $
             // Edges
             minEdgeSize: 1,
             maxEdgeSize: 5,
-            defaultEdgeColor: '#222'
+            defaultEdgeColor: '#222',
+            //
+            zoomMin: 1/80
         }
 
         // Find node by id
