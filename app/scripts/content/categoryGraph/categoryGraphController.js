@@ -23,10 +23,15 @@ define(['sigma', 'jQuery', 'forceAtlas', 'customEdgesShapes'], function(sigma, $
 
 		$scope.forceAtlas = true;
 
-        // Find node by id
+		$scope.autocomplete();
+
+		$scope.onSelect = function(id) {
+			$scope.nodeId = id.bu_code.toString();
+		}
+
+		// Draw graph for given node
 		$scope.findNode = function() {
-            if ($scope.nodeId !== 'undefined')
-                $scope.findNodeById($scope.nodeId);
+			$scope.findNodeById($scope.nodeId);
 		}
 
 		$scope.settings = {
