@@ -1,4 +1,4 @@
-define(['jQuery'], function() {
+define(['toastr','jQuery' ], function(toastr) {
 
 	return function() {
 		return {
@@ -132,12 +132,22 @@ define(['jQuery'], function() {
 
 				// Find node by id
 				$scope.findnodebyid = function(nodeId) {
+					var found = false;
 					s.graph.nodes().forEach(function(node, i, a) {
 		                if (node.id === nodeId) {
 		                    $scope.findChoosedNode(node);
+							found = true;
 		                    return;
 		                }
 					});
+					
+					//show not found alert
+					if(!found) {
+						toastr.options = {
+							"positionClass": "toast-bottom-left"
+						}
+						toastr.warning('Izbrane institucija v tem obdobju nima transakcij!');
+					}
 				}
 
 				// Get choosed node

@@ -8,9 +8,10 @@ requirejs.config({
         'bootstrap': 'vendor/bootstrap.min',
         'sigma': 'vendor/sigmajs/sigma.min',
         'forceAtlas' : 'vendor/sigmajs/plugins/sigma.layout.forceAtlas2.min',
-		'customEdgesShapes' : 'vendor/sigmajs/plugins/sigma.renderers.customEdgeShapes.min',
+		    'customEdgesShapes' : 'vendor/sigmajs/plugins/sigma.renderers.customEdgeShapes.min',
         'lodash' : 'vendor/lodash.min',
-		'uiBootstrap' : 'vendor/ui-bootstrap-tpls-0.13.0.min'
+		    'uiBootstrap' : 'vendor/ui-bootstrap-tpls-0.13.0.min',
+        'toastr': 'vendor/toastr'
     },
     shim: {
       'angular': {
@@ -41,9 +42,9 @@ requirejs.config({
 	    'customEdgesShapes' : {
 	    	deps: ['sigma']
 	    },
-		'uiBootstrap' : {
-			deps: ['angular']
-		}
+  		'uiBootstrap' : {
+  			deps: ['angular']
+  		}
     }
 });
 
