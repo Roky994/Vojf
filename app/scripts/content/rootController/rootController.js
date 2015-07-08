@@ -9,16 +9,16 @@ define([], function() {
 		
         //search data 
         $rootScope.monthFilter = [{
-			label: "Prvi kvartar",
+			label: "Prvo četrtletje",
 			value: {monthFrom: 1, monthUntil: 3, urlParam: 0}
 		}, {
-			label: "Drugi kvartar",
+			label: "Drugo četrtletje",
 			value: {monthFrom: 4, monthUntil: 6, urlParam: 1}
 		}, {
-			label: "Tretji kvartar",
+			label: "Tretje četrtletje",
 			value: {monthFrom: 7, monthUntil: 9, urlParam: 2}
 		}, {
-			label: "Četrti kvartar",
+			label: "Četrto četrtletje",
 			value: {monthFrom: 10, monthUntil: 12, urlParam: 3}
 		}];
 		
