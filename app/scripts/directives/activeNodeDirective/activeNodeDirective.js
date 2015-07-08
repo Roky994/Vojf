@@ -5,7 +5,6 @@ define(['jQuery'], function() {
 			restrict: 'E',
 			replace: true,
 			templateUrl: 'app/scripts/directives/activeNodeDirective/activeNodeDirectiveTemplate.html'
-			
 		}
 	}
 

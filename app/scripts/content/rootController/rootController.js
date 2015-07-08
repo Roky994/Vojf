@@ -1,6 +1,10 @@
 define([], function() {
     return function($rootScope, $routeParams, $location, apiService) {
-        
+
+		$rootScope.tabActivity = ["active", ""];
+		$rootScope.tab1 = false;
+		$rootScope.tab2 = false;
+
 		$rootScope.filter = {
             month: {},
             year: undefined,
@@ -130,6 +134,21 @@ define([], function() {
 
 			return result;
 		};
+
+
+		$rootScope.selectTab = function(tab) {
+			if (tab == 1) {
+				$rootScope.tab1 = true;
+				$rootScope.tab2 = false;
+				$rootScope.tabActivity[0] = "active";
+				$rootScope.tabActivity[1] = "";
+			} else {
+				$rootScope.tab1 = false;
+				$rootScope.tab2 = true;
+				$rootScope.tabActivity[0] = "";
+				$rootScope.tabActivity[1] = "active";
+			}
+		}
 
     }
 });
