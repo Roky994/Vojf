@@ -1,28 +1,42 @@
-<div>
+<div ng-show="activeNode">
 	<div class="row">
-		<ul class="nav nav-tabs">
-			<li role="presentation" ng-class="{active: tabActivity[0]}"><a href ng-click="selectTab(1)">Kategorije</a></li>
-			<li role="presentation" class="tabActivity[1]"><a href ng-click="selectTab(2)">Statistika</a></li>
+		<ul class="nav nav-tabs nav-justified">
+			<li role="presentation" ng-class="{active: selectedTab == 0}"><a href ng-click="selectedTab = 0">Osnovno</a></li>
+			<li role="presentation" ng-class="{active: selectedTab == 1}"><a href ng-click="selectedTab = 1">Transakcije</a></li>
+			<li role="presentation" ng-class="{active: selectedTab == 2}"><a href ng-click="selectedTab = 2">Kategorije</a></li>
 		</ul>
 	</div>
-
+	<!-- <div class="row">
+		<a class="list-group-item active border-fix">
+				{{ activeNode.label }} <span class="badge"> {{ neighbours.length }} </span>
+		</a>
+	</div> -->
 	<!-- Tab1 -->
-	<div class="row" ng-show="activeNode&&tab1">
-	    <a class="list-group-item active">
-	        {{ activeNode.label }} <span class="badge"> {{ neighbours.length }} </span>
-	    </a>
-	    <ul class="list-group scrollable">
-	
-	        <li class="list-group-item font-size-11" ng-repeat="object in neighbours |  orderBy: 'edge.label'" ng-click="findNodeById(object.node.id)">
-	            <span class="badge" style="background-color: {{object.color}}"> {{ object.edge.label|currency:"EUR: " }}</span>
-	            {{ object.node.label|uppercase }}
-	        </li>
-	    </ul>
+	<div class="row basic-info tab-content" ng-show="selectedTab == 0">
+
+		<p>Kategorija</p>
+		<h5>{{ legend[activeNode.apiData.category -1].name }}</h5>
+
+		<p>Matična številka</p>
+		<h5>{{ activeNode.apiData.maticna || "Matična"}}</h5>
+
+		<p>Davčna številka</p>
+		<h5>{{ activeNode.apiData.davcna || "Davčna"}}</h5>
 	</div>
 
 	<!-- Tab2 -->
-	<div class="row" ng-show="tab2">
-		nothing yet
+	<div class="row" ng-show="selectedTab == 1">
+		<ul class="list-group scrollable">
+
+				<li class="list-group-item font-size-11" ng-repeat="object in neighbours |  orderBy: 'edge.label'" ng-click="findNodeById(object.node.id)">
+						<span class="badge" style="background-color: {{object.color}}"> {{ object.edge.label|currency:"EUR: " }}</span>
+						{{ object.node.label|uppercase }}
+				</li>
+		</ul>
 	</div>
 
+	<div class="row tab-content" ng-show="selectedTab == 2">
+ 	<!-- Dejan tukaj vstavi HTML kodo -->
+
+	</div>
 </div>

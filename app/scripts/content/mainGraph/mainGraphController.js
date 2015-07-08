@@ -1,6 +1,6 @@
 define(['sigma', 'jQuery','lodash', 'forceAtlas', 'customEdgesShapes'], function(sigma, $, _) {
     return function($scope, $timeout, $routeParams, $location, apiService) {
-        
+
         //firt process url params
         $scope.processUrlParams();
         $scope.parseUrl();
@@ -14,7 +14,7 @@ define(['sigma', 'jQuery','lodash', 'forceAtlas', 'customEdgesShapes'], function
 
         var latCenter = 46.0499335;
         var lonCenter = 14.5067506;
-        
+
         $scope.legend = [];
 
         $scope.peddingQuery = true;
@@ -32,6 +32,27 @@ define(['sigma', 'jQuery','lodash', 'forceAtlas', 'customEdgesShapes'], function
         $scope.findNode = function() {
             $scope.findNodeById($scope.nodeId);
         }
+
+        $scope.$watch("activeNode", function(){
+          $scope.activeNodeChange();
+        });
+
+        $scope.activeNodeChange = function() {
+          console.log($scope.activeNode);
+          if($scope.activeNode === undefined || $scope.activeNode === null) {
+            return;
+          }
+
+          if($scope.activeNode.id.match(/^\d{1,2}$/)) {
+            $scope.acSelected = undefined;
+            return;
+          }
+          $scope.acSelected = $scope.activeNode.label;
+          apiService.getInstitutes(function(obj) {
+            $scope.activeNode.apiData = obj.data[0];
+          }, {bu_code: $scope.activeNode.id});
+        };
+
 
         // Graph directive settings
         $scope.settings = {
@@ -54,7 +75,7 @@ define(['sigma', 'jQuery','lodash', 'forceAtlas', 'customEdgesShapes'], function
 
         var institutes = [];
         var edges      = [];
-        
+
         //for query function call
         $scope.loadEdges = function() {
             loadEdges();
@@ -63,7 +84,7 @@ define(['sigma', 'jQuery','lodash', 'forceAtlas', 'customEdgesShapes'], function
         var loadEdges = function() {
             //update url
             $scope.setUrlParams();
-            
+
             $scope.peddingQuery = true;
             $scope.graph = {nodes: [], edges: []};
 
@@ -83,7 +104,7 @@ define(['sigma', 'jQuery','lodash', 'forceAtlas', 'customEdgesShapes'], function
                 loadEdges();
             }, {name: {}});
         }
-        
+
         var loadCategories = function() {
             apiService.getCategories(function(response) {
                 $scope.legend = _.map(response.data, function(obj) {
@@ -100,12 +121,12 @@ define(['sigma', 'jQuery','lodash', 'forceAtlas', 'customEdgesShapes'], function
                 parseJsonForBorder(data);
             });
         }
-        
-        //Parse data from API for Sigma.js 
+
+        //Parse data from API for Sigma.js
         var parseDataForGraph = function() {
 
             var maxAmount = 0;
-            
+
             angular.forEach(institutes, function(institute, key) {
                 institute.totalExpenses = undefined;
                 institute.isTarget = undefined;

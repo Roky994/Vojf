@@ -13,7 +13,7 @@ define(['toastr','jQuery' ], function(toastr) {
 				nodeid: '=',
 				neighbours:'=',
 				activenode:'=',
-                forceatlas:'=',
+        forceatlas:'=',
 				showcategory: '=',
 				reset:'='
 			},
@@ -24,7 +24,7 @@ define(['toastr','jQuery' ], function(toastr) {
 		            s.graph.nodes().forEach(function(n, index) {
 						if (n.id.charAt(0) == "b")
                         	return;
-		
+
 					  	if(categoryIndex == $scope.graph.nodes[index].category) {
 							  n.color = $scope.graph.nodes[index].color;
 						} else {
@@ -33,11 +33,11 @@ define(['toastr','jQuery' ], function(toastr) {
 			        });
 					s.refresh();
 		        }
-					
+
 				$scope.drawgraph = function() {
-					$('#graph').remove(); 
-					$('#graph-container').html('<div id="graph"></div>'); 
-					
+					$('#graph').remove();
+					$('#graph-container').html('<div id="graph"></div>');
+
 		            try {
 		                sigma.classes.graph.addMethod('neighbors', function (nodeId) {
 		                    var k,
@@ -56,15 +56,15 @@ define(['toastr','jQuery' ], function(toastr) {
 
 					sigma.prototype.zoomToNode = function(node) {
 		                camera = this.cameras[0];
-						
+
 						ratio = camera.ratio < $scope.settings.zoomMin * 10 ? camera.ratio : $scope.settings.zoomMin * 10;
 					    sigma.misc.animation.camera(
-						  camera, 
+						  camera,
 						  {
-						    x: node[s.camera.readPrefix + 'x'], 
+						    x: node[s.camera.readPrefix + 'x'],
 						    y: node[s.camera.readPrefix + 'y'],
 						    ratio: ratio
-						  }, 
+						  },
 						  {duration: 1500}
 						);
 
@@ -76,18 +76,18 @@ define(['toastr','jQuery' ], function(toastr) {
 					    }
 
 						sigma.misc.animation.camera(
-						  camera, 
+						  camera,
 						  {
 						    x: 0,
 						    y: 0,
 						    ratio: 1
-						  }, 
+						  },
 						  {duration: 1500}
 						);
 					}
 
 					sigma.prototype.resetColors = function() {
-						
+
 						s.graph.nodes().forEach(function(n,i) {
 				          n.color = $scope.graph.nodes[i].color;
 				        });
@@ -96,7 +96,7 @@ define(['toastr','jQuery' ], function(toastr) {
 				        s.graph.edges().forEach(function(e,i) {
 				          e.color = $scope.graph.edges[i].color;
 				        });
-				        
+
 				        s.refresh();
 
 					}
@@ -109,7 +109,7 @@ define(['toastr','jQuery' ], function(toastr) {
 						},
 						settings: $scope.settings
 					});
-					
+
 					$('#graph-overlay').css({
 						top: 0,
 						left: 15,
@@ -127,7 +127,7 @@ define(['toastr','jQuery' ], function(toastr) {
 
                     if ($scope.forceatlas) {
                         startForceatlas();
-                    } 
+                    }
 				}
 
 				// Find node by id
@@ -140,7 +140,7 @@ define(['toastr','jQuery' ], function(toastr) {
 		                    return;
 		                }
 					});
-					
+
 					//show not found alert
 					if(!found) {
 						toastr.options = {
@@ -197,19 +197,19 @@ define(['toastr','jQuery' ], function(toastr) {
 						}
 						j++;
 					});
-					
+
 					//console.log(s);
 					s.zoomToNode(node, 0.05);
 					s.refresh();
 				}
-				
+
 				 // Reset the graph
 				$scope.reset = function() {
 					s.resetZoom();
 					s.resetColors();
 					$scope.nodeid = undefined;
 					$scope.activenode = undefined;
-					
+
 				}
 
                 var startForceatlas = function() {

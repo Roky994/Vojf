@@ -10,8 +10,8 @@ define([], function() {
             year: undefined,
             amount: {},
         }
-		
-        //search data 
+
+        //search data
         $rootScope.monthFilter = [{
 			label: "Prvo četrtletje",
 			value: {monthFrom: 1, monthUntil: 3, urlParam: 0}
@@ -25,7 +25,7 @@ define([], function() {
 			label: "Četrto četrtletje",
 			value: {monthFrom: 10, monthUntil: 12, urlParam: 3}
 		}];
-		
+
 		$rootScope.yearFilter = [{
 			value: 2003
 		},{
@@ -51,7 +51,7 @@ define([], function() {
 		}, {
 			value: 2014
 		}];
-		
+
 		$rootScope.amountFilter = [{
 			label: "0 - 10000",
 			value: { minAmount: 0, maxAmount: 10000, urlParam: 0 }
@@ -65,29 +65,28 @@ define([], function() {
 			label: "več kot 100000",
 			value: { minAmount: 100000, urlParam: 3 }
 		}];
-    
+
 		$rootScope.processUrlParams = function() {
-            
+
             $rootScope.nodeId = $routeParams.nodeId.toString();
-            
+
             $rootScope.filter.amount = $routeParams.amount ? $rootScope.amountFilter[$routeParams.amount].value : $rootScope.amountFilter[3].value;
 
             $rootScope.filter.month = $routeParams.quaternery ? $rootScope.monthFilter[$routeParams.quaternery].value : $rootScope.monthFilter[0].value ;
-            
+
             $rootScope.filter.year = $routeParams.year ? parseInt($routeParams.year) : 2014;
 
         }
-        
-        $rootScope.setUrlParams = function() {
 
+        $rootScope.setUrlParams = function() {
             if($rootScope.filter.amount)
                 $location.search('amount', $rootScope.filter.amount.urlParam);
             if($rootScope.filter.month)
                 $location.search('quaternery', $rootScope.filter.month.urlParam);
-            
+
             $location.search('year', $rootScope.filter.year);
         }
-			
+
 		$rootScope.parseUrl = function() {
 			var graphName = $location.path().split("/")[1];
 			var name;
@@ -136,19 +135,6 @@ define([], function() {
 		};
 
 
-		$rootScope.selectTab = function(tab) {
-			if (tab == 1) {
-				$rootScope.tab1 = true;
-				$rootScope.tab2 = false;
-				$rootScope.tabActivity[0] = "active";
-				$rootScope.tabActivity[1] = "";
-			} else {
-				$rootScope.tab1 = false;
-				$rootScope.tab2 = true;
-				$rootScope.tabActivity[0] = "";
-				$rootScope.tabActivity[1] = "active";
-			}
-		}
-
+    
     }
 });

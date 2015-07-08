@@ -16,21 +16,21 @@
 	<div class="col-lg-7">
 
 		<div class="form-inline pull-right">
-			
+
 			<img ng-show="peddingQuery" id="query-loader" src="public/img/loader.gif"/>
-			
-			<select class="form-control" ng-options="item.value as item.label for item in monthFilter" ng-model="filter.month">
+
+			<select class="form-control" ng-options="item.value as item.label for item in monthFilter" ng-model="filter.month" ng-hide="filter.month.hide">
 				<option value='' disabled>- Izberi četrtletje -</option>
 			</select>
-			
-			<select class="form-control" ng-options="item.value as item.value for item in yearFilter" ng-model="filter.year">
+
+			<select class="form-control" ng-options="item.value as item.value for item in yearFilter" ng-model="filter.year" ng-hide="filter.year.hide">
 				<option value='' disabled>- Izberi leto -</option>
 			</select>
 
-			<select class="form-control" ng-options="item.value as item.label for item in amountFilter" ng-model="filter.amount">
+			<select class="form-control" ng-options="item.value as item.label for item in amountFilter" ng-model="filter.amount" ng-hide="filter.amount.hide">
 				<option value='' disabled>- Izberi količino denarja -</option>
 			</select>
-			
+
 			<button ng-disabled="peddingQuery" class="btn-success btn" ng-click="loadEdges()">Posodobi</button>
 
 		</div>
