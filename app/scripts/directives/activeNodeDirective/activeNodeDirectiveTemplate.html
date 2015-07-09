@@ -15,13 +15,13 @@
 	<div class="row basic-info tab-content" ng-show="selectedTab == 0">
 
 		<p>Kategorija</p>
-		<h5>{{ legend[activeNode.category].name }}</h5>
+		<h5>{{ legend[activeNode.category].name || activeNode.label }}</h5>
 
 		<p>Matična številka</p>
-		<h5>{{ activeNode.apiData.reg_number || "Matična"}}</h5>
+		<h5>{{ activeNode.apiData.reg_number || "/"}}</h5>
 
 		<p>Davčna številka</p>
-		<h5>{{ activeNode.apiData.vat_number || "Davčna"}}</h5>
+		<h5>{{ activeNode.apiData.vat_number || "/"}}</h5>
 	</div>
 
 	<!-- Tab2 -->
@@ -29,7 +29,7 @@
 		<ul class="list-group scrollable">
 
 				<li class="list-group-item font-size-11" ng-repeat="object in neighbours |  orderBy: 'edge.label'" ng-click="findNodeById(object.node.id)">
-						<span class="badge" style="background-color: {{object.color}}"> {{ object.edge.label|currency:"EUR: " }}</span>
+						<span class="badge" ng-style="{'background-color': object.color}"> {{ object.edge.label|currency:"EUR: " }}</span>
 						{{ object.node.label|uppercase }}
 				</li>
 		</ul>

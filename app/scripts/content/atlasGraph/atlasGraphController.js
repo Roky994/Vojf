@@ -50,25 +50,27 @@ define(['sigma', 'jQuery', 'forceAtlas', 'customEdgesShapes'], function(sigma, $
             zoomMin: 1/80
         }
 
-				$scope.$watch("activeNode", function(){
-					$scope.activeNodeChange();
-				});
+        $scope.$watch("activeNode", function(){
+            $scope.activeNodeChange();
+        });
 
-				$scope.activeNodeChange = function() {
-					console.log($scope.activeNode);
-					if($scope.activeNode === undefined || $scope.activeNode === null) {
-						return;
-					}
+        $scope.activeNodeChange = function() {
+            console.log($scope.activeNode);
+            if ($scope.activeNode === undefined || $scope.activeNode === null) {
+                $scope.acSelected = undefined;
+                return;
+            }
 
-					if($scope.activeNode.id.match(/^\d{1,2}$/)) {
-						$scope.acSelected = undefined;
-						return;
-					}
-					$scope.acSelected = $scope.activeNode.label;
-					apiService.getInstitutes(function(obj) {
-						$scope.activeNode.apiData = obj.data[0];
-					}, {bu_code: $scope.activeNode.id});
-				};
+            if ($scope.activeNode.id.match(/^\d{1,2}$/)) {
+                $scope.acSelected = undefined;
+                return;
+            }
+
+            $scope.acSelected = $scope.activeNode.label;
+            apiService.getCompany(function(obj) {
+                $scope.activeNode.apiData = obj.data[0];
+            }, {bu_code: $scope.activeNode.id});
+        };
 
         // Find node by id
         $scope.findNode = function() {

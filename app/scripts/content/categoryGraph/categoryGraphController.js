@@ -1,16 +1,15 @@
 define(['sigma', 'jQuery', 'forceAtlas', 'customEdgesShapes'], function(sigma, $) {
 	return function($scope, $timeout, $routeParams, apiService) {
 
-		//firt process url params
-    $scope.processUrlParams();
-    $scope.parseUrl();
+		// First process url params
+		$scope.processUrlParams();
+		$scope.parseUrl();
 
 		var institutes = [];
-    var edges      = [];
+		var edges      = [];
 		$scope.legend  = [];
-    $scope.peddingQuery = true;
-		// Graph directive settings
-    // Search term
+		$scope.peddingQuery = true;
+
 		$scope.nodeId = $routeParams.nodeId;
 
 		$scope.filter.amount = {};
@@ -19,10 +18,10 @@ define(['sigma', 'jQuery', 'forceAtlas', 'customEdgesShapes'], function(sigma, $
 		$scope.neighbours = [];
 		$scope.graph = {nodes: [], edges: []};
 
-		$scope.drawGraph = function() {};
-        $scope.findNodeById = function() {};
-        $scope.reset        = function() {};
-        $scope.showCategory = function() {};
+		$scope.drawGraph    = function() {};
+		$scope.findNodeById = function() {};
+		$scope.reset        = function() {};
+		$scope.showCategory = function() {};
 
 		$scope.forceAtlas = true;
 
@@ -55,25 +54,26 @@ define(['sigma', 'jQuery', 'forceAtlas', 'customEdgesShapes'], function(sigma, $
 	        zoomMin: 1/30
     	};
 
-			$scope.$watch("activeNode", function(){
-				$scope.activeNodeChange();
-			});
+		$scope.$watch("activeNode", function(){
+			$scope.activeNodeChange();
+		});
 
-			$scope.activeNodeChange = function() {
-				console.log($scope.activeNode);
-				if($scope.activeNode === undefined || $scope.activeNode === null) {
-					return;
-				}
+		$scope.activeNodeChange = function() {
+			if ($scope.activeNode === undefined || $scope.activeNode === null) {
+				$scope.acSelected = undefined;
+				return;
+			}
 
-				if($scope.activeNode.id.match(/^\d{1,2}$/)) {
-					$scope.acSelected = undefined;
-					return;
-				}
-				$scope.acSelected = $scope.activeNode.label;
-				apiService.getInstitutes(function(obj) {
-					$scope.activeNode.apiData = obj.data[0];
-				}, {bu_code: $scope.activeNode.id});
-			};
+			if ($scope.activeNode.id.match(/^\d{1,2}$/)) {
+				$scope.acSelected = undefined;
+				return;
+			}
+
+			$scope.acSelected = $scope.activeNode.label;
+			apiService.getCompany(function(obj) {
+				$scope.activeNode.apiData = obj.data[0];
+			}, {bu_code: $scope.activeNode.id});
+		};
 
 		//for query function call
         $scope.loadEdges = function() {

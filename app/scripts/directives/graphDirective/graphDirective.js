@@ -142,7 +142,7 @@ define(['toastr','jQuery' ], function(toastr) {
 					});
 
 					//show not found alert
-					if(!found) {
+					if (!found) {
 						toastr.options = {
 							"positionClass": "toast-bottom-left"
 						}

@@ -30,6 +30,7 @@ define(['sigma', 'jQuery','lodash', 'forceAtlas', 'customEdgesShapes'], function
 
         // Draw graph for given node
         $scope.findNode = function() {
+            console.log($scope.nodeId);
             $scope.findNodeById($scope.nodeId);
         }
 
@@ -38,14 +39,14 @@ define(['sigma', 'jQuery','lodash', 'forceAtlas', 'customEdgesShapes'], function
         });
 
         $scope.activeNodeChange = function() {
-              console.log($scope.activeNode);
               if ($scope.activeNode === undefined || $scope.activeNode === null) {
-                    return;
+                  $scope.acSelected = undefined;
+                  return;
               }
 
               if ($scope.activeNode.id.match(/^\d{1,2}$/)) {
-                    $scope.acSelected = undefined;
-                    return;
+                $scope.acSelected = undefined;
+                return;
               }
 
               $scope.acSelected = $scope.activeNode.label;
@@ -53,7 +54,6 @@ define(['sigma', 'jQuery','lodash', 'forceAtlas', 'customEdgesShapes'], function
                   $scope.activeNode.apiData = obj.data[0];
               }, {bu_code: $scope.activeNode.id});
         };
-
 
         // Graph directive settings
         $scope.settings = {
