@@ -15,13 +15,13 @@
 	<div class="row basic-info tab-content" ng-show="selectedTab == 0">
 
 		<p>Kategorija</p>
-		<h5>{{ legend[activeNode.apiData.category -1].name }}</h5>
+		<h5>{{ legend[activeNode.category].name }}</h5>
 
 		<p>Matična številka</p>
-		<h5>{{ activeNode.apiData.maticna || "Matična"}}</h5>
+		<h5>{{ activeNode.apiData.reg_number || "Matična"}}</h5>
 
 		<p>Davčna številka</p>
-		<h5>{{ activeNode.apiData.davcna || "Davčna"}}</h5>
+		<h5>{{ activeNode.apiData.vat_number || "Davčna"}}</h5>
 	</div>
 
 	<!-- Tab2 -->

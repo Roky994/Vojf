@@ -209,7 +209,6 @@ define(['toastr','jQuery' ], function(toastr) {
 					s.resetColors();
 					$scope.nodeid = undefined;
 					$scope.activenode = undefined;
-
 				}
 
                 var startForceatlas = function() {

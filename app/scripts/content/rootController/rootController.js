@@ -122,10 +122,10 @@ define([], function() {
 				name = term;
 			}
 
-			console.log("bu: " + bu);
-			console.log("kljucna beseda: " + name);
-			console.log("maticna: " + reg);
-			console.log("davcna: " + vat);
+			if (bu) console.log("bu: " + bu);
+			if (name) console.log("kljucna beseda: " + name);
+			if (reg) console.log("maticna: " + reg);
+			if (vat) console.log("davcna: " + vat);
 
 			apiService.getInstitutes(function (response) {
 				result = response.data;

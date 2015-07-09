@@ -8,12 +8,6 @@ Ljubljana, 2015
 - SigmaJS http://sigmajs.org/
 - AngularJS https://angularjs.org/
 
-## TODO
-
-- Dynamic data feeding - API
-- Testing
-
-
 ## Useful links
 
 - http://supervizor.domenca.com/
@@ -26,6 +20,5 @@ Ljubljana, 2015
 * Backend
 
 * Graph (visualizations)
-
 
 ---

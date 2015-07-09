@@ -8,7 +8,8 @@ define([], function() {
             getInstitutes: getInstitutes,
             getGraph: getGraph,
             getCategories: getCategories,
-            getTransactions : getTransactions
+            getTransactions : getTransactions,
+            getCompany : getCompany
         };
 
         function getInstitutes(callback, filter) {
@@ -49,6 +50,14 @@ define([], function() {
             return $http.post(url + '/transactions/query', {
                 bu_code : filter.bu_code,
                 limit : 4500
+            })
+                .then(callback)
+                .catch(apiFail);
+        }
+
+        function getCompany(callback, filter) {
+            return $http.post(url + '/companies/query', {
+                bu_code : filter.bu_code,
             })
                 .then(callback)
                 .catch(apiFail);

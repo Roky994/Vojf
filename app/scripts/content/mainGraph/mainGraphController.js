@@ -1,7 +1,7 @@
 define(['sigma', 'jQuery','lodash', 'forceAtlas', 'customEdgesShapes'], function(sigma, $, _) {
     return function($scope, $timeout, $routeParams, $location, apiService) {
 
-        //firt process url params
+        // First process url params
         $scope.processUrlParams();
         $scope.parseUrl();
 
@@ -38,19 +38,20 @@ define(['sigma', 'jQuery','lodash', 'forceAtlas', 'customEdgesShapes'], function
         });
 
         $scope.activeNodeChange = function() {
-          console.log($scope.activeNode);
-          if($scope.activeNode === undefined || $scope.activeNode === null) {
-            return;
-          }
+              console.log($scope.activeNode);
+              if ($scope.activeNode === undefined || $scope.activeNode === null) {
+                    return;
+              }
 
-          if($scope.activeNode.id.match(/^\d{1,2}$/)) {
-            $scope.acSelected = undefined;
-            return;
-          }
-          $scope.acSelected = $scope.activeNode.label;
-          apiService.getInstitutes(function(obj) {
-            $scope.activeNode.apiData = obj.data[0];
-          }, {bu_code: $scope.activeNode.id});
+              if ($scope.activeNode.id.match(/^\d{1,2}$/)) {
+                    $scope.acSelected = undefined;
+                    return;
+              }
+
+              $scope.acSelected = $scope.activeNode.label;
+              apiService.getCompany(function(obj) {
+                  $scope.activeNode.apiData = obj.data[0];
+              }, {bu_code: $scope.activeNode.id});
         };
 
 
