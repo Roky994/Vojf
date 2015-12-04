@@ -13,12 +13,4 @@ Ljubljana, 2015
 - http://supervizor.domenca.com/
 - http://lalg.fri.uni-lj.si/redmine/
 
-## Authors
-
-* Frontend
-
-* Backend
-
-* Graph (visualizations)
-
 ---
